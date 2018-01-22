@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.15
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMinusMinusCompiler", "CMinusMinusCompiler\CMinusMinusCompiler.csproj", "{978A1F3B-EBC3-46F1-928C-75DC29E04B53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMinusMinusCompiler.Test", "CMinusMinusCompiler.Test\CMinusMinusCompiler.Test.csproj", "{2DC2D92F-EB2A-4143-9C02-600C956E1228}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{978A1F3B-EBC3-46F1-928C-75DC29E04B53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{978A1F3B-EBC3-46F1-928C-75DC29E04B53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{978A1F3B-EBC3-46F1-928C-75DC29E04B53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{978A1F3B-EBC3-46F1-928C-75DC29E04B53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DC2D92F-EB2A-4143-9C02-600C956E1228}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DC2D92F-EB2A-4143-9C02-600C956E1228}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DC2D92F-EB2A-4143-9C02-600C956E1228}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DC2D92F-EB2A-4143-9C02-600C956E1228}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D2BC3DD2-2AE4-425B-95AE-69431A4A5827}
+	EndGlobalSection
+EndGlobal
