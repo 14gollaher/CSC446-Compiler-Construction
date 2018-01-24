@@ -48,6 +48,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyInitializer.cs" />
     <Compile Include="LexicalAnalysis\LexicalAnalysis_Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -63,7 +64,18 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="LexicalAnalysis\Outputs\LexicalAnalysisTest_HappyPath.txt" />
+    <Content Include="LexicalAnalysis\Expected\Identifiers.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="LexicalAnalysis\Source\HappyPath.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="LexicalAnalysis\Expected\HappyPath.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="LexicalAnalysis\Source\Identifiers.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

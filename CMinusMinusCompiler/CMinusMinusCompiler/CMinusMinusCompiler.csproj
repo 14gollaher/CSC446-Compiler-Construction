@@ -46,12 +46,16 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="CommonTools.cs" />
     <Compile Include="LexicalAnalysis\LexicalAnalyzer.cs" />
-    <Compile Include="LexicalAnalysis\Token.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
 </Project>

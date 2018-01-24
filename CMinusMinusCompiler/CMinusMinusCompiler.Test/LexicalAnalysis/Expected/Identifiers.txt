@@ -1,0 +1,13 @@
+﻿Lexeme                      Token                Attributes     
+-----------------------------------------------------------
+Wheee                       IdentifierToken      Attribute      
+Hello                       IdentifierToken      Attribute      
+wORlD                       IdentifierToken      Attribute      
+abcdefghijklmnopqrstuvwxyz_ IdentifierToken      Attribute      
+ERROR: Line 3 - Identifier length exceeds maximum 27 characters
+ERROR: Line 4 - Identifier length exceeds maximum 27 characters
+if                          IfToken              Attribute      
+ELse                        IdentifierToken      Attribute      
+hello                       IdentifierToken      Attribute      
+while                       WhileToken           Attribute      
+\n                          EndOfFileToken       Attribute      
