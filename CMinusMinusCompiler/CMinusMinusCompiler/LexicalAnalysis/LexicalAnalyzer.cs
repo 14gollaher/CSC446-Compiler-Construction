@@ -96,11 +96,12 @@ namespace CMinusMinusCompiler
         {
             if (Token != Symbol.UnknownToken)
             {
-                string[] outputData = new string[] { Lexeme, Token.ToString(), "Attribute" };
+                string[] outputData = new string[] { Lexeme, Token.ToString(), "" };
                 CommonTools.WriteOutput(string.Format(OutputFormat, outputData));
             }
         }
 
+        // Display token header to screen and output file
         public void DisplayTokenHeader()
         {
             File.Delete(CommonTools.OutputFilePath);
@@ -110,6 +111,7 @@ namespace CMinusMinusCompiler
             CommonTools.WriteOutput(string.Format(OutputFormat, headingData) + headerRule);
         }
 
+        // Get the next character from the source file contents
         private char GetNextCharacter()
         {
             if (SourceFileContents.Length > 0)

@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace CMinusMinusCompiler.Test
 {
@@ -23,8 +24,9 @@ namespace CMinusMinusCompiler.Test
             Bootstrapper bootstrapper = new Bootstrapper();
             bootstrapper.StartLexicalAnalyzer(new string[] { @"LexicalAnalysis\Source\Identifiers.c" });
 
-            string output = File.ReadAllText(CommonTools.OutputFilePath);
-            string expected = File.ReadAllText(@"LexicalAnalysis\Expected\Identifiers.txt");
+            string expected = Regex.Replace(File.ReadAllText(@"LexicalAnalysis\Expected\Identifiers.txt"), "\\s+", " ");
+            string output = Regex.Replace(File.ReadAllText(CommonTools.OutputFilePath), "\\s+", " ");
+
             Assert.AreEqual(expected, output);
         }
 
