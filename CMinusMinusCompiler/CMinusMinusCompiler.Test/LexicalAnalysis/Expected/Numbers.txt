@@ -1,6 +1,6 @@
 ﻿Lexeme                              Token                Attributes     
 -------------------------------------------------------------------
-Wheee                               IdentifierToken                     
+Wheee                               IdentifierToken                    
 Hello                               IdentifierToken                     
 wORlD                               IdentifierToken                     
 abcdefghijklmnopqrstuvwxyz_         IdentifierToken                     

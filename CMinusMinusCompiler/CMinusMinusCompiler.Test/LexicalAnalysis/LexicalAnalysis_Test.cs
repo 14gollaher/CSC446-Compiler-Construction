@@ -11,7 +11,7 @@ namespace CMinusMinusCompiler.Test
         public void LexicalAnalysis_HappyPath()
         {
             Bootstrapper bootstrapper = new Bootstrapper();
-            bootstrapper.StartLexicalAnalyzer(new string[] { @"LexicalAnalysis\Source\HappyPath.c" });
+            bootstrapper.Start(new string[] { @"LexicalAnalysis\Source\HappyPath.c" });
 
             string output = File.ReadAllText(CommonTools.OutputFilePath);
             string expected = File.ReadAllText(@"LexicalAnalysis\Expected\HappyPath.txt");
@@ -22,7 +22,7 @@ namespace CMinusMinusCompiler.Test
         public void LexicalAnalysis_Identifiers()
         {
             Bootstrapper bootstrapper = new Bootstrapper();
-            bootstrapper.StartLexicalAnalyzer(new string[] { @"LexicalAnalysis\Source\Identifiers.c" });
+            bootstrapper.Start(new string[] { @"LexicalAnalysis\Source\Identifiers.c" });
 
             string expected = Regex.Replace(File.ReadAllText(@"LexicalAnalysis\Expected\Identifiers.txt"), "\\s+", " ");
             string output = Regex.Replace(File.ReadAllText(CommonTools.OutputFilePath), "\\s+", " ");
@@ -34,7 +34,7 @@ namespace CMinusMinusCompiler.Test
         public void LexicalAnalysis_Identifiers2()
         {
             Bootstrapper bootstrapper = new Bootstrapper();
-            bootstrapper.StartLexicalAnalyzer(new string[] { @"LexicalAnalysis\Source\Identifiers2.c" });
+            bootstrapper.Start(new string[] { @"LexicalAnalysis\Source\Identifiers2.c" });
 
             string output = File.ReadAllText(CommonTools.OutputFilePath);
             string expected = File.ReadAllText(@"LexicalAnalysis\Expected\Identifiers2.txt");

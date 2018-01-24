@@ -2,6 +2,11 @@
 using System.IO;
 
 //TODO: File opening issues?
+//TODO: Initial creation of output files
+//TODO: Figure out where Hamer will drop the input files
+//TODO: Nexted comments?
+//TODO: Change startup to say "expected usage: " 
+
 
 namespace CMinusMinusCompiler
 {

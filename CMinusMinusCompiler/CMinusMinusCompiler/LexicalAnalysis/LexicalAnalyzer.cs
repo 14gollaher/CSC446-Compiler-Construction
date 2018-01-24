@@ -1,12 +1,12 @@
 ﻿using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
+using System.Linq;
 
 namespace CMinusMinusCompiler
 {
-    // Lexical analyzer finds valid tokens in a specified source
-    // file. 
+    // Lexical analyzer finds valid tokens in a specified source file. 
     public class LexicalAnalyzer
     {
         public enum Symbol
@@ -25,12 +25,12 @@ namespace CMinusMinusCompiler
         public string Lexeme { get; set; }
         public char Character { get; set; }
         public int LineNumber { get; set; } = 1;
-        public int Value { get; set; }
-        public float ValueReal { get; set; }
+        public int? Value { get; set; }
+        public float? ValueReal { get; set; }
         public string Literal { get; set; }
 
         private string SourceFileContents { get; set; }
-        private string OutputFormat { get; } = "{0,-27} {1,-20} {2,-15}";
+        private string OutputFormat { get; } = "{0,-35} {1,-20} {2,-15}";
 
         private Dictionary<string, Symbol> ReserverdWordTokens { get; } = new Dictionary<string, Symbol>
         {
@@ -96,7 +96,10 @@ namespace CMinusMinusCompiler
         {
             if (Token != Symbol.UnknownToken)
             {
-                string[] outputData = new string[] { Lexeme, Token.ToString(), "" };
+                dynamic attribute = Value ?? ValueReal;
+                attribute = attribute ?? Literal;
+
+                string[] outputData = new string[] { Lexeme, Token.ToString(), attribute.ToString() };
                 CommonTools.WriteOutput(string.Format(OutputFormat, outputData));
             }
         }
@@ -106,8 +109,7 @@ namespace CMinusMinusCompiler
         {
             File.Delete(CommonTools.OutputFilePath);
             string[] headingData = new string[] { "Lexeme", "Token", "Attributes" };
-            string headerRule = 
-                Environment.NewLine + "-----------------------------------------------------------";
+            string headerRule = Environment.NewLine + new string('-', 67);
             CommonTools.WriteOutput(string.Format(OutputFormat, headingData) + headerRule);
         }
 
@@ -137,7 +139,7 @@ namespace CMinusMinusCompiler
             //else if (Char.IsDigit(Lexeme[0])) ProcessSingleToken();
         }
 
-        // Check if character is an valid English character (A-Z, a-z)
+        // Check if character is a valid English character (A-Z, a-z)
         private bool IsFirstWordCharacter(char character)
         {
             return (character >= 'A' && character <= 'Z') || (character >= 'a' && character <= 'z');
@@ -164,48 +166,46 @@ namespace CMinusMinusCompiler
             {
                 Lexeme += Character;
             }
-
-            if (Lexeme.Length > 27)
-            {
-                WriteLexicalError("Identifier length exceeds maximum 27 characters");
-            }
-            else
-            {
-                Token = ReserverdWordTokens.ContainsKey(Lexeme)
-                    ? ReserverdWordTokens[Lexeme] : Symbol.IdentifierToken;
-            }
+            if (Lexeme.Length > 27) Literal 
+                    = new string(Lexeme.Take(Int32.Parse(ConfigurationManager.AppSettings["MaximumLiteralLength"])).ToArray());  
+    
+            Token = ReserverdWordTokens.ContainsKey(Lexeme)
+                ? ReserverdWordTokens[Lexeme] : Symbol.IdentifierToken;
         }
 
         // Process a potential number token
         private void ProcessNumberToken()
         {
-            Lexeme += Character;
-            while(IsDigitCharacter(GetNextCharacter()))
-            {
-                Lexeme += Character;
-            }
-            
+            ProcessRemainingNumberToken();
+
             if (Character == '.')
             {
-                ProcessFloatToken();
+                GetNextCharacter();
+                ProcessRemainingNumberToken();
+            }
+            else
+            {
+                Value = Convert.
             }
 
-            Token = Symbol.NumberToken;
+            if (SingleTokens.ContainsKey(Character) || Char.IsWhiteSpace(Character))
+            {
+                Token = Symbol.NumberToken;
+            }
+            else
+            {
+               //WriteLexicalError("Unexpected character ");
+            }
+
         }
 
         // Process a potential float token
-        private void ProcessFloatToken()
+        private void ProcessRemainingNumberToken()
         {
             Lexeme += Character;
             while (IsDigitCharacter(GetNextCharacter()))
             {
                 Lexeme += Character;
-            }
-
-            if (!Char.IsWhiteSpace(Character))
-            {
-                WriteLexicalError("Unexpected character following decimal");
-                Token = Symbol.UnknownToken;
             }
         }
 
@@ -215,8 +215,8 @@ namespace CMinusMinusCompiler
             Lexeme = string.Empty;
             Literal = string.Empty;
             Character = ' ';
-            Value = 0;
-            ValueReal = 0.0F;
+            Value = null;
+            ValueReal = null;
         }
 
         // Writes an error specific to the lexical analysis
