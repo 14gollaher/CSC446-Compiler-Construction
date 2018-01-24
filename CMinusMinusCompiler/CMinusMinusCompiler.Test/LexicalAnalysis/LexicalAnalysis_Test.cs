@@ -27,5 +27,17 @@ namespace CMinusMinusCompiler.Test
             string expected = File.ReadAllText(@"LexicalAnalysis\Expected\Identifiers.txt");
             Assert.AreEqual(expected, output);
         }
+
+        [TestMethod]
+        public void LexicalAnalysis_Identifiers2()
+        {
+            Bootstrapper bootstrapper = new Bootstrapper();
+            bootstrapper.StartLexicalAnalyzer(new string[] { @"LexicalAnalysis\Source\Identifiers2.c" });
+
+            string output = File.ReadAllText(CommonTools.OutputFilePath);
+            string expected = File.ReadAllText(@"LexicalAnalysis\Expected\Identifiers2.txt");
+            Assert.AreEqual(expected, output);
+        }
+
     }
 }

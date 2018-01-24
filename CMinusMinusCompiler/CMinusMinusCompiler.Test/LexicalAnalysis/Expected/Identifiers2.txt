@@ -1,0 +1,10 @@
+﻿Lexeme                      Token                Attributes     
+-----------------------------------------------------------
+ERROR: Line 1 - Unexpected character in identifier
+ERROR: Line 2 - Unexpected character in identifier
+ERROR: Line 3 - Unexpected character in identifier
+ERROR: Line 4 - Unexpected character in identifier
+ERROR: Line 3 - Identifier length exceeds maximum 27 characters
+abc                         IdentifierToken
+def                         IdentifierToken
+\n                          EndOfFileToken
