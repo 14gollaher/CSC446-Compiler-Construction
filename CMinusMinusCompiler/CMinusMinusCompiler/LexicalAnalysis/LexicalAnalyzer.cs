@@ -58,6 +58,17 @@ namespace CMinusMinusCompiler
             { '=', Symbol.RelationalOperationToken }
         };
 
+        private List<string> WordPreceedingValidTokens { get; } = new List<string>
+        {
+            ";", ",", "(", ")", "{", "}", "[", "]", "+", "-", "*", "/", "%", "=", "<", ">"
+        };
+
+        private List<string> NumberPreceedingValidTokens { get; } = new List<string>
+        {
+            ";", ",", "(", ")", "{", "}", "+", "-", "*", "/", "%", "=", "<", ">"
+        };
+
+
         // Constructor that opens specified source file path to begin parsing
         public LexicalAnalyzer(string sourceFilePath)
         {
@@ -94,14 +105,11 @@ namespace CMinusMinusCompiler
         // Display next token to screen and output file
         public void DisplayCurrentToken()
         {
-            if (Token != Symbol.UnknownToken)
-            {
-                dynamic attribute = Value ?? ValueReal;
-                attribute = attribute ?? Literal;
+            dynamic attribute = Value ?? ValueReal;
+            attribute = attribute ?? Literal;
 
-                string[] outputData = new string[] { Lexeme, Token.ToString(), attribute.ToString() };
-                CommonTools.WriteOutput(string.Format(OutputFormat, outputData));
-            }
+            string[] outputData = new string[] { Lexeme, Token.ToString(), attribute.ToString() };
+            CommonTools.WriteOutput(string.Format(OutputFormat, outputData));
         }
 
         // Display token header to screen and output file
@@ -135,8 +143,7 @@ namespace CMinusMinusCompiler
 
             if (IsFirstWordCharacter(Lexeme[0])) ProcessWordToken();
             else if (IsDigitCharacter(Lexeme[0])) ProcessNumberToken();
-            //else if (Char.(Lexeme[0])) ProcessNumberToken();
-            //else if (Char.IsDigit(Lexeme[0])) ProcessSingleToken();
+            else Token = Symbol.UnknownToken;
         }
 
         // Check if character is a valid English character (A-Z, a-z)
@@ -166,11 +173,11 @@ namespace CMinusMinusCompiler
             {
                 Lexeme += Character;
             }
-            if (Lexeme.Length > 27) Literal 
-                    = new string(Lexeme.Take(Int32.Parse(ConfigurationManager.AppSettings["MaximumLiteralLength"])).ToArray());  
+
+            int maximumLiteralLength = Int32.Parse(ConfigurationManager.AppSettings["MaximumLiteralLength"]);
+            if (Lexeme.Length > maximumLiteralLength) Literal = new string(Lexeme.Take(maximumLiteralLength).ToArray());
     
-            Token = ReserverdWordTokens.ContainsKey(Lexeme)
-                ? ReserverdWordTokens[Lexeme] : Symbol.IdentifierToken;
+            Token = ReserverdWordTokens.ContainsKey(Lexeme) ? ReserverdWordTokens[Lexeme] : Symbol.IdentifierToken;
         }
 
         // Process a potential number token
@@ -185,7 +192,7 @@ namespace CMinusMinusCompiler
             }
             else
             {
-                Value = Convert.
+                Value = Convert.ToInt32(Lexeme);
             }
 
             if (SingleTokens.ContainsKey(Character) || Char.IsWhiteSpace(Character))
@@ -194,12 +201,23 @@ namespace CMinusMinusCompiler
             }
             else
             {
-               //WriteLexicalError("Unexpected character ");
+                // Unexpected characters in current token
+                ProcessRemainingCharactersToSpace();
+                Token = Symbol.UnknownToken;
             }
-
         }
 
-        // Process a potential float token
+        // Process remaining characters until whitespace
+        private void ProcessRemainingCharactersToSpace()
+        {
+            Lexeme += Character;
+            while (Char.IsWhiteSpace(GetNextCharacter()))
+            {
+                Lexeme += Character;
+            }
+        }
+
+        // Process remaining expected number tokens
         private void ProcessRemainingNumberToken()
         {
             Lexeme += Character;
@@ -219,12 +237,21 @@ namespace CMinusMinusCompiler
             ValueReal = null;
         }
 
-        // Writes an error specific to the lexical analysis
-        private void WriteLexicalError(string message)
+        // Clear public attributes
+        private void ClearTokenAttributes()
         {
-            CommonTools.WriteOutput("ERROR: Line " + LineNumber + " - " + message);
-            Token = Symbol.UnknownToken;
+            Literal = string.Empty;
+            Character = ' ';
+            Value = null;
+            ValueReal = null;
         }
+
+        //// Writes an error specific to the lexical analysis
+        //private void WriteLexicalError(string message)
+        //{
+        //    CommonTools.WriteOutput("ERROR: Line " + LineNumber + " - " + message);
+        //    Token = Symbol.UnknownToken;
+        //}
     }
 }
 
