@@ -1,0 +1,8 @@
+﻿Lexeme                                 Token                          Attributes
+--------------------------------------------------------------------------------
+123                                    NumberToken                    123
+123.45                                 NumberToken                    123.45
+9                                      NumberToken                    9
+8                                      NumberToken                    8
+7.6                                    NumberToken                    7.6
+\n                                     EndOfFileToken                 

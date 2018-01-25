@@ -31,13 +31,36 @@ namespace CMinusMinusCompiler.Test
         }
 
         [TestMethod]
-        public void LexicalAnalysis_Identifiers2()
+        public void LexicalAnalysis_Numbers()
         {
             Bootstrapper bootstrapper = new Bootstrapper();
-            bootstrapper.Start(new string[] { @"LexicalAnalysis\Source\Identifiers2.c" });
+            bootstrapper.Start(new string[] { @"LexicalAnalysis\Source\Numbers.c" });
 
             string output = File.ReadAllText(CommonTools.OutputFilePath);
-            string expected = File.ReadAllText(@"LexicalAnalysis\Expected\Identifiers2.txt");
+            string expected = File.ReadAllText(@"LexicalAnalysis\Expected\Numbers.txt");
+            Assert.AreEqual(expected, output);
+        }
+
+
+        [TestMethod]
+        public void LexicalAnalysis_Comments()
+        {
+            Bootstrapper bootstrapper = new Bootstrapper();
+            bootstrapper.Start(new string[] { @"LexicalAnalysis\Source\Comments.c" });
+
+            string output = File.ReadAllText(CommonTools.OutputFilePath);
+            string expected = File.ReadAllText(@"LexicalAnalysis\Expected\Comments.txt");
+            Assert.AreEqual(expected, output);
+        }
+
+        [TestMethod]
+        public void LexicalAnalysis_SingleCharacterSymbols()
+        {
+            Bootstrapper bootstrapper = new Bootstrapper();
+            bootstrapper.Start(new string[] { @"LexicalAnalysis\Source\SingleCharacterSymbols.c" });
+
+            string output = File.ReadAllText(CommonTools.OutputFilePath);
+            string expected = File.ReadAllText(@"LexicalAnalysis\Expected\SingleCharacterSymbols.txt");
             Assert.AreEqual(expected, output);
         }
 
@@ -51,6 +74,5 @@ namespace CMinusMinusCompiler.Test
             string expected = File.ReadAllText(@"LexicalAnalysis\Expected\List1.txt");
             Assert.AreEqual(expected, output);
         }
-
     }
 }

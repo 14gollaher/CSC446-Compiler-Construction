@@ -4,8 +4,18 @@ using System.IO;
 //TODO: File opening issues?
 //TODO: Initial creation of output files
 //TODO: Figure out where Hamer will drop the input files
-//TODO: Nexted comments?
+//TODO: Nested comments?
 //TODO: Change startup to say "expected usage: " 
+//TODO: Page the output
+//TODO: Figure out how to happen negative numbers
+//TODO: Figure out _123 what happens? 1 or 2 tokens
+
+
+//abc!!!
+//123abc
+//_abc
+//abc? def
+//abc def
 
 
 namespace CMinusMinusCompiler

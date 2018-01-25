@@ -1,0 +1,7 @@
+﻿Lexeme                                 Token                          Attributes
+--------------------------------------------------------------------------------
+/                                      MultiplicationOperatorToken    
+*                                      MultiplicationOperatorToken    
+;                                      SemiColonToken                 
+%                                      MultiplicationOperatorToken    
+\n                                     EndOfFileToken                 

@@ -1,0 +1,5 @@
+﻿Lexeme                                 Token                          Attributes
+--------------------------------------------------------------------------------
+id1                                    IdentifierToken                
+identifier2                            IdentifierToken                
+\n                                     EndOfFileToken                 
