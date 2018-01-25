@@ -67,6 +67,9 @@
     <Content Include="LexicalAnalysis\Expected\Identifiers.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="LexicalAnalysis\Expected\List1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="LexicalAnalysis\Expected\Identifiers2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -74,6 +77,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="LexicalAnalysis\Expected\HappyPath.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="LexicalAnalysis\Source\List1.c">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="LexicalAnalysis\Source\Identifiers.c">

@@ -41,5 +41,16 @@ namespace CMinusMinusCompiler.Test
             Assert.AreEqual(expected, output);
         }
 
+        [TestMethod]
+        public void LexicalAnalysis_List1()
+        {
+            Bootstrapper bootstrapper = new Bootstrapper();
+            bootstrapper.Start(new string[] { @"LexicalAnalysis\Source\List1.c" });
+
+            string output = File.ReadAllText(CommonTools.OutputFilePath);
+            string expected = File.ReadAllText(@"LexicalAnalysis\Expected\List1.txt");
+            Assert.AreEqual(expected, output);
+        }
+
     }
 }
