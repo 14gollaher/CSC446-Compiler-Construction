@@ -1,1 +1,52 @@
-﻿TODO
+﻿Lexeme                                Token                         Attribute     
+-------------------------------------------------------------------------------
+1                                     NumberToken                   1                                     
+"1"                                   StringLiteralToken                  "1"                                   
+1                                     NumberToken                   1                                     
+*                                     MultiplicationOperatorToken                                         
+2                                     NumberToken                   2                                     
+1                                     NumberToken                   1                                     
+-                                     AdditionOperatorToken                                               
+z                                     IdentifierToken                                                     
+1                                     NumberToken                   1                                     
++                                     AdditionOperatorToken                                               
++                                     AdditionOperatorToken                                               
+4                                     NumberToken                   4                                     
+x                                     IdentifierToken                                                     
+=                                     AssignmentOperatorToken                                             
+y                                     IdentifierToken                                                     
+x                                     IdentifierToken                                                     
+=                                     AssignmentOperatorToken                                             
+"y"                                   StringLiteralToken                  "y"                                   
+_                                     UnknownToken                                                        
+123                                   NumberToken                   123                                   
+hello                                 IdentifierToken                                                     
+0                                     NumberToken                   0                                     
+world                                 IdentifierToken                                                     
+hello                                 IdentifierToken                                                     
+-                                     AdditionOperatorToken                                               
+world                                 IdentifierToken                                                     
+"hello"                               StringLiteralToken                  "hello"                               
++                                     AdditionOperatorToken                                               
+"world"                               StringLiteralToken                  "world"                               
+z                                     IdentifierToken                                                     
+||                                    AdditionOperatorToken                                               
+1000                                  NumberToken                   1000                                  
+9                                     NumberToken                   9                                     
+/                                     MultiplicationOperatorToken                                         
+10                                    NumberToken                   10                                    
+%                                     MultiplicationOperatorToken                                         
+if                                    IfToken                                                             
+z                                     IdentifierToken                                                     
+==                                    RelationalOperatorToken                                             
+2                                     NumberToken                   2                                     
+var_1                                 IdentifierToken                                                     
+!=                                    RelationalOperatorToken                                             
+-                                     AdditionOperatorToken                                                                   
+23.6                                  NumberToken                   23.6                                  
+while                                 WhileToken                                                          
+J                                     IdentifierToken                                                     
+<                                     RelationalOperatorToken                                             
+100                                   NumberToken                   100                                   
+9                                     NumberToken                   9                                     
+"hi world                             UnknownToken                  	                                      

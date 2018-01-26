@@ -68,15 +68,5 @@ namespace CMinusMinusCompiler.Test
             TestTools.CompareFileEquality
                 (@"LexicalAnalyzer\Expected\StringLiterals.txt", CommonTools.OutputFilePath);
         }
-
-        [TestMethod]
-        public void LexicalAnalyzer_List1()
-        {
-            Bootstrapper bootstrapper = new Bootstrapper();
-            bootstrapper.Start(new string[] { @"LexicalAnalyzer\Source\List1.c" });
-
-            TestTools.CompareFileEquality
-                (@"LexicalAnalyzer\Expected\List1.txt", CommonTools.OutputFilePath);
-        }
     }
 }
