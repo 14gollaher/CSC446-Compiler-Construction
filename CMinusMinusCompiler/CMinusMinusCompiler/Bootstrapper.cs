@@ -8,6 +8,7 @@ using System.IO;
 //TODO: Page the output
 //TODO: Figure out how to happen negative numbers
 //TODO: Figure out _123 what happens? 1 or 2 tokens
+//TODO: 1.23.4 - 3 tokens, num, period, num
 
 
 //QUESTIONS: 

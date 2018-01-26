@@ -1,5 +1,5 @@
-﻿Lexeme                                 Token                          Attributes
---------------------------------------------------------------------------------
+﻿Lexeme                                 Token                          Attribute
+-------------------------------------------------------------------------------
 id1                                    IdentifierToken                
 identifier2                            IdentifierToken                
 *									   MultiplicationOperatorToken

@@ -112,8 +112,8 @@ namespace CMinusMinusCompiler
         public void DisplayTokenHeader()
         {
             File.Delete(CommonTools.OutputFilePath);
-            string[] headingData = new string[] { "Lexeme", "Token", "Attributes" };
-            string headerRule = Environment.NewLine + new string('-', 80);
+            string[] headingData = new string[] { "Lexeme", "Token", "Attribute" };
+            string headerRule = Environment.NewLine + new string('-', 79);
             CommonTools.WriteOutput(string.Format(OutputFormat, headingData) + headerRule);
         }
 

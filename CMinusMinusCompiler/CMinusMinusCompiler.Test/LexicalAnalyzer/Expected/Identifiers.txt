@@ -1,5 +1,5 @@
-﻿Lexeme                                 Token                          Attributes
---------------------------------------------------------------------------------
+﻿Lexeme                                 Token                          Attribute
+-------------------------------------------------------------------------------
 Wheee                                  IdentifierToken                
 Hello                                  IdentifierToken                
 wORlD                                  IdentifierToken                

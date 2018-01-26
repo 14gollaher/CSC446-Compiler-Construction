@@ -1,5 +1,5 @@
-﻿Lexeme                                 Token                          Attributes
---------------------------------------------------------------------------------
+﻿Lexeme                                 Token                          Attribute
+-------------------------------------------------------------------------------
 "a b"                                  StringLiteralToken             "a b"
 "c"                                    StringLiteralToken             "c"
 "d e                                   UnknownToken                   
