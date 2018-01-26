@@ -9,5 +9,6 @@ abcdefghijklmnopqrstuvwxyz123          IdentifierToken                abcdefghij
 if                                     IfToken                        
 ELse                                   IdentifierToken                
 hello                                  IdentifierToken                
-while                                  WhileToken                     
-\n                                     EndOfFileToken                 
+while                                  WhileToken 
+*									   MultiplicationOperatorToken
+ifelse								   IdentifierToken

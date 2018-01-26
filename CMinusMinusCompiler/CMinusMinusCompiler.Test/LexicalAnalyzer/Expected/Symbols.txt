@@ -1,0 +1,15 @@
+﻿Lexeme                                 Token                          Attributes
+--------------------------------------------------------------------------------
+&&                                     MultiplicationOperatorToken    
+||                                     AdditionOperatorToken          
+==                                     RelationalOperatorToken        
+!=                                     RelationalOperatorToken        
+<=                                     RelationalOperatorToken        
+/                                      MultiplicationOperatorToken    
+*                                      MultiplicationOperatorToken    
+;                                      SemiColonToken                 
+%                                      MultiplicationOperatorToken    
+>=                                     RelationalOperatorToken        
+&									   UnknownToken        
+|                                      UnknownToken        
+_                                      UnknownToken        

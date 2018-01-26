@@ -2,7 +2,8 @@
 --------------------------------------------------------------------------------
 123                                    NumberToken                    123
 123.45                                 NumberToken                    123.45
+.                                      PeriodToken                    
+12                                     NumberToken                    12
 9                                      NumberToken                    9
 8                                      NumberToken                    8
 7.6                                    NumberToken                    7.6
-\n                                     EndOfFileToken                 

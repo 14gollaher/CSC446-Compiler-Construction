@@ -1,0 +1,11 @@
+﻿Lexeme                                 Token                          Attributes
+--------------------------------------------------------------------------------
+"a b"                                  StringLiteralToken             "a b"
+"c"                                    StringLiteralToken             "c"
+"d e                                   UnknownToken                   
+f                                      IdentifierToken                
+g                                      IdentifierToken                
+"                                      UnknownToken                   
+if                                     IfToken                        
+"                                      UnknownToken                   
+"abcdefghijklmnopqrstuvwxyz123"		   StringLiteralToken			  "abcdefghijklmnopqrstuvwxyz123"

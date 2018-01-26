@@ -45,7 +45,7 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="CommonTools.cs" />
-    <Compile Include="LexicalAnalysis\LexicalAnalyzer.cs" />
+    <Compile Include="LexicalAnalyzer\LexicalAnalyzer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

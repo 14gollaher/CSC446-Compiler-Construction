@@ -49,8 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInitializer.cs" />
-    <Compile Include="LexicalAnalysis\LexicalAnalysis_Test.cs" />
+    <Compile Include="LexicalAnalyzer\LexicalAnalyzer_Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestTools.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -64,40 +65,46 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="LexicalAnalysis\Expected\Comments.txt">
+    <Content Include="LexicalAnalyzer\Expected\StringLiterals.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="LexicalAnalysis\Expected\SingleCharacterSymbols.txt">
+    <Content Include="LexicalAnalyzer\Expected\Comments.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="LexicalAnalysis\Expected\Numbers.txt">
+    <Content Include="LexicalAnalyzer\Expected\Symbols.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="LexicalAnalysis\Expected\Identifiers.txt">
+    <Content Include="LexicalAnalyzer\Expected\Numbers.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="LexicalAnalysis\Expected\List1.txt">
+    <Content Include="LexicalAnalyzer\Expected\Identifiers.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="LexicalAnalysis\Source\SingleCharacterSymbols.c">
+    <Content Include="LexicalAnalyzer\Expected\List1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="LexicalAnalysis\Source\HappyPath.c">
+    <Content Include="LexicalAnalyzer\Source\Symbols.c">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="LexicalAnalysis\Expected\HappyPath.txt">
+    <Content Include="LexicalAnalyzer\Source\StringLiterals.c">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="LexicalAnalysis\Source\Comments.c">
+    <Content Include="LexicalAnalyzer\Source\HappyPath.c">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="LexicalAnalysis\Source\Numbers.c">
+    <Content Include="LexicalAnalyzer\Expected\HappyPath.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="LexicalAnalysis\Source\List1.c">
+    <Content Include="LexicalAnalyzer\Source\Comments.c">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="LexicalAnalysis\Source\Identifiers.c">
+    <Content Include="LexicalAnalyzer\Source\Numbers.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="LexicalAnalyzer\Source\List1.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="LexicalAnalyzer\Source\Identifiers.c">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

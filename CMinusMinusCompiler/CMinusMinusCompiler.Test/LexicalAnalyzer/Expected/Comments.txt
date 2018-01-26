@@ -2,4 +2,6 @@
 --------------------------------------------------------------------------------
 id1                                    IdentifierToken                
 identifier2                            IdentifierToken                
-\n                                     EndOfFileToken                 
+*									   MultiplicationOperatorToken
+/									   MultiplicationOperatorToken
+end									   IdentifierToken

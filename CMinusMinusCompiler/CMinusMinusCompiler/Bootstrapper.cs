@@ -4,19 +4,17 @@ using System.IO;
 //TODO: File opening issues?
 //TODO: Initial creation of output files
 //TODO: Figure out where Hamer will drop the input files
-//TODO: Nested comments?
 //TODO: Change startup to say "expected usage: " 
 //TODO: Page the output
 //TODO: Figure out how to happen negative numbers
 //TODO: Figure out _123 what happens? 1 or 2 tokens
 
 
-//abc!!!
-//123abc
-//_abc
-//abc? def
-//abc def
-
+//QUESTIONS: 
+// _ | & -- are these unkown then?
+// "hi world -- whole thing is unkown token right? not just "Hi world
+// %, /, etc are they multiplication?
+// I have verbose token names is that okay?
 
 namespace CMinusMinusCompiler
 {
@@ -27,7 +25,7 @@ namespace CMinusMinusCompiler
         // Initialize core C-- Compiler components.
         public void Start(string[] arguments)
         {
-            CreateOutputDirectory();
+            CommonTools.CreateOutputDirectory();
             StartLexicalAnalyzer(arguments);
             CommonTools.ExitProgram();
         }
@@ -42,9 +40,8 @@ namespace CMinusMinusCompiler
             }
             else
             {
-                Console.Write("Enter a file path: ");
-                string sourceFilePath = Console.ReadLine();
-                lexicalAnalyzer = new LexicalAnalyzer(sourceFilePath);
+                Console.Write("ERROR: Expected command line argument");
+                return;
             }
 
             lexicalAnalyzer.DisplayTokenHeader();
@@ -54,11 +51,6 @@ namespace CMinusMinusCompiler
                 lexicalAnalyzer.GetNextToken();
                 lexicalAnalyzer.DisplayCurrentToken();
             }
-        }
-
-        private void CreateOutputDirectory()
-        {
-            Directory.CreateDirectory(Path.GetDirectoryName(CommonTools.OutputFilePath));
         }
     }
 }
