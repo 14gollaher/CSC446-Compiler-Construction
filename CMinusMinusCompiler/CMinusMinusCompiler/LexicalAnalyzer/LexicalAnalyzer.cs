@@ -50,17 +50,7 @@ namespace CMinusMinusCompiler
         // Constructor that opens specified source file path to begin parsing
         public LexicalAnalyzer(string sourceFilePath)
         {
-            // Read source file contents from specified source file path
-            try
-            {
-                SourceFileContents = File.ReadAllText(sourceFilePath).Replace("\r", string.Empty);
-            }
-            catch (Exception)
-            {
-
-                Console.WriteLine("ERROR: Could not open specified source file.");
-                CommonTools.PromptProgramExit();
-            }
+            SourceFileContents = File.ReadAllText(sourceFilePath).Replace("\r", string.Empty);
         }
 
         // Display next token to screen and output file

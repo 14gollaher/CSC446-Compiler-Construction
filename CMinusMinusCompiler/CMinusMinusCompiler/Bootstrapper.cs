@@ -21,6 +21,8 @@ namespace CMinusMinusCompiler
             LexicalAnalyzer lexicalAnalyzer;
             if (arguments.Length == 1)
             {
+                if (!CommonTools.CheckFilePathExists(arguments[0])) return;
+
                 lexicalAnalyzer = new LexicalAnalyzer(arguments[0]);
                 CommonTools.LexicalAnalyzerInstance = lexicalAnalyzer;
             }

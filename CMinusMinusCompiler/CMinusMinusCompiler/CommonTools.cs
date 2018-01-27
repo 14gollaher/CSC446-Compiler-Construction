@@ -22,6 +22,18 @@ namespace CMinusMinusCompiler
             File.AppendAllText(OutputFilePath, output + Environment.NewLine);
             DisplayLineCount++;
         }
+        
+        // Checks that an input 
+        public static bool CheckFilePathExists(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                Console.WriteLine("ERROR: Could not open specified source file.");
+                PromptProgramExit();
+                return false;
+            }
+            return true;
+        }
 
         // Prompt user to for final key before program termination
         public static void PromptProgramExit()
