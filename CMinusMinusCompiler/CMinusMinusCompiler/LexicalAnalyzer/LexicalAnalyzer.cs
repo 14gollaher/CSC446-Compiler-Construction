@@ -9,42 +9,43 @@ namespace CMinusMinusCompiler
     // Lexical analyzer finds valid tokens in a specified source file. 
     public class LexicalAnalyzer
     {
+        // Public Members
         public char Character { get; set; } = ' ';
         public int LineNumber { get; set; } = 1;
-        public static int? Value { get; set; }
-        public static float? ValueReal { get; set; }
-        public static string Literal { get; set; }
-        public static Symbol Token { get; set; }
-        public static string Lexeme { get; set; }
+        public int? Value { get; set; }
+        public float? ValueReal { get; set; }
+        public string Literal { get; set; }
+        public TokenType Token { get; set; }
+        public string Lexeme { get; set; }
+
+        // Private Members
         private string SourceFileContents { get; set; }
-
-        private Dictionary<string, Symbol> ReserverdWordTokens { get; } = new Dictionary<string, Symbol>
+        private Dictionary<string, TokenType> ReserverdWordTokens { get; } = new Dictionary<string, TokenType>
         {
-            { "if", Symbol.IfToken }, { "else", Symbol.ElseToken }, { "while", Symbol.WhileToken },
-            { "float", Symbol.FloatToken }, { "int", Symbol.IntToken }, { "char", Symbol.CharToken },
-            { "break", Symbol.BreakToken }, { "continue", Symbol.ContinueToken }, { "void", Symbol.VoidToken }
+            { "if", TokenType.IfToken }, { "else", TokenType.ElseToken }, { "while", TokenType.WhileToken },
+            { "float", TokenType.FloatToken }, { "int", TokenType.IntToken }, { "char", TokenType.CharToken },
+            { "break", TokenType.BreakToken }, { "continue", TokenType.ContinueToken }, { "void", TokenType.VoidToken }
         };
-
-        private Dictionary<char, Symbol> SingleCharacterSymbols { get; } = new Dictionary<char, Symbol>
+        private Dictionary<char, TokenType> SingleCharacterSymbols { get; } = new Dictionary<char, TokenType>
         {
-            { ';', Symbol.SemiColonToken }, { '.', Symbol.PeriodToken },
-            { '(', Symbol.LeftParenthesisToken }, { ')', Symbol.RightParenthesisToken },
-            { '{', Symbol.LeftBraceToken }, { '}', Symbol.RightBraceToken },
-            { '[', Symbol.LeftBracketToken }, { ']', Symbol.RightBracketToken },
-            { '+', Symbol.AdditionOperatorToken }, { '-', Symbol.AdditionOperatorToken },
-            { '*', Symbol.MultiplicationOperatorToken }, { '/', Symbol.MultiplicationOperatorToken },
-            { '%', Symbol.MultiplicationOperatorToken }, { ',', Symbol.CommaToken },
-            { '<', Symbol.RelationalOperatorToken }, { '>', Symbol.RelationalOperatorToken },
-            { '=', Symbol.AssignmentOperatorToken }, { '!', Symbol.UnknownToken },
-            { '|', Symbol.UnknownToken }, { '&', Symbol.UnknownToken }
+            { ';', TokenType.SemiColonToken }, { '.', TokenType.PeriodToken },
+            { '(', TokenType.LeftParenthesisToken }, { ')', TokenType.RightParenthesisToken },
+            { '{', TokenType.LeftBraceToken }, { '}', TokenType.RightBraceToken },
+            { '[', TokenType.LeftBracketToken }, { ']', TokenType.RightBracketToken },
+            { '+', TokenType.AdditionOperatorToken }, { '-', TokenType.AdditionOperatorToken },
+            { '*', TokenType.MultiplicationOperatorToken }, { '/', TokenType.MultiplicationOperatorToken },
+            { '%', TokenType.MultiplicationOperatorToken }, { ',', TokenType.CommaToken },
+            { '<', TokenType.RelationalOperatorToken }, { '>', TokenType.RelationalOperatorToken },
+            { '=', TokenType.AssignmentOperatorToken }, { '!', TokenType.UnknownToken },
+            { '|', TokenType.UnknownToken }, { '&', TokenType.UnknownToken }
         };
-
-        private Dictionary<string, Symbol> DoubleCharactersSymbols { get; } = new Dictionary<string, Symbol>
+        private Dictionary<string, TokenType> DoubleCharactersSymbols { get; } = new Dictionary<string, TokenType>
         {
-            { "==", Symbol.RelationalOperatorToken }, { "!=", Symbol.RelationalOperatorToken },
-            { "<=", Symbol.RelationalOperatorToken }, { ">=", Symbol.RelationalOperatorToken },
-            { "||", Symbol.AdditionOperatorToken }, { "&&", Symbol.MultiplicationOperatorToken }
+            { "==", TokenType.RelationalOperatorToken }, { "!=", TokenType.RelationalOperatorToken },
+            { "<=", TokenType.RelationalOperatorToken }, { ">=", TokenType.RelationalOperatorToken },
+            { "||", TokenType.AdditionOperatorToken }, { "&&", TokenType.MultiplicationOperatorToken }
         };
+        private static string OutputFormat { get; } = "{0,-38} {1,-30} {2}";
 
         // Constructor that opens specified source file path to begin parsing
         public LexicalAnalyzer(string sourceFilePath)
@@ -58,8 +59,29 @@ namespace CMinusMinusCompiler
             {
 
                 Console.WriteLine("ERROR: Could not open specified source file.");
-                CommonTools.ExitProgram();
+                CommonTools.PromptProgramExit();
             }
+        }
+
+        // Display next token to screen and output file
+        public void DisplayCurrentToken()
+        {
+            if (Token != TokenType.CommentToken && Token != TokenType.EndOfFileToken)
+            {
+                dynamic attribute = Value ?? ValueReal;
+                attribute = attribute ?? Literal;
+
+                string[] outputData = new string[] { Lexeme, Token.ToString(), attribute.ToString() };
+                CommonTools.WriteOutput(string.Format(OutputFormat, outputData));
+            }
+        }
+
+        // Display token header to screen and output file
+        public void DisplayTokenHeader()
+        {
+            string[] headingData = new string[] { "Lexeme", "Token", "Attribute" };
+            string headerRule = Environment.NewLine + new string('-', 79);
+            CommonTools.WriteOutput(string.Format(OutputFormat, headingData) + headerRule);
         }
 
         // Get next token from source file contents
@@ -73,7 +95,7 @@ namespace CMinusMinusCompiler
             }
             if (Character == Char.MinValue)
             {
-                Token = Symbol.EndOfFileToken;
+                Token = TokenType.EndOfFileToken;
             }
             else
             {
@@ -112,7 +134,7 @@ namespace CMinusMinusCompiler
             else if (IsForwardSlashCharacter(Lexeme[0])) ProcessForwardSlashToken();
             else if (IsSingleCharacterSymbol(Lexeme[0])) ProcessSymbolToken();
             else if (IsQuotationsSymbol(Lexeme[0])) ProcessStringLiteralToken();
-            else Token = Symbol.UnknownToken;
+            else Token = TokenType.UnknownToken;
         }
 
         // Check if character is forward slash caracter
@@ -139,11 +161,13 @@ namespace CMinusMinusCompiler
             return Char.IsDigit(character);
         }
 
+        // Check if next character is a single character symbol (%, *, ...)
         private bool IsSingleCharacterSymbol(char character)
         {
-            return SingleCharacterSymbols.ContainsKey(character) ;
+            return SingleCharacterSymbols.ContainsKey(character);
         }
 
+        // Check if next character is a quotations symbol (")
         private bool IsQuotationsSymbol(char character)
         {
             return character == '"';
@@ -154,14 +178,14 @@ namespace CMinusMinusCompiler
         {
             ProcessRemainingWordToken();
 
-            int maximumLiteralLength 
+            int maximumLiteralLength
                 = Int32.Parse(ConfigurationManager.AppSettings["MaximumLiteralLength"]);
 
-            if (Lexeme.Length > maximumLiteralLength) Literal 
+            if (Lexeme.Length > maximumLiteralLength) Literal
                     = new string(Lexeme.Take(maximumLiteralLength).ToArray());
 
-            Token = ReserverdWordTokens.ContainsKey(Lexeme) 
-                ? ReserverdWordTokens[Lexeme] : Symbol.IdentifierToken;
+            Token = ReserverdWordTokens.ContainsKey(Lexeme)
+                ? ReserverdWordTokens[Lexeme] : TokenType.IdentifierToken;
         }
 
         // Process remaining expected word tokens
@@ -176,7 +200,7 @@ namespace CMinusMinusCompiler
         // Process a potential number token
         private void ProcessNumberToken()
         {
-            Token = Symbol.NumberToken;
+            Token = TokenType.NumberToken;
             ProcessRemainingNumberToken();
 
             if (Character == '.')
@@ -206,15 +230,17 @@ namespace CMinusMinusCompiler
             }
         }
 
+        // Process the forward slash token which has multiple token paths
         private void ProcessForwardSlashToken()
         {
             if (Character == '*') ProcessCommentToken();
-            else Token = Symbol.MultiplicationOperatorToken;
+            else Token = TokenType.MultiplicationOperatorToken;
         }
 
+        // Process a comment token
         private void ProcessCommentToken()
         {
-            Token = Symbol.CommentToken;
+            Token = TokenType.CommentToken;
             UpdateLexemeAndCharacter();
 
             while (Character != Char.MinValue)
@@ -226,6 +252,7 @@ namespace CMinusMinusCompiler
             CommonTools.WriteOutput("ERROR: Expected comment end '*/' not found");
         }
 
+        // Search for the end of a comment in the input
         private bool CommentEndSearch()
         {
             if (Character == '*')
@@ -241,6 +268,7 @@ namespace CMinusMinusCompiler
             return false;
         }
 
+        // Process a symbol token using dictionary map members
         private void ProcessSymbolToken()
         {
             if (DoubleCharactersSymbols.ContainsKey(Lexeme + Character))
@@ -254,13 +282,14 @@ namespace CMinusMinusCompiler
             }
         }
 
+        // Process a string literal token
         private void ProcessStringLiteralToken()
         {
             while (!IsQuotationsSymbol(Character))
             {
                 if (IsEndOfLineCharacter(Character))
                 {
-                    Token = Symbol.UnknownToken;
+                    Token = TokenType.UnknownToken;
                     return;
                 }
 
@@ -268,15 +297,17 @@ namespace CMinusMinusCompiler
             }
 
             UpdateLexemeAndCharacter();
-            Token = Symbol.StringLiteralToken;
+            Token = TokenType.StringLiteralToken;
             Literal = Lexeme;
         }
 
+        // Check for determing if character is end of line or file character
         private bool IsEndOfLineCharacter(char character)
         {
             return character == '\n' || character == Char.MinValue;
         }
 
+        // Updates the lexeme with the current character and gets new character
         private void UpdateLexemeAndCharacter()
         {
             Lexeme += Character;
@@ -292,7 +323,8 @@ namespace CMinusMinusCompiler
             ValueReal = null;
         }
 
-        public enum Symbol
+        // Enumerated type to contain all possible token types
+        public enum TokenType
         {
             IfToken, ElseToken, WhileToken, FloatToken, IntToken, CharToken,
             BreakToken, ContinueToken, VoidToken, CommaToken, SemiColonToken,
@@ -305,4 +337,3 @@ namespace CMinusMinusCompiler
         }
     }
 }
-

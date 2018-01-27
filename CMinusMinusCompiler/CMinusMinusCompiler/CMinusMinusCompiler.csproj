@@ -46,7 +46,6 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="CommonTools.cs" />
     <Compile Include="LexicalAnalyzer\LexicalAnalyzer.cs" />
-    <Compile Include="LexicalAnalyzer\LexicalAnaylzerPrinter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

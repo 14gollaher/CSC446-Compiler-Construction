@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using static CMinusMinusCompiler.LexicalAnalyzer;
 
 namespace CMinusMinusCompiler
 {
@@ -13,7 +12,7 @@ namespace CMinusMinusCompiler
         {
             CommonTools.CreateOutputDirectory();
             StartLexicalAnalyzer(arguments);
-            CommonTools.ExitProgram();
+            CommonTools.PromptProgramExit();
         }
 
         // Initializes and runs Lexical Analysis module
@@ -23,6 +22,7 @@ namespace CMinusMinusCompiler
             if (arguments.Length == 1)
             {
                 lexicalAnalyzer = new LexicalAnalyzer(arguments[0]);
+                CommonTools.LexicalAnalyzerInstance = lexicalAnalyzer;
             }
             else
             {
@@ -33,12 +33,12 @@ namespace CMinusMinusCompiler
             Console.Clear();
 
             File.Delete(CommonTools.OutputFilePath);
-            LexicalAnaylzerPrinter.DisplayTokenHeader();
+            lexicalAnalyzer.DisplayTokenHeader();
 
-            while(Token != Symbol.EndOfFileToken)
+            while(lexicalAnalyzer.Token != LexicalAnalyzer.TokenType.EndOfFileToken)
             {
                 lexicalAnalyzer.GetNextToken();
-                LexicalAnaylzerPrinter.DisplayCurrentToken();
+                lexicalAnalyzer.DisplayCurrentToken();
             }
         }
     }
