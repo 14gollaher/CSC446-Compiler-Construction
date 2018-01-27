@@ -68,5 +68,25 @@ namespace CMinusMinusCompiler.Test
             TestTools.CompareFileEquality
                 (@"LexicalAnalyzer\Expected\StringLiterals.txt", CommonTools.OutputFilePath);
         }
+
+        [TestMethod]
+        public void LexicalAnalyzer_ReservedWords()
+        {
+            Bootstrapper bootstrapper = new Bootstrapper();
+            bootstrapper.Start(new string[] { @"LexicalAnalyzer\Source\ReservedWords.c" });
+
+            TestTools.CompareFileEquality
+                (@"LexicalAnalyzer\Expected\ReservedWords.txt", CommonTools.OutputFilePath);
+        }
+
+        [TestMethod]
+        public void LexicalAnaylzer_FullWalkthrough()
+        {
+            Bootstrapper bootstrapper = new Bootstrapper();
+            bootstrapper.Start(new string[] { @"LexicalAnalyzer\Source\FullWalkthrough.c" });
+
+            TestTools.CompareFileEquality
+                (@"LexicalAnalyzer\Expected\FullWalkthrough.txt", CommonTools.OutputFilePath);
+        }
     }
 }

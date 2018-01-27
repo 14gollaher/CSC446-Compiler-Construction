@@ -1,15 +1,28 @@
 ﻿Lexeme                                 Token                          Attribute
 -------------------------------------------------------------------------------
-&&                                     MultiplicationOperatorToken    
-||                                     AdditionOperatorToken          
+;                                      SemiColonToken                 
+.                                      PeriodToken                    
+(                                      LeftParenthesisToken           
+)                                      RightParenthesisToken          
+{                                      LeftBraceToken                 
+}                                      RightBraceToken                
+[                                      LeftBracketToken               
+]                                      RightBracketToken              
++                                      AdditionOperatorToken          
+-                                      AdditionOperatorToken          
+*                                      MultiplicationOperatorToken    
+/                                      MultiplicationOperatorToken    
+%                                      MultiplicationOperatorToken    
+,                                      CommaToken                     
+<                                      RelationalOperatorToken        
+>                                      RelationalOperatorToken        
+=                                      AssignmentOperatorToken        
+!                                      UnknownToken                   
+|                                      UnknownToken                   
+&                                      UnknownToken                   
 ==                                     RelationalOperatorToken        
 !=                                     RelationalOperatorToken        
 <=                                     RelationalOperatorToken        
-/                                      MultiplicationOperatorToken    
-*                                      MultiplicationOperatorToken    
-;                                      SemiColonToken                 
-%                                      MultiplicationOperatorToken    
 >=                                     RelationalOperatorToken        
-&									   UnknownToken        
-|                                      UnknownToken        
-_                                      UnknownToken        
+||                                     AdditionOperatorToken          
+&&                                     MultiplicationOperatorToken    

@@ -1,0 +1,11 @@
+﻿Lexeme                                 Token                          Attribute
+-------------------------------------------------------------------------------
+if									   IfToken				
+else								   ElseToken
+while								   WhileToken
+float								   FloatToken
+int									   IntToken
+char								   CharToken
+break								   BreakToken
+continue							   ContinueToken
+void								   VoidToken

@@ -36,7 +36,7 @@ namespace CMinusMinusCompiler
         {
             { "if", Symbol.IfToken }, { "else", Symbol.ElseToken }, { "while", Symbol.WhileToken },
             { "float", Symbol.FloatToken }, { "int", Symbol.IntToken }, { "char", Symbol.CharToken },
-            { "break", Symbol.BreakToken }, { "continue", Symbol.ElseToken }, { "void", Symbol.VoidToken }
+            { "break", Symbol.BreakToken }, { "continue", Symbol.ContinueToken }, { "void", Symbol.VoidToken }
         };
 
         private Dictionary<char, Symbol> SingleCharacterSymbols { get; } = new Dictionary<char, Symbol>
@@ -48,8 +48,8 @@ namespace CMinusMinusCompiler
             { '+', Symbol.AdditionOperatorToken }, { '-', Symbol.AdditionOperatorToken },
             { '*', Symbol.MultiplicationOperatorToken }, { '/', Symbol.MultiplicationOperatorToken },
             { '%', Symbol.MultiplicationOperatorToken }, { ',', Symbol.CommaToken },
-            { '=', Symbol.AssignmentOperatorToken }, { '!', Symbol.UnknownToken },
             { '<', Symbol.RelationalOperatorToken }, { '>', Symbol.RelationalOperatorToken },
+            { '=', Symbol.AssignmentOperatorToken }, { '!', Symbol.UnknownToken },
             { '|', Symbol.UnknownToken }, { '&', Symbol.UnknownToken }
         };
 
@@ -131,6 +131,13 @@ namespace CMinusMinusCompiler
             }
         }
 
+        // Get the next character from the source file contents without making character "read"
+        private char PeakNextCharacter()
+        {
+            if (SourceFileContents.Length > 0) return SourceFileContents[0];
+            else return Char.MinValue;
+        }
+
         // Process next token
         public void ProcessToken()
         {
@@ -210,14 +217,15 @@ namespace CMinusMinusCompiler
 
             if (Character == '.')
             {
-                GetNextCharacter();
-                if (IsDigitCharacter(Character))
+                if (!IsDigitCharacter(PeakNextCharacter()))
                 {
-                    Lexeme = Lexeme + '.' + Character;
-                    GetNextCharacter();
-                    ProcessRemainingNumberToken();
-                    ValueReal = Convert.ToSingle(Lexeme);
+                    Value = Convert.ToInt32(Lexeme);
+                    return;
                 }
+
+                UpdateLexemeAndCharacter();
+                ProcessRemainingNumberToken();
+                ValueReal = Convert.ToSingle(Lexeme);
             }
             else
             {
