@@ -2,6 +2,7 @@
 -------------------------------------------------------------------------------
 id1                                    IdentifierToken                
 identifier2                            IdentifierToken                
-*									   MultiplicationOperatorToken
-/									   MultiplicationOperatorToken
-end									   IdentifierToken
+*                                      MultiplicationOperatorToken    
+/                                      MultiplicationOperatorToken    
+end                                    IdentifierToken                
+ERROR: Expected comment end '*/' not found

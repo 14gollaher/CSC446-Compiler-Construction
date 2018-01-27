@@ -9,28 +9,14 @@ namespace CMinusMinusCompiler
     // Lexical analyzer finds valid tokens in a specified source file. 
     public class LexicalAnalyzer
     {
-        public enum Symbol
-        {
-            IfToken, ElseToken, WhileToken, FloatToken, IntToken, CharToken,
-            BreakToken, ContinueToken, VoidToken, CommaToken, SemiColonToken,
-            AssignmentOperatorToken, EndOfFileToken, AdditionOperatorToken,
-            MultiplicationOperatorToken, LeftParenthesisToken, RightParenthesisToken,
-            LeftBraceToken, RightBraceToken, LeftBracketToken, RightBracketToken,
-            PeriodToken, QuotationsSymbol, RelationalOperatorToken, IdentifierToken,
-            NumberToken, CommentToken, StringLiteralToken, UnderscoreToken,
-            UnknownToken,
-        }
-
-        public Symbol Token { get; set; }
-        public string Lexeme { get; set; }
         public char Character { get; set; } = ' ';
         public int LineNumber { get; set; } = 1;
-        public int? Value { get; set; }
-        public float? ValueReal { get; set; }
-        public string Literal { get; set; }
-
+        public static int? Value { get; set; }
+        public static float? ValueReal { get; set; }
+        public static string Literal { get; set; }
+        public static Symbol Token { get; set; }
+        public static string Lexeme { get; set; }
         private string SourceFileContents { get; set; }
-        private string OutputFormat { get; } = "{0,-38} {1,-30} {2}";
 
         private Dictionary<string, Symbol> ReserverdWordTokens { get; } = new Dictionary<string, Symbol>
         {
@@ -93,28 +79,6 @@ namespace CMinusMinusCompiler
             {
                 ProcessToken();
             }
-        }
-
-        // Display next token to screen and output file
-        public void DisplayCurrentToken()
-        {
-            if (Token != Symbol.CommentToken && Token != Symbol.EndOfFileToken)
-            {
-                dynamic attribute = Value ?? ValueReal;
-                attribute = attribute ?? Literal;
-
-                string[] outputData = new string[] { Lexeme, Token.ToString(), attribute.ToString() };
-                CommonTools.WriteOutput(string.Format(OutputFormat, outputData));
-            }
-        }
-
-        // Display token header to screen and output file
-        public void DisplayTokenHeader()
-        {
-            File.Delete(CommonTools.OutputFilePath);
-            string[] headingData = new string[] { "Lexeme", "Token", "Attribute" };
-            string headerRule = Environment.NewLine + new string('-', 79);
-            CommonTools.WriteOutput(string.Format(OutputFormat, headingData) + headerRule);
         }
 
         // Get the next character from the source file contents
@@ -185,7 +149,6 @@ namespace CMinusMinusCompiler
             return character == '"';
         }
 
-
         // Proccess a potential word token
         private void ProcessWordToken()
         {
@@ -213,6 +176,7 @@ namespace CMinusMinusCompiler
         // Process a potential number token
         private void ProcessNumberToken()
         {
+            Token = Symbol.NumberToken;
             ProcessRemainingNumberToken();
 
             if (Character == '.')
@@ -231,8 +195,6 @@ namespace CMinusMinusCompiler
             {
                 Value = Convert.ToInt32(Lexeme);
             }
-
-            Token = Symbol.NumberToken;
         }
 
         // Process remaining expected number tokens
@@ -252,6 +214,7 @@ namespace CMinusMinusCompiler
 
         private void ProcessCommentToken()
         {
+            Token = Symbol.CommentToken;
             UpdateLexemeAndCharacter();
 
             while (Character != Char.MinValue)
@@ -270,7 +233,6 @@ namespace CMinusMinusCompiler
                 GetNextCharacter();
                 if (Character == '/')
                 {
-                    Token = Symbol.CommentToken;
                     Character = ' ';
                     return true;
                 }
@@ -328,6 +290,18 @@ namespace CMinusMinusCompiler
             Literal = string.Empty;
             Value = null;
             ValueReal = null;
+        }
+
+        public enum Symbol
+        {
+            IfToken, ElseToken, WhileToken, FloatToken, IntToken, CharToken,
+            BreakToken, ContinueToken, VoidToken, CommaToken, SemiColonToken,
+            AssignmentOperatorToken, EndOfFileToken, AdditionOperatorToken,
+            MultiplicationOperatorToken, LeftParenthesisToken, RightParenthesisToken,
+            LeftBraceToken, RightBraceToken, LeftBracketToken, RightBracketToken,
+            PeriodToken, QuotationsSymbol, RelationalOperatorToken, IdentifierToken,
+            NumberToken, CommentToken, StringLiteralToken, UnderscoreToken,
+            UnknownToken,
         }
     }
 }

@@ -5,3 +5,6 @@
 									  /*
 									  */
 */end
+
+/* Here is
+a comment that doesn't end

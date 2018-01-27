@@ -11,3 +11,6 @@
 7.6                                    NumberToken                    7.6
 2                                      NumberToken                    2
 .                                      PeriodToken                    
+cow                                    IdentifierToken                    
+3                                      NumberToken					  3                    
+.                                      PeriodToken                    

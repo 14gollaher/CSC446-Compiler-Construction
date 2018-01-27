@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
-using System.Text.RegularExpressions;
+using System;
+using System.Threading;
 
 namespace CMinusMinusCompiler.Test
 {

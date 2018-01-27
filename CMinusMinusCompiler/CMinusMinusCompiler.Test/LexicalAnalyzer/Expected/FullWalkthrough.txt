@@ -1,1 +1,58 @@
-﻿TODO
+﻿Lexeme                                 Token                          Attribute
+-------------------------------------------------------------------------------
+break                                  BreakToken                     
+true                                   IdentifierToken                
+532.2                                  NumberToken                    532.2
+>                                      RelationalOperatorToken        
+=                                      AssignmentOperatorToken        
+"GO LITERAL 1 GO"                      StringLiteralToken             "GO LITERAL 1 GO"
+"GO LITERAL 2 UOOPS!                   UnknownToken                   
+identifier                             IdentifierToken                
+"ABCDEFGHijklmnopqrstuvwxyz1"          StringLiteralToken             "ABCDEFGHijklmnopqrstuvwxyz1"
+"ABCDEFGHijklmnopqrstuvwxyz12"         StringLiteralToken             "ABCDEFGHijklmnopqrstuvwxyz12"
+ABCDEFGHijklmnopqrstuvwxyz1            IdentifierToken                
+"                                      UnknownToken                   
+ABCDEFGHijklmnopqrstuvwxyz12           IdentifierToken                ABCDEFGHijklmnopqrstuvwxyz1
+"                                      UnknownToken                   
+if                                     IfToken                        
+continue                               ContinueToken                  
+float                                  FloatToken                     
+941                                    NumberToken                    941
+char                                   CharToken                      
+12.3                                   NumberToken                    12.3
+break                                  BreakToken                     
+<=                                     RelationalOperatorToken        
+<                                      RelationalOperatorToken        
+/                                      MultiplicationOperatorToken    
+/                                      MultiplicationOperatorToken    
+<=                                     RelationalOperatorToken        
+>                                      RelationalOperatorToken        
+>=                                     RelationalOperatorToken        
+==                                     RelationalOperatorToken        
+=                                      AssignmentOperatorToken        
+;                                      SemiColonToken                 
++                                      AdditionOperatorToken          
+or                                     IdentifierToken                
+-                                      AdditionOperatorToken          
+and                                    IdentifierToken                
+*                                      MultiplicationOperatorToken    
+/                                      MultiplicationOperatorToken    
+or                                     IdentifierToken                
+(                                      LeftParenthesisToken           
+)                                      RightParenthesisToken          
+;                                      SemiColonToken                 
+"GO literal 1"                         StringLiteralToken             "GO literal 1"
+a                                      IdentifierToken                
+if1                                    IdentifierToken                
+while2                                 IdentifierToken                
+"GO literal 2"                         StringLiteralToken             "GO literal 2"
+12345.6                                NumberToken                    12345.6
+>                                      RelationalOperatorToken        
+=                                      AssignmentOperatorToken        
+"go literal GOO"                       StringLiteralToken             "go literal GOO"
+35                                     NumberToken                    35
+.                                      PeriodToken                    
+cow                                    IdentifierToken                
+casper                                 IdentifierToken                
+happer                                 IdentifierToken                
+ERROR: Expected comment end '*/' not found
