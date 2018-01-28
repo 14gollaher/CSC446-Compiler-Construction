@@ -4,5 +4,12 @@ id1                                    IdentifierToken
 identifier2                            IdentifierToken                
 *                                      MultiplicationOperatorToken    
 /                                      MultiplicationOperatorToken    
-end                                    IdentifierToken                
+end                                    IdentifierToken              
+/                                      MultiplicationOperatorToken  
+*                                      MultiplicationOperatorToken   
+*                                      MultiplicationOperatorToken   
+/                                      MultiplicationOperatorToken  
+*                                      MultiplicationOperatorToken   
+/                                      MultiplicationOperatorToken  
+2									   NumberToken					2
 ERROR: Expected comment end '*/' not found

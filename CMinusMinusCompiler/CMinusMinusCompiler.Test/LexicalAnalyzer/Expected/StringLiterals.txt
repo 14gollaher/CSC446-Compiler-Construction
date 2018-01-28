@@ -9,3 +9,6 @@ g                                      IdentifierToken
 if                                     IfToken                        
 "                                      UnknownToken                   
 "abcdefghijklmnopqrstuvwxyz123"		   StringLiteralToken			  "abcdefghijklmnopqrstuvwxyz123"
+""                                     StringLiteralToken             ""
+"                                      UnknownToken                   
+"                                      UnknownToken                   

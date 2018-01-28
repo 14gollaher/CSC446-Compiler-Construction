@@ -12,3 +12,6 @@ hello                                  IdentifierToken
 while                                  WhileToken 
 *									   MultiplicationOperatorToken
 ifelse								   IdentifierToken
+float2								   IdentifierToken	
+2									   NumberToken					  2	
+int									   IntToken	

@@ -14,3 +14,21 @@
 cow                                    IdentifierToken                    
 3                                      NumberToken					  3                    
 .                                      PeriodToken                    
+cow3                                   IdentifierToken    
+if3									   IdentifierToken	
+2147483647                             NumberToken					  2.147484E+09
+2147483647.5						   NumberToken                    2.147484E+09
+2                                      NumberToken                    2
+if                                     IfToken   
+_                                      UnknownToken                   
+2                                      NumberToken                    2
+a2                                     IdentifierToken     
+88                                     NumberToken                    88
+"88                                    UnknownToken                   
+9                                      NumberToken                    9
+"88"                                   StringLiteralToken             "88"
+"88                                    UnknownToken      
+"88 8                                  UnknownToken       
+2                                      NumberToken                    2
+.                                      PeriodToken                    
+!                                      UnknownToken    

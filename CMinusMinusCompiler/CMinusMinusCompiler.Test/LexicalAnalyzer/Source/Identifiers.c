@@ -5,3 +5,5 @@ abcdefghijklmnopqrstuvwxyz123
 if ELse hello
 while*
 ifelse
+float2
+2int

@@ -5,6 +5,9 @@
 									  /*
 									  */
 */end
-
+/ ** /
+/*  */  */
+/* if */
+2/* */ 
 /* Here is
 a comment that doesn't end
