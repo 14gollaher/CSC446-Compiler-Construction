@@ -43,8 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bootstrapper.cs" />
-    <Compile Include="CommonTools.cs" />
+    <Compile Include="Common\Bootstrapper.cs" />
+    <Compile Include="Common\CommonTools.cs" />
     <Compile Include="LexicalAnalyzer\LexicalAnalyzer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
