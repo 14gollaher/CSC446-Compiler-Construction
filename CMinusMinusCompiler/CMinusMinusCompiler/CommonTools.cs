@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.IO;
 
 namespace CMinusMinusCompiler
@@ -11,18 +10,17 @@ namespace CMinusMinusCompiler
         public static int DisplayLineCount { get; set; }
         public static bool IsUnitTestExecution { get; set; }
         public static string OutputFilePath { get; set; }
-            = ConfigurationManager.AppSettings["LexicalAnalyzerOutputPath"];
-        public static LexicalAnalyzer LexicalAnalyzerInstance { get; set;}
+        public static LexicalAnalyzer LexicalAnalyzerInstance { get; set; }
 
         // Writes the output to the screen and output file
         public static void WriteOutput(string output)
         {
-            UpdateOutputPager();
+            UpdateOutputPager(LexicalAnalyzerInstance.DisplayTokenHeader);
             Console.WriteLine(output);
             File.AppendAllText(OutputFilePath, output + Environment.NewLine);
             DisplayLineCount++;
         }
-        
+
         // Checks that an input 
         public static bool CheckFilePathExists(string filePath)
         {
@@ -45,10 +43,11 @@ namespace CMinusMinusCompiler
             }
         }
 
-        // Create an output directory for the 
-        public static void CreateOutputDirectory()
+        // Create an output directory for specified path
+        public static void CreateOutputDirectory(string outputFilePath)
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(OutputFilePath));
+            OutputFilePath = outputFilePath;
+            Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath));
         }
 
         // Pause output prompting user for key to continue
@@ -62,14 +61,22 @@ namespace CMinusMinusCompiler
             }
         }
 
+        // Clear the file and screen displays
+        public static void ClearDisplays()
+        {
+            Console.Clear();
+            File.Delete(OutputFilePath);
+        }
+
         // Manage the output to ensure only 20 results on the page at a time
-        private static void UpdateOutputPager()
+        // and accept function to display header information
+        private static void UpdateOutputPager(Action displayHeader)
         {
             if (DisplayLineCount == 20 && !IsUnitTestExecution)
             {
                 DisplayLineCount = 0;
                 OutputDisplayPause();
-                LexicalAnalyzerInstance.DisplayTokenHeader(); // Will be commented in later versions
+                displayHeader();
             }
         }
     }

@@ -20,13 +20,17 @@ namespace CMinusMinusCompiler
 
         // Private Members
         private string SourceFileContents { get; set; }
-        private Dictionary<string, TokenType> ReserverdWordTokens { get; } = new Dictionary<string, TokenType>
+        private Dictionary<string, TokenType> ReserverdWordTokens { get; } 
+            = new Dictionary<string, TokenType>
         {
-            { "if", TokenType.IfToken }, { "else", TokenType.ElseToken }, { "while", TokenType.WhileToken },
-            { "float", TokenType.FloatToken }, { "int", TokenType.IntToken }, { "char", TokenType.CharToken },
-            { "break", TokenType.BreakToken }, { "continue", TokenType.ContinueToken }, { "void", TokenType.VoidToken }
+            { "if", TokenType.IfToken }, { "else", TokenType.ElseToken },
+            { "while", TokenType.WhileToken }, { "float", TokenType.FloatToken },
+            { "int", TokenType.IntToken }, { "char", TokenType.CharToken },
+            { "break", TokenType.BreakToken }, { "continue", TokenType.ContinueToken },
+            { "void", TokenType.VoidToken }
         };
-        private Dictionary<char, TokenType> SingleCharacterSymbols { get; } = new Dictionary<char, TokenType>
+        private Dictionary<char, TokenType> SingleCharacterSymbols { get; } 
+            = new Dictionary<char, TokenType>
         {
             { ';', TokenType.SemiColonToken }, { '.', TokenType.PeriodToken },
             { '(', TokenType.LeftParenthesisToken }, { ')', TokenType.RightParenthesisToken },
@@ -39,7 +43,8 @@ namespace CMinusMinusCompiler
             { '=', TokenType.AssignmentOperatorToken }, { '!', TokenType.UnknownToken },
             { '|', TokenType.UnknownToken }, { '&', TokenType.UnknownToken }
         };
-        private Dictionary<string, TokenType> DoubleCharactersSymbols { get; } = new Dictionary<string, TokenType>
+        private Dictionary<string, TokenType> DoubleCharactersSymbols { get; } 
+            = new Dictionary<string, TokenType>
         {
             { "==", TokenType.RelationalOperatorToken }, { "!=", TokenType.RelationalOperatorToken },
             { "<=", TokenType.RelationalOperatorToken }, { ">=", TokenType.RelationalOperatorToken },
@@ -114,7 +119,7 @@ namespace CMinusMinusCompiler
             else return Char.MinValue;
         }
 
-        // Process next token
+        // Process token based on next current and next character in the lexeme
         public void ProcessToken()
         {
             UpdateLexemeAndCharacter();
