@@ -12,7 +12,7 @@ identifier                             IdentifierToken
 "ABCDEFGHijklmnopqrstuvwxyz12"         StringLiteralToken             "ABCDEFGHijklmnopqrstuvwxyz12"
 ABCDEFGHijklmnopqrstuvwxyz1            IdentifierToken                
 "                                      UnknownToken                   
-ABCDEFGHijklmnopqrstuvwxyz12           IdentifierToken                ABCDEFGHijklmnopqrstuvwxyz1
+ABCDEFGHijklmnopqrstuvwxyz12           UnknownToken	                   
 "                                      UnknownToken                   
 if                                     IfToken                        
 continue                               ContinueToken                  

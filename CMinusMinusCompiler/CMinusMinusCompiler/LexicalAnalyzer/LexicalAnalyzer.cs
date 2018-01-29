@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
 
 namespace CMinusMinusCompiler
 {
@@ -176,11 +175,15 @@ namespace CMinusMinusCompiler
             int maximumLiteralLength
                 = Int32.Parse(ConfigurationManager.AppSettings["MaximumLiteralLength"]);
 
-            if (Lexeme.Length > maximumLiteralLength) Literal
-                    = new string(Lexeme.Take(maximumLiteralLength).ToArray());
-
-            Token = ReserverdWordTokens.ContainsKey(Lexeme)
-                ? ReserverdWordTokens[Lexeme] : TokenType.IdentifierToken;
+            if (Lexeme.Length > maximumLiteralLength)
+            {
+                Token = TokenType.UnknownToken;
+            }
+            else
+            {
+                Token = ReserverdWordTokens.ContainsKey(Lexeme)
+                    ? ReserverdWordTokens[Lexeme] : TokenType.IdentifierToken;
+            }
         }
 
         // Process remaining expected word tokens

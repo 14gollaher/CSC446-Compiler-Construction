@@ -4,8 +4,8 @@ Wheee                                  IdentifierToken
 Hello                                  IdentifierToken                
 wORlD                                  IdentifierToken                
 abcdefghijklmnopqrstuvwxyz_            IdentifierToken                
-abcdefghijklmnopqrstuvwxyz123          IdentifierToken                abcdefghijklmnopqrstuvwxyz1
-abcdefghijklmnopqrstuvwxyz123          IdentifierToken                abcdefghijklmnopqrstuvwxyz1
+abcdefghijklmnopqrstuvwxyz123          UnknownToken                
+abcdefghijklmnopqrstuvwxyz123          UnknownToken                
 if                                     IfToken                        
 ELse                                   IdentifierToken                
 hello                                  IdentifierToken                
