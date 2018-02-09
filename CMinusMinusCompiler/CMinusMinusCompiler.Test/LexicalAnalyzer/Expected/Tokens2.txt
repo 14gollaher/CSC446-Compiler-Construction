@@ -1,0 +1,6 @@
+﻿Lexeme                                 Token                          Attribute
+-------------------------------------------------------------------------------
+12                                     NumberToken                    12
+.                                      PeriodToken                    
+.                                      PeriodToken                    
+5                                      NumberToken                    5

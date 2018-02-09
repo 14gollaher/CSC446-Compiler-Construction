@@ -1,0 +1,3 @@
+﻿Lexeme                                 Token                          Attribute
+-------------------------------------------------------------------------------
+"literal with no terminator            UnknownToken                   

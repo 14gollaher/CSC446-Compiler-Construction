@@ -1,0 +1,3 @@
+﻿Lexeme                                 Token                          Attribute
+-------------------------------------------------------------------------------
+supercalifragilisticexpialidousous     UnknownToken                   

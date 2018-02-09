@@ -10,8 +10,6 @@ namespace CMinusMinusCompiler
         // Initialize core C-- Compiler components.
         public void Start(string[] arguments)
         {
-            CommonTools.CreateOutputDirectory(ConfigurationManager.AppSettings["LexicalAnalyzerOutputPath"]);
-            
             // Change below line as needed 
             StartLexicalAnalyzer(arguments); 
 
@@ -22,6 +20,8 @@ namespace CMinusMinusCompiler
         // to run and test modules separately
         public void StartLexicalAnalyzer(string[] arguments)
         {
+            CommonTools.CreateOutputDirectory(ConfigurationManager.AppSettings["LexicalAnalyzerOutputPath"]);
+
             LexicalAnalyzer lexicalAnalyzer;
             if (arguments.Length == 1)
             {

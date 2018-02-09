@@ -1,0 +1,66 @@
+﻿Lexeme                                 Token                          Attribute
+-------------------------------------------------------------------------------
+begin                                  IdentifierToken                
+end                                    IdentifierToken                
+if                                     IfToken                        
+else                                   ElseToken                      
+class                                  IdentifierToken                
+public                                 IdentifierToken                
+static                                 IdentifierToken                
+void                                   VoidToken                      
+main                                   IdentifierToken                
+String                                 IdentifierToken                
+string                                 IdentifierToken                
+extends                                IdentifierToken                
+return                                 IdentifierToken                
+int                                    IntToken                       
+float                                  FloatToken                     
+char                                   CharToken                      
+break                                  BreakToken                     
+continue                               ContinueToken                  
+while                                  WhileToken                     
+true                                   IdentifierToken                
+false                                  IdentifierToken                
+this                                   IdentifierToken                
++                                      AdditionOperatorToken          
+-                                      AdditionOperatorToken          
+*                                      MultiplicationOperatorToken    
+/                                      MultiplicationOperatorToken    
+%                                      MultiplicationOperatorToken    
+and                                    IdentifierToken                
+or                                     IdentifierToken                
+procedure                              IdentifierToken                
+junk                                   IdentifierToken                
+is                                     IdentifierToken                
+123                                    NumberToken                    123
+12.56                                  NumberToken                    12.56
+wum                                    IdentifierToken                
+put                                    IdentifierToken                
+(                                      LeftParenthesisToken           
+"This is literal number one of two literals" StringLiteralToken             "This is literal number one of two literals"
+)                                      RightParenthesisToken          
+;                                      SemiColonToken                 
+average                                IdentifierToken                
+constant                               IdentifierToken                
+var                                    IdentifierToken                
+george                                 IdentifierToken                
+get                                    IdentifierToken                
+put                                    IdentifierToken                
+=                                      AssignmentOperatorToken        
+;                                      SemiColonToken                 
+,                                      CommaToken                     
+(                                      LeftParenthesisToken           
+)                                      RightParenthesisToken          
+!=                                     RelationalOperatorToken        
+==                                     RelationalOperatorToken        
+<                                      RelationalOperatorToken        
+>                                      RelationalOperatorToken        
+<=                                     RelationalOperatorToken        
+>=                                     RelationalOperatorToken        
+||                                     AdditionOperatorToken          
+&&                                     MultiplicationOperatorToken    
+=                                      AssignmentOperatorToken        
+*                                      MultiplicationOperatorToken    
+-                                      AdditionOperatorToken          
+/                                      MultiplicationOperatorToken    
+"String literal number two"            StringLiteralToken             "String literal number two"

@@ -1,0 +1,3 @@
+﻿Lexeme                                 Token                          Attribute
+-------------------------------------------------------------------------------
+"This is literal /* SUPRISE!!! */"     StringLiteralToken             "This is literal /* SUPRISE!!! */"

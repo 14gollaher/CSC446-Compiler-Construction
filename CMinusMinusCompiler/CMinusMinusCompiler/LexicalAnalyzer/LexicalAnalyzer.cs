@@ -60,7 +60,7 @@ namespace CMinusMinusCompiler
         // Display next token to screen and output file
         public void DisplayCurrentToken()
         {
-            if (Token != TokenType.CommentToken && Token != TokenType.EndOfFileToken)
+            if (Token != TokenType.EndOfFileToken)
             {
                 dynamic attribute = Value ?? ValueReal;
                 attribute = attribute ?? Literal;
@@ -238,16 +238,19 @@ namespace CMinusMinusCompiler
         // Process a comment token
         private void ProcessCommentToken()
         {
-            Token = TokenType.CommentToken;
             UpdateLexemeAndCharacter();
 
             while (Character != Char.MinValue)
             {
                 GetNextCharacter();
-                if (CommentEndSearch()) return;
+                if (CommentEndSearch())
+                {
+                    GetNextToken();
+                    return;
+                }
             }
-
             CommonTools.WriteOutput("ERROR: Expected comment end '*/' not found");
+            GetNextToken();
         }
 
         // Search for the end of a comment in the input
@@ -330,7 +333,7 @@ namespace CMinusMinusCompiler
             MultiplicationOperatorToken, LeftParenthesisToken, RightParenthesisToken,
             LeftBraceToken, RightBraceToken, LeftBracketToken, RightBracketToken,
             PeriodToken, QuotationsSymbol, RelationalOperatorToken, IdentifierToken,
-            NumberToken, CommentToken, StringLiteralToken, UnderscoreToken,
+            NumberToken, StringLiteralToken, UnderscoreToken,
             UnknownToken,
         }
     }
