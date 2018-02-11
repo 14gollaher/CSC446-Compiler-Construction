@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
 
 namespace CMinusMinusCompiler
 {
@@ -10,8 +11,9 @@ namespace CMinusMinusCompiler
         // Initialize core C-- Compiler components.
         public void Start(string[] arguments)
         {
-            // Change below line as needed 
-            StartLexicalAnalyzer(arguments); 
+
+            // StartLexicalAnalyzer(arguments); 
+            StartParser(arguments);
 
             CommonTools.PromptProgramExit();
         }
@@ -21,6 +23,7 @@ namespace CMinusMinusCompiler
         public void StartLexicalAnalyzer(string[] arguments)
         {
             CommonTools.CreateOutputDirectory(ConfigurationManager.AppSettings["LexicalAnalyzerOutputPath"]);
+            CommonTools.ClearDisplays();
 
             LexicalAnalyzer lexicalAnalyzer;
             if (arguments.Length == 1)
@@ -28,7 +31,6 @@ namespace CMinusMinusCompiler
                 if (!CommonTools.CheckFilePathExists(arguments[0])) return;
 
                 lexicalAnalyzer = new LexicalAnalyzer(arguments[0]);
-                CommonTools.LexicalAnalyzerInstance = lexicalAnalyzer;
             }
             else
             {
@@ -36,14 +38,50 @@ namespace CMinusMinusCompiler
                 return;
             }
 
-            CommonTools.ClearDisplays();
+            CommonTools.LexicalAnalyzerInstance = lexicalAnalyzer;
+
             lexicalAnalyzer.DisplayTokenHeader();
 
-            while(lexicalAnalyzer.Token != LexicalAnalyzer.TokenType.EndOfFileToken)
+            while(lexicalAnalyzer.Token != Symbol.EndOfFileToken)
             {
                 lexicalAnalyzer.GetNextToken();
                 lexicalAnalyzer.DisplayCurrentToken();
             }
+        }
+
+        public void StartParser(string[] arguments)
+        {
+            CommonTools.CreateOutputDirectory(ConfigurationManager.AppSettings["ParserOutputPath"]);
+            CommonTools.ClearDisplays();
+
+            LexicalAnalyzer lexicalAnalyzer;
+            Parser parser;
+
+            if (arguments.Length == 1)
+            {
+                if (!CommonTools.CheckFilePathExists(arguments[0])) return;
+
+                lexicalAnalyzer = new LexicalAnalyzer(arguments[0]);
+            }
+            else
+            {
+                Console.WriteLine("ERROR: Usage expected command line argument.");
+                return;
+            }
+
+            CommonTools.LexicalAnalyzerInstance = lexicalAnalyzer;
+
+            lexicalAnalyzer.GetNextToken();
+
+            parser = new Parser(lexicalAnalyzer);
+            parser.ProcessProgram();
+
+            if (lexicalAnalyzer.Token != Symbol.EndOfFileToken)
+            {
+                CommonTools.WriteOutput("ERROR: Unexpected tokens after end-of-file symbol.");
+            }
+
+            CommonTools.WriteOutput("Completed processing " + Path.GetFileName(arguments[0]));
         }
     }
 }

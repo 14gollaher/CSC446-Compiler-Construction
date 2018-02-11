@@ -91,7 +91,7 @@ namespace CMinusMinusCompiler.Test
         public void LexicalAnaylzer_InstructorTestFile1()
         {
             Bootstrapper bootstrapper = new Bootstrapper();
-            bootstrapper.Start(new string[] { @"LexicalAnalyzer\Source\Tokens.c" });
+            bootstrapper.StartLexicalAnalyzer(new string[] { @"LexicalAnalyzer\Source\Tokens.c" });
 
             TestTools.CompareFileEquality
                 (@"LexicalAnalyzer\Expected\Tokens.txt", CommonTools.OutputFilePath);
@@ -101,7 +101,7 @@ namespace CMinusMinusCompiler.Test
         public void LexicalAnaylzer_InstructorTestFile2()
         {
             Bootstrapper bootstrapper = new Bootstrapper();
-            bootstrapper.Start(new string[] { @"LexicalAnalyzer\Source\Tokens2.c" });
+            bootstrapper.StartLexicalAnalyzer(new string[] { @"LexicalAnalyzer\Source\Tokens2.c" });
 
             TestTools.CompareFileEquality
                 (@"LexicalAnalyzer\Expected\Tokens2.txt", CommonTools.OutputFilePath);
@@ -111,7 +111,7 @@ namespace CMinusMinusCompiler.Test
         public void LexicalAnaylzer_InstructorTestFile3()
         {
             Bootstrapper bootstrapper = new Bootstrapper();
-            bootstrapper.Start(new string[] { @"LexicalAnalyzer\Source\Tokens3.c" });
+            bootstrapper.StartLexicalAnalyzer(new string[] { @"LexicalAnalyzer\Source\Tokens3.c" });
 
             TestTools.CompareFileEquality
                 (@"LexicalAnalyzer\Expected\Tokens3.txt", CommonTools.OutputFilePath);
@@ -121,7 +121,7 @@ namespace CMinusMinusCompiler.Test
         public void LexicalAnaylzer_InstructorTestFile4()
         {
             Bootstrapper bootstrapper = new Bootstrapper();
-            bootstrapper.Start(new string[] { @"LexicalAnalyzer\Source\Tokens4.c" });
+            bootstrapper.StartLexicalAnalyzer(new string[] { @"LexicalAnalyzer\Source\Tokens4.c" });
 
             TestTools.CompareFileEquality
                 (@"LexicalAnalyzer\Expected\Tokens4.txt", CommonTools.OutputFilePath);
@@ -131,7 +131,7 @@ namespace CMinusMinusCompiler.Test
         public void LexicalAnaylzer_InstructorTestFile5()
         {
             Bootstrapper bootstrapper = new Bootstrapper();
-            bootstrapper.Start(new string[] { @"LexicalAnalyzer\Source\Tokens5.c" });
+            bootstrapper.StartLexicalAnalyzer(new string[] { @"LexicalAnalyzer\Source\Tokens5.c" });
 
             TestTools.CompareFileEquality
                 (@"LexicalAnalyzer\Expected\Tokens5.txt", CommonTools.OutputFilePath);

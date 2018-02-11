@@ -6,12 +6,20 @@
     into Intel assembly code. The compiler features 8 
     modules:
         Lexical Analyzer (DONE)
-        Syntax Analyzer (TODO)
+        Syntax Analyzer (DONE)
         Semantic Analyzer (TODO)
         Intermediate Code Generator (TODO)
         Code Optimizer (TODO)
         Code Generator (TODO)
         Symbol Table (TODO)
+*/
+
+/* Questions: 
+
+Do we need to support more "stuff"?
+    - Types(double, long/short float, etc)
+        - And if not, why is void not a type? 
+    - Assignment
 */
 
 namespace CMinusMinusCompiler
