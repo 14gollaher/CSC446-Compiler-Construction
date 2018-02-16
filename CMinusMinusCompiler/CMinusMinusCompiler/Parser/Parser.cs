@@ -2,8 +2,7 @@
 
 namespace CMinusMinusCompiler
 {
-    /* Recursive descent parser to verify program 
-    follows the C-- grammar.
+    /* Recursive descent parser to verify program follows C-- grammar
 
     Program        -> Type IdentifierToken Rest Program |
                       e
@@ -27,19 +26,20 @@ namespace CMinusMinusCompiler
                       e
 
     IdentifierList -> IdentifierToken IdentifierTail ; Declaration
+    
+    IdentifierTail -> , IdentifierToken IdentifierTail
 
     StatementList  -> e
 
     Return         -> e
     */
-
     public class Parser
     {
         // Private properties
         private LexicalAnalyzer LexicalAnaylzer { get; set; }
         private Symbol[] TypeTokens { get; } = {
             Symbol.IntToken, Symbol.FloatToken,
-            Symbol.CharToken //, Symbol.VoidToken
+            Symbol.CharToken 
         };
 
         // Constructor requires a lexical analyzer instance
@@ -48,8 +48,7 @@ namespace CMinusMinusCompiler
             LexicalAnaylzer = lexicalAnalyzer;
         }
 
-        // Matches expected symbol to current symbol from
-        // lexical analyzer
+        // Matches expected symbol to current symbol from lexical analyzer
         public void MatchToken(Symbol expectedSymbol)
         {
             if (LexicalAnaylzer.Token == expectedSymbol)
@@ -58,17 +57,14 @@ namespace CMinusMinusCompiler
             }
             else
             {
-                CommonTools.WriteOutput(
-                    "ERROR: Line " + LexicalAnaylzer.LineNumber 
-                    + " Expected token \"" + expectedSymbol 
-                    + "\" - Received token \"" + LexicalAnaylzer.Token);
+                DisplayExpectedTokensError(expectedSymbol.ToString());
             }
         }
+
         // Program -> Type IdentifierToken Rest Program |
-         //           e
+        //            e
         public void ProcessProgram()
         {
-            // Here void token is making this next if skip, fix me
             if (TypeTokens.Contains(LexicalAnaylzer.Token))
             {
                 ProcessType();
@@ -86,7 +82,7 @@ namespace CMinusMinusCompiler
             if (LexicalAnaylzer.Token == Symbol.IntToken) MatchToken(Symbol.IntToken);
             else if (LexicalAnaylzer.Token == Symbol.FloatToken) MatchToken(Symbol.FloatToken);
             else if (LexicalAnaylzer.Token == Symbol.CharToken) MatchToken(Symbol.CharToken);
-            else CommonTools.WriteOutput("TODO make me a better errors");
+            else DisplayExpectedTokensError("valid TYPE");
         }
 
         // Rest -> ( ParameterList ) Compound |
@@ -98,7 +94,7 @@ namespace CMinusMinusCompiler
                 MatchToken(Symbol.LeftParenthesisToken);
                 ProcessParameterList();
                 MatchToken(Symbol.RightParenthesisToken);
-                ProcessCoumpound();
+                ProcessCompound();
             }
             else
             {
@@ -108,8 +104,8 @@ namespace CMinusMinusCompiler
             }
         }
 
-        // ParameterTail  -> , Type IdentifierToken ParameterTail |
-        //                     e
+        // ParameterList -> , Type IdentifierToken ParameterTail |
+        //                  e
         private void ProcessParameterList()
         {
             if (TypeTokens.Contains(LexicalAnaylzer.Token))
@@ -134,13 +130,20 @@ namespace CMinusMinusCompiler
         }
 
         // Compound -> { Declaration StatementList Return }
-        private void ProcessCoumpound()
+        private void ProcessCompound()
         {
-            MatchToken(Symbol.LeftBraceToken);
-            ProcessDeclaration();
-            ProcessStatementList();
-            ProcessReturn();
-            MatchToken(Symbol.RightBraceToken);
+            if (LexicalAnaylzer.Token == Symbol.LeftBraceToken)
+            {
+                MatchToken(Symbol.LeftBraceToken);
+                ProcessDeclaration();
+                ProcessStatementList();
+                ProcessReturn();
+                MatchToken(Symbol.RightBraceToken);
+            }
+            else
+            {
+                DisplayExpectedTokensError(Symbol.LeftBraceToken.ToString());
+            }
         }
 
         // Declaration -> Type IdentifierList |
@@ -154,18 +157,21 @@ namespace CMinusMinusCompiler
             }
         }
 
-        // ParameterList  -> Type IdentifierToken ParameterTail |
+        // IdentifierList -> IdentifierToken IdentifierTail ; Declaration |
         //                   e
         private void ProcessIdentifierList()
         {
-            MatchToken(Symbol.IdentifierToken);
-            ProcessIdentifierTail();
-            MatchToken(Symbol.SemiColonToken);
-            ProcessDeclaration();
+            if (LexicalAnaylzer.Token == Symbol.IdentifierToken)
+            {
+                MatchToken(Symbol.IdentifierToken);
+                ProcessIdentifierTail();
+                MatchToken(Symbol.SemiColonToken);
+                ProcessDeclaration();
+            }
         }
 
-        // ParameterTail  -> , Type IdentifierToken ParameterTail |
-        //                   e 
+        // IdentifierTail -> , IdentifierToken IdentifierTail |
+        //                     e
         private void ProcessIdentifierTail()
         {
             if (LexicalAnaylzer.Token == Symbol.CommaToken)
@@ -186,6 +192,15 @@ namespace CMinusMinusCompiler
         private void ProcessReturn()
         {
             // Blank for now
+        }
+
+        // Displays expected tokens error to appropriate displays
+        private void DisplayExpectedTokensError(string expectedTokens)
+        {
+            CommonTools.WriteOutput(
+                "ERROR: Line " + LexicalAnaylzer.LineNumber
+                + " Expected token \"" + expectedTokens
+                + "\" - Received token \"" + LexicalAnaylzer.Token + "\"");
         }
     }
 }

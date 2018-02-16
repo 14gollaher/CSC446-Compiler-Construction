@@ -1,0 +1,5 @@
+﻿ERROR: Line 1 Expected token "valid TYPE" - Received token "IdentifierToken"
+ERROR: Line 1 Expected token "RightParenthesisToken" - Received token "IdentifierToken"
+ERROR: Line 1 Expected token "LeftBraceToken" - Received token "IdentifierToken"
+ERROR: Line 1 Unexpected tokens in source file, expected End-of-File Token
+Completed processing InvalidType.c

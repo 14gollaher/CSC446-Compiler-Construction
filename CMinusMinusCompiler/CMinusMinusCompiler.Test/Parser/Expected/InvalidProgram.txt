@@ -1,0 +1,2 @@
+﻿ERROR: Line 1 Unexpected tokens in source file, expected End-of-File Token
+Completed processing InvalidProgram.c

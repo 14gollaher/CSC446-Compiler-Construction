@@ -82,7 +82,6 @@ namespace CMinusMinusCompiler
             while (Char.IsWhiteSpace(Character))
             {
                 GetNextCharacter();
-                if (Character == '\n') LineNumber++;
             }
             if (Character == Char.MinValue) Token = Symbol.EndOfFileToken;
             else ProcessToken();
@@ -95,6 +94,7 @@ namespace CMinusMinusCompiler
             {
                 Character = SourceFileContents[0];
                 SourceFileContents = SourceFileContents.Remove(0, 1);
+                if (Character == '\n') LineNumber++;
             }
             else
             {

@@ -8,18 +8,17 @@ namespace CMinusMinusCompiler
     // to run modules independently, and test command line arguments
     public class Bootstrapper
     {
-        // Initialize core C-- Compiler components.
+        // Initialize core C-- Compiler components. Allows for program
+        // to run and test modules independently
         public void Start(string[] arguments)
         {
-
-            // StartLexicalAnalyzer(arguments); 
+            //StartLexicalAnalyzer(arguments);
             StartParser(arguments);
 
             CommonTools.PromptProgramExit();
         }
 
-        // Initializes and runs Lexical Analysis module. Allows for program
-        // to run and test modules separately
+        // Initializes and runs Lexical Analysis module 
         public void StartLexicalAnalyzer(string[] arguments)
         {
             CommonTools.CreateOutputDirectory(ConfigurationManager.AppSettings["LexicalAnalyzerOutputPath"]);
@@ -34,11 +33,12 @@ namespace CMinusMinusCompiler
             }
             else
             {
-                Console.WriteLine("ERROR: Usage expected command line argument.");
+                Console.WriteLine("ERROR: Usage expects single command line argument.");
                 return;
             }
 
             CommonTools.LexicalAnalyzerInstance = lexicalAnalyzer;
+            CommonTools.DisplayHeader = lexicalAnalyzer.DisplayTokenHeader;
 
             lexicalAnalyzer.DisplayTokenHeader();
 
@@ -49,6 +49,7 @@ namespace CMinusMinusCompiler
             }
         }
 
+        // Initializes and runs Parser module
         public void StartParser(string[] arguments)
         {
             CommonTools.CreateOutputDirectory(ConfigurationManager.AppSettings["ParserOutputPath"]);
@@ -78,7 +79,10 @@ namespace CMinusMinusCompiler
 
             if (lexicalAnalyzer.Token != Symbol.EndOfFileToken)
             {
-                CommonTools.WriteOutput("ERROR: Unexpected tokens after end-of-file symbol.");
+                CommonTools.WriteOutput(
+                    "ERROR: Line " 
+                    + lexicalAnalyzer.LineNumber 
+                    + " Unexpected tokens in source file, expected End-of-File Token");
             }
 
             CommonTools.WriteOutput("Completed processing " + Path.GetFileName(arguments[0]));

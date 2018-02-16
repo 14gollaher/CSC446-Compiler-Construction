@@ -144,13 +144,37 @@
     <Content Include="LexicalAnalyzer\Source\Tokens5.c">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Parser\Expected\UnsupportedOperations.txt">
+    <Content Include="Parser\Expected\InvalidCompound.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Parser\Expected\InvalidRest.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Parser\Expected\InvalidType.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Parser\Expected\InvalidIdentifierTail.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Parser\Expected\InvalidProgram.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Parser\Expected\HappyPath.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Parser\Source\UnsupportedOperations.c">
+    <Content Include="Parser\Source\InvalidCompound.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Parser\Source\InvalidRest.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Parser\Source\InvalidType.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Parser\Source\InvalidIdentifierTail.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Parser\Source\InvalidProgram.c">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Parser\Source\HappyPath.c">

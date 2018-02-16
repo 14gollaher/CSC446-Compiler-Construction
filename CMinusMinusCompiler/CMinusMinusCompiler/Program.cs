@@ -15,11 +15,9 @@
 */
 
 /* Questions: 
-
-Do we need to support more "stuff"?
-    - Types(double, long/short float, etc)
-        - And if not, why is void not a type? 
-    - Assignment
+TODO: Errors in all non-nullable productions
+Do we absolutely quit on an error? Or just let program flow continue,
+you'll only be checking the top error?
 */
 
 namespace CMinusMinusCompiler

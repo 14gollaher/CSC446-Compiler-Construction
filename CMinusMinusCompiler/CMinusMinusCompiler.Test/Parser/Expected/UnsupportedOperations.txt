@@ -1,1 +1,0 @@
-﻿Completed processing UnsupportedOperations.c
