@@ -195,12 +195,12 @@ namespace CMinusMinusCompiler
         }
 
         // Displays expected tokens error to appropriate displays
-        private void DisplayExpectedTokensError(string expectedTokens)
+        private void DisplayExpectedTokensError(string expectedToken)
         {
             CommonTools.WriteOutput(
-                "ERROR: Line " + LexicalAnaylzer.LineNumber
-                + " Expected token \"" + expectedTokens
-                + "\" - Received token \"" + LexicalAnaylzer.Token + "\"");
+                $"ERROR: Line {LexicalAnaylzer.LineNumber} " +
+                $"Expected token \"{expectedToken}\" " +
+                $"- Received token \"{LexicalAnaylzer.Token}\"");
         }
     }
 }

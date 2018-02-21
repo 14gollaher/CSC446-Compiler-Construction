@@ -80,12 +80,11 @@ namespace CMinusMinusCompiler
             if (lexicalAnalyzer.Token != Symbol.EndOfFileToken)
             {
                 CommonTools.WriteOutput(
-                    "ERROR: Line " 
-                    + lexicalAnalyzer.LineNumber 
-                    + " Unexpected tokens in source file, expected End-of-File Token");
+                    $"ERROR: Line {lexicalAnalyzer.LineNumber} " +
+                    $"Unexpected tokens in source file, expected End-of-File Token");
             }
 
-            CommonTools.WriteOutput("Completed processing " + Path.GetFileName(arguments[0]));
+            CommonTools.WriteOutput($"Completed processing {Path.GetFileName(arguments[0])}");
         }
     }
 }
