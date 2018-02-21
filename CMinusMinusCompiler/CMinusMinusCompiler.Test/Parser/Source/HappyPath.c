@@ -10,6 +10,9 @@ int main()
 {
 	float d;
 }
+/*
+   Whole bunch of bad stuff
+*/
 
 float func(int z)
 {
@@ -23,4 +26,3 @@ int func(int x, int y)
 {
 	int a, b;
 }
-

@@ -201,6 +201,7 @@ namespace CMinusMinusCompiler
                 $"ERROR: Line {LexicalAnaylzer.LineNumber} " +
                 $"Expected token \"{expectedToken}\" " +
                 $"- Received token \"{LexicalAnaylzer.Token}\"");
+            CommonTools.PromptProgramExit();
         }
     }
 }

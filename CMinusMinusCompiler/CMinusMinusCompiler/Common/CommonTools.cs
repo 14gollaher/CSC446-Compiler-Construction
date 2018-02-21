@@ -39,8 +39,9 @@ namespace CMinusMinusCompiler
         {
             if (!IsUnitTestExecution)
             {
-                Console.Write("Press any key to exit...");
-                if (!IsUnitTestExecution) Console.ReadKey();
+                Console.Write("\nPress any key to exit...");
+                Console.ReadKey();
+                Environment.Exit(0);
             }
         }
 
