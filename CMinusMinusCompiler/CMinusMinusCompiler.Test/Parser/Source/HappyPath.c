@@ -3,6 +3,9 @@ int main()
 {
 }
 
+
+/*This will be omitted!!!*/
+
 float a;
 int b, c;
 

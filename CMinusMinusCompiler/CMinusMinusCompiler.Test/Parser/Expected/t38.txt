@@ -1,0 +1,2 @@
+﻿ERROR: Line 6 Unexpected tokens in source file, expected End-of-File Token
+Completed processing t38.c

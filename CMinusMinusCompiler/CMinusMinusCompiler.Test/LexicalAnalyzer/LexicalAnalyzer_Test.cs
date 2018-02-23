@@ -88,7 +88,7 @@ namespace CMinusMinusCompiler.Test
         }
 
         [TestMethod]
-        public void LexicalAnaylzer_InstructorTestFile1()
+        public void LexicalAnaylzer_InstructorCase1()
         {
             Bootstrapper bootstrapper = new Bootstrapper();
             bootstrapper.StartLexicalAnalyzer(new string[] { @"LexicalAnalyzer\Source\Tokens.c" });
@@ -98,7 +98,7 @@ namespace CMinusMinusCompiler.Test
         }
 
         [TestMethod]
-        public void LexicalAnaylzer_InstructorTestFile2()
+        public void LexicalAnaylzer_InstructorCase2()
         {
             Bootstrapper bootstrapper = new Bootstrapper();
             bootstrapper.StartLexicalAnalyzer(new string[] { @"LexicalAnalyzer\Source\Tokens2.c" });
@@ -108,7 +108,7 @@ namespace CMinusMinusCompiler.Test
         }
 
         [TestMethod]
-        public void LexicalAnaylzer_InstructorTestFile3()
+        public void LexicalAnaylzer_InstructorCase3()
         {
             Bootstrapper bootstrapper = new Bootstrapper();
             bootstrapper.StartLexicalAnalyzer(new string[] { @"LexicalAnalyzer\Source\Tokens3.c" });
@@ -118,7 +118,7 @@ namespace CMinusMinusCompiler.Test
         }
 
         [TestMethod]
-        public void LexicalAnaylzer_InstructorTestFile4()
+        public void LexicalAnaylzer_InstructorCase4()
         {
             Bootstrapper bootstrapper = new Bootstrapper();
             bootstrapper.StartLexicalAnalyzer(new string[] { @"LexicalAnalyzer\Source\Tokens4.c" });
@@ -128,7 +128,7 @@ namespace CMinusMinusCompiler.Test
         }
 
         [TestMethod]
-        public void LexicalAnaylzer_InstructorTestFile5()
+        public void LexicalAnaylzer_InstructorCase5()
         {
             Bootstrapper bootstrapper = new Bootstrapper();
             bootstrapper.StartLexicalAnalyzer(new string[] { @"LexicalAnalyzer\Source\Tokens5.c" });

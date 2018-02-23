@@ -65,5 +65,85 @@ namespace CMinusMinusCompiler.Test
             TestTools.CompareFileEquality
                 (@"Parser\Expected\InvalidRest.txt", CommonTools.OutputFilePath);
         }
+
+        [TestMethod]
+        public void Parser_InstructorCase1()
+        {
+            Bootstrapper bootstrapper = new Bootstrapper();
+            bootstrapper.StartParser(new string[] { @"Parser\Source\t31.c" });
+
+            TestTools.CompareFileEquality
+                (@"Parser\Expected\t31.txt", CommonTools.OutputFilePath);
+        }
+
+        [TestMethod]
+        public void Parser_InstructorCase2()
+        {
+            Bootstrapper bootstrapper = new Bootstrapper();
+            bootstrapper.StartParser(new string[] { @"Parser\Source\t32.c" });
+
+            TestTools.CompareFileEquality
+                (@"Parser\Expected\t32.txt", CommonTools.OutputFilePath);
+        }
+
+        [TestMethod]
+        public void Parser_InstructorCase3()
+        {
+            Bootstrapper bootstrapper = new Bootstrapper();
+            bootstrapper.StartParser(new string[] { @"Parser\Source\t33.c" });
+
+            TestTools.CompareFileEquality
+                (@"Parser\Expected\t33.txt", CommonTools.OutputFilePath);
+        }
+
+        [TestMethod]
+        public void Parser_InstructorCase4()
+        {
+            Bootstrapper bootstrapper = new Bootstrapper();
+            bootstrapper.StartParser(new string[] { @"Parser\Source\t34.c" });
+
+            TestTools.CompareFileEquality
+                (@"Parser\Expected\t34.txt", CommonTools.OutputFilePath);
+        }
+
+        [TestMethod]
+        public void Parser_InstructorCase5()
+        {
+            Bootstrapper bootstrapper = new Bootstrapper();
+            bootstrapper.StartParser(new string[] { @"Parser\Source\t35.c" });
+
+            TestTools.CompareFileEquality
+                (@"Parser\Expected\t35.txt", CommonTools.OutputFilePath);
+        }
+
+        [TestMethod]
+        public void Parser_InstructorCase6()
+        {
+            Bootstrapper bootstrapper = new Bootstrapper();
+            bootstrapper.StartParser(new string[] { @"Parser\Source\t36.c" });
+
+            TestTools.CompareFileEquality
+                (@"Parser\Expected\t36.txt", CommonTools.OutputFilePath);
+        }
+
+        [TestMethod]
+        public void Parser_InstructorCase7()
+        {
+            Bootstrapper bootstrapper = new Bootstrapper();
+            bootstrapper.StartParser(new string[] { @"Parser\Source\t37.c" });
+
+            TestTools.CompareFileEquality
+                (@"Parser\Expected\t37.txt", CommonTools.OutputFilePath);
+        }
+
+        [TestMethod]
+        public void Parser_InstructorCase8()
+        {
+            Bootstrapper bootstrapper = new Bootstrapper();
+            bootstrapper.StartParser(new string[] { @"Parser\Source\t38.c" });
+
+            TestTools.CompareFileEquality
+                (@"Parser\Expected\t38.txt", CommonTools.OutputFilePath);
+        }
     }
 }
