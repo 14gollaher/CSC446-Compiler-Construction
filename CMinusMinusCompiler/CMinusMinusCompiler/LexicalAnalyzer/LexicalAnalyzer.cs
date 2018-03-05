@@ -315,4 +315,16 @@ namespace CMinusMinusCompiler
             ValueReal = null;
         }
     }
+
+    // Enumerated type to contain all possible token types
+    public enum Symbol
+    {
+        IfToken, ElseToken, WhileToken, FloatToken, IntToken, CharToken,
+        BreakToken, ContinueToken, VoidToken, CommaToken, SemiColonToken,
+        AssignmentOperatorToken, EndOfFileToken, AdditionOperatorToken,
+        MultiplicationOperatorToken, LeftParenthesisToken, RightParenthesisToken,
+        LeftBraceToken, RightBraceToken, LeftBracketToken, RightBracketToken,
+        PeriodToken, QuotationsSymbol, RelationalOperatorToken, IdentifierToken,
+        NumberToken, StringLiteralToken, UnderscoreToken, UnknownToken
+    }
 }

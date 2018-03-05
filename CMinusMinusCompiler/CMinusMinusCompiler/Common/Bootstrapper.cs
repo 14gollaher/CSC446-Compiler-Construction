@@ -37,7 +37,6 @@ namespace CMinusMinusCompiler
                 return;
             }
 
-            CommonTools.LexicalAnalyzerInstance = lexicalAnalyzer;
             CommonTools.DisplayHeader = lexicalAnalyzer.DisplayTokenHeader;
 
             lexicalAnalyzer.DisplayTokenHeader();
@@ -69,8 +68,6 @@ namespace CMinusMinusCompiler
                 Console.WriteLine("ERROR: Usage expected command line argument.");
                 return;
             }
-
-            CommonTools.LexicalAnalyzerInstance = lexicalAnalyzer;
 
             lexicalAnalyzer.GetNextToken();
 

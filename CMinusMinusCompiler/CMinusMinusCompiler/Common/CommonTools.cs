@@ -10,7 +10,6 @@ namespace CMinusMinusCompiler
         public static int DisplayLineCount { get; set; }
         public static bool IsUnitTestExecution { get; set; }
         public static string OutputFilePath { get; set; }
-        public static LexicalAnalyzer LexicalAnalyzerInstance { get; set; }
         public static Action DisplayHeader { get; set; }
 
         // Writes the output to the screen and output file
@@ -82,16 +81,5 @@ namespace CMinusMinusCompiler
                 displayHeader?.Invoke();
             }
         }
-    }
-
-    // Enumerated type to contain all possible token types
-    public enum Symbol {
-        IfToken, ElseToken, WhileToken, FloatToken, IntToken, CharToken,
-        BreakToken, ContinueToken, VoidToken, CommaToken, SemiColonToken,
-        AssignmentOperatorToken, EndOfFileToken, AdditionOperatorToken,
-        MultiplicationOperatorToken, LeftParenthesisToken, RightParenthesisToken,
-        LeftBraceToken, RightBraceToken, LeftBracketToken, RightBracketToken,
-        PeriodToken, QuotationsSymbol, RelationalOperatorToken, IdentifierToken,
-        NumberToken, StringLiteralToken, UnderscoreToken, UnknownToken
     }
 }

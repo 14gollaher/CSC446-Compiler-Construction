@@ -45,6 +45,12 @@
   <ItemGroup>
     <Compile Include="Common\Bootstrapper.cs" />
     <Compile Include="Common\CommonTools.cs" />
+    <Compile Include="SymbolTable\ConstantNode.cs" />
+    <Compile Include="SymbolTable\FunctionNode.cs" />
+    <Compile Include="SymbolTable\Node.cs" />
+    <Compile Include="SymbolTable\SymbolTable.cs" />
+    <Compile Include="SymbolTable\ParameterNode.cs" />
+    <Compile Include="SymbolTable\VariableNode.cs" />
     <Compile Include="LexicalAnalyzer\LexicalAnalyzer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
