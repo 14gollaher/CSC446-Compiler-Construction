@@ -1,8 +1,7 @@
-﻿namespace CMinusMinusCompiler.HashTable
+﻿namespace CMinusMinusCompiler
 {
     public class ParameterNode
     {
         public VariableType Type { get; set; }
-        //ParameterNode NextParameter { get; set; }
     }
 }

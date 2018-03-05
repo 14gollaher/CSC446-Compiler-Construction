@@ -27,8 +27,8 @@ namespace CMinusMinusCompiler
         // Method calls C-- Bootstrapper
         static void Main(string[] arguments)
         {
-            Bootstrapper bootstrapper = new Bootstrapper();
-            bootstrapper.Start(arguments);
+            //Bootstrapper bootstrapper = new Bootstrapper();
+            Bootstrapper.Start(arguments);
         }
     }
 }
