@@ -1,4 +1,0 @@
-﻿foo main()
-{
-	foo x;
-}

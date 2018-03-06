@@ -1,6 +1,7 @@
 ﻿namespace CMinusMinusCompiler
 {
-    public class VariableNode : Node
+    // Class to hold properties specific to variable node
+    public class VariableNode
     {
         public VariableType Type { get; set; }
         public int Offset { get; set; }

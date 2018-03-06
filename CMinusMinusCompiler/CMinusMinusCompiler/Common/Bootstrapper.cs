@@ -66,7 +66,7 @@ namespace CMinusMinusCompiler
             }
             else
             {
-                Console.WriteLine("ERROR: Usage expected command line argument.");
+                Console.WriteLine("ERROR: Usage expected command line argument");
                 return;
             }
 

@@ -1,4 +1,0 @@
-﻿ERROR: Line 3 Expected token "SemiColonToken" - Received token "MultiplicationOperatorToken"
-ERROR: Line 3 Expected token "RightBraceToken" - Received token "MultiplicationOperatorToken"
-ERROR: Line 3 Unexpected tokens in source file, expected End-of-File Token
-Completed processing InvalidRest.c

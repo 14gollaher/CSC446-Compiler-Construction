@@ -7,17 +7,11 @@
     modules:
         Lexical Analyzer (DONE)
         Syntax Analyzer (DONE)
+        Symbol Table (DONE)
         Semantic Analyzer (TODO)
         Intermediate Code Generator (TODO)
         Code Optimizer (TODO)
         Code Generator (TODO)
-        Symbol Table (TODO)
-*/
-
-/* Questions: 
-TODO: Errors in all non-nullable productions
-Do we absolutely quit on an error? Or just let program flow continue,
-you'll only be checking the top error?
 */
 
 namespace CMinusMinusCompiler
@@ -27,7 +21,6 @@ namespace CMinusMinusCompiler
         // Method calls C-- Bootstrapper
         static void Main(string[] arguments)
         {
-            //Bootstrapper bootstrapper = new Bootstrapper();
             Bootstrapper.Start(arguments);
         }
     }

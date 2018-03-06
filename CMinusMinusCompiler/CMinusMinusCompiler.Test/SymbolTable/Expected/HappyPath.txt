@@ -1,1 +1,9 @@
-﻿Completed processing HappyPath.c
+﻿ERROR: Duplicate lexeme "cats" with depth "2" exists
+Lexeme                                 Token                          Depth
+---------------------------------------------------------------------------
+cats                                   IdentifierToken                2
+dogs                                   IdentifierToken                2
+
+
+Lexeme                                 Token                          Depth
+---------------------------------------------------------------------------

@@ -2,6 +2,7 @@
 
 namespace CMinusMinusCompiler
 {
+    // Class to hold properties specific to function node
     public class FunctionNode
     {
         public int LocalSize { get; set; }
