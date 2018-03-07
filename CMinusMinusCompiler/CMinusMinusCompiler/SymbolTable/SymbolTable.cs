@@ -22,7 +22,8 @@ namespace CMinusMinusCompiler
             HashTable = new LinkedList<Node>[TableSize];
         }
 
-        // Returns first node found in symbol table matching passed lexeme
+        // Returns first node found (most recent insert)
+        // in symbol table matching given lexeme
         public Node LookupNode(string lexeme)
         {
             int location = HashLexeme(lexeme);
@@ -33,7 +34,7 @@ namespace CMinusMinusCompiler
             return null;
         }
 
-        // Inserts a node into the symbol table, requriing code node informations
+        // Inserts a node into the symbol table, requiring node informations
         public void InsertNode(string lexeme, Symbol token, int depth)
         {
             Node node = LookupNode(lexeme);
@@ -48,7 +49,8 @@ namespace CMinusMinusCompiler
             int location = HashLexeme(lexeme);
             if (HashTable[location] == null) HashTable[location] = new LinkedList<Node>();
 
-            node = new Node(lexeme, token, depth);
+            // As of now we have no way to determine type of node, so hardcoding Variable types
+            node = new VariableNode(lexeme, token, depth);
             HashTable[location].AddFirst(node);
         }
 
@@ -91,37 +93,16 @@ namespace CMinusMinusCompiler
             }
         }
 
-        // Modified PJW hash algorithm from:
-        // Hashing and Symbol Tables (summarized from “Compilers – Principles, 
-        // Techniques, and Tools”, Aho, Sethi, and Ullman, first edition) 
-        // and 
-        // https://www.programmingalgorithms.com/algorithm/pjw-hash
         // Function to hash lexeme into a valid integer for symbol table
         private int HashLexeme(string lexeme)
-        {
-            //const uint ThreeQuarters = ((uint)(sizeof(uint) * 8) * 3) / 4;
-            //const uint OneEighth = (uint)(sizeof(uint) * 8) / 8;
-            //const uint HighBits = 0xFFFFFFFF << (int)(sizeof(uint) * 8 - OneEighth);
-            //uint hash = 0;
-            //uint testHash = 0;
-
-            //foreach (char item in lexeme)
-            //{
-            //    hash = (hash << (int)OneEighth) + ((byte)item);
-
-            //    if ((testHash = hash & HighBits) != 0)
-            //    {
-            //        hash = ((hash ^ (testHash >> (int)ThreeQuarters)) & (~HighBits));
-            //    }
-            //}
-
-            //return (int)hash % TableSize;
-            
+        {   
             return Math.Abs(lexeme.GetHashCode()) % TableSize;
         }
     }
     // Enumerated type to contain possible variable data types
     public enum VariableType { Int, Float, Char }
+
     // Enumerated type to contain possible entry types
-    public enum EntryType { Constant, Variable, Function }
+    // ** Shouldn't need this since we have different class types
+    // public enum EntryType { Constant, Variable, Function }
 }

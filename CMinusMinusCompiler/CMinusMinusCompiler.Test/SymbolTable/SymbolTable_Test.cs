@@ -21,6 +21,7 @@ namespace CMinusMinusCompiler.Test
 
             symbolTable.InsertNode("cows", Symbol.CharToken, 5);
             symbolTable.InsertNode("cows", Symbol.FloatToken, 4);
+            symbolTable.InsertNode("cows", Symbol.FloatToken, 6);
 
             Node nullNode = symbolTable.LookupNode("horses");
             Assert.IsNull(nullNode);
@@ -33,7 +34,7 @@ namespace CMinusMinusCompiler.Test
             validNode = symbolTable.LookupNode("cows");
             Assert.AreEqual("cows", validNode.Lexeme);
             Assert.AreEqual(Symbol.FloatToken, validNode.Token);
-            Assert.AreEqual(4, validNode.Depth);
+            Assert.AreEqual(6, validNode.Depth);
 
             symbolTable.OutputSymbolTable(2);
             symbolTable.OutputSymbolTable(3);
