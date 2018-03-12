@@ -104,5 +104,5 @@ namespace CMinusMinusCompiler
 
     // Enumerated type to contain possible entry types
     // ** Shouldn't need this since we have different class types
-    // public enum EntryType { Constant, Variable, Function }
+    public enum EntryType { Constant, Variable, Function }
 }
