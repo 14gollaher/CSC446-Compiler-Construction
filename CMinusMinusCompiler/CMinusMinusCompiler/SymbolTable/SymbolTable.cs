@@ -49,8 +49,9 @@ namespace CMinusMinusCompiler
             int location = HashLexeme(lexeme);
             if (HashTable[location] == null) HashTable[location] = new LinkedList<Node>();
 
-            // As of now we have no way to determine type of node, so hardcoding Variable types
-            node = new VariableNode(lexeme, token, depth);
+            // Just doing base class of node since we have no way to tell which type of node
+            // to insert at this point
+            node = new Node(lexeme, token, depth);
             HashTable[location].AddFirst(node);
         }
 
@@ -103,6 +104,5 @@ namespace CMinusMinusCompiler
     public enum VariableType { Int, Float, Char }
 
     // Enumerated type to contain possible entry types
-    // ** Shouldn't need this since we have different class types
-    public enum EntryType { Constant, Variable, Function }
+    public enum EntryType { Constant, Variable, Function } // Shouldn't need this since we have different class types
 }
