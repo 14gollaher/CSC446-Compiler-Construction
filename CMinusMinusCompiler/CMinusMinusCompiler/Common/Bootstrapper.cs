@@ -42,7 +42,7 @@ namespace CMinusMinusCompiler
 
             lexicalAnalyzer.DisplayTokenHeader();
 
-            while(lexicalAnalyzer.Token != Symbol.EndOfFileToken)
+            while(lexicalAnalyzer.Token != Token.EndOfFileToken)
             {
                 lexicalAnalyzer.GetNextToken();
                 lexicalAnalyzer.DisplayCurrentToken();
@@ -75,7 +75,7 @@ namespace CMinusMinusCompiler
             parser = new Parser(lexicalAnalyzer);
             parser.ProcessProgram();
 
-            if (lexicalAnalyzer.Token != Symbol.EndOfFileToken)
+            if (lexicalAnalyzer.Token != Token.EndOfFileToken)
             {
                 CommonTools.WriteOutput(
                     $"ERROR: Line {lexicalAnalyzer.LineNumber} " +

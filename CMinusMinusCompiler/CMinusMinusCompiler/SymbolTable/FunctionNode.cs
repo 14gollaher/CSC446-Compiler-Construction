@@ -5,7 +5,7 @@ namespace CMinusMinusCompiler
     // Class to hold properties specific to function node
     public class FunctionNode : Node
     {
-        public FunctionNode(string lexeme, Symbol token, int depth) 
+        public FunctionNode(string lexeme, Token token, int depth) 
             : base(lexeme, token, depth)
         {}
 

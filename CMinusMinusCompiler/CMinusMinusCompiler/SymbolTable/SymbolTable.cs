@@ -35,7 +35,7 @@ namespace CMinusMinusCompiler
         }
 
         // Inserts a node into the symbol table, requiring node informations
-        public void InsertNode(string lexeme, Symbol token, int depth)
+        public void InsertNode(string lexeme, Token token, int depth)
         {
             Node node = LookupNode(lexeme);
 

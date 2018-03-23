@@ -14,37 +14,37 @@ namespace CMinusMinusCompiler
         public int? Value { get; set; }
         public float? ValueReal { get; set; }
         public string Literal { get; set; }
-        public Symbol Token { get; set; }
+        public Token Token { get; set; }
         public string Lexeme { get; set; }
 
         // Private properties
         private string SourceFileContents { get; set; }
-        private Dictionary<string, Symbol> ReserverdWordTokens { get; } 
-            = new Dictionary<string, Symbol> {
-            { "if", Symbol.IfToken }, { "else", Symbol.ElseToken },
-            { "while", Symbol.WhileToken }, { "float", Symbol.FloatToken },
-            { "int", Symbol.IntToken }, { "char", Symbol.CharToken },
-            { "break", Symbol.BreakToken }, { "continue", Symbol.ContinueToken },
-            { "void", Symbol.VoidToken }
+        private Dictionary<string, Token> ReserverdWordTokens { get; } 
+            = new Dictionary<string, Token> {
+            { "if", Token.IfToken }, { "else", Token.ElseToken },
+            { "while", Token.WhileToken }, { "float", Token.FloatToken },
+            { "int", Token.IntToken }, { "char", Token.CharToken },
+            { "break", Token.BreakToken }, { "continue", Token.ContinueToken },
+            { "void", Token.VoidToken }, { "const", Token.ConstToken }
         };
-        private Dictionary<char, Symbol> SingleCharacterSymbols { get; } 
-            = new Dictionary<char, Symbol> {
-            { ';', Symbol.SemiColonToken }, { '.', Symbol.PeriodToken },
-            { '(', Symbol.LeftParenthesisToken }, { ')', Symbol.RightParenthesisToken },
-            { '{', Symbol.LeftBraceToken }, { '}', Symbol.RightBraceToken },
-            { '[', Symbol.LeftBracketToken }, { ']', Symbol.RightBracketToken },
-            { '+', Symbol.AdditionOperatorToken }, { '-', Symbol.AdditionOperatorToken },
-            { '*', Symbol.MultiplicationOperatorToken }, { '/', Symbol.MultiplicationOperatorToken },
-            { '%', Symbol.MultiplicationOperatorToken }, { ',', Symbol.CommaToken },
-            { '<', Symbol.RelationalOperatorToken }, { '>', Symbol.RelationalOperatorToken },
-            { '=', Symbol.AssignmentOperatorToken }, { '!', Symbol.UnknownToken },
-            { '|', Symbol.UnknownToken }, { '&', Symbol.UnknownToken }
+        private Dictionary<char, Token> SingleCharacterSymbols { get; } 
+            = new Dictionary<char, Token> {
+            { ';', Token.SemiColonToken }, { '.', Token.PeriodToken },
+            { '(', Token.LeftParenthesisToken }, { ')', Token.RightParenthesisToken },
+            { '{', Token.LeftBraceToken }, { '}', Token.RightBraceToken },
+            { '[', Token.LeftBracketToken }, { ']', Token.RightBracketToken },
+            { '+', Token.AdditionOperatorToken }, { '-', Token.AdditionOperatorToken },
+            { '*', Token.MultiplicationOperatorToken }, { '/', Token.MultiplicationOperatorToken },
+            { '%', Token.MultiplicationOperatorToken }, { ',', Token.CommaToken },
+            { '<', Token.RelationalOperatorToken }, { '>', Token.RelationalOperatorToken },
+            { '=', Token.AssignmentOperatorToken }, { '!', Token.UnknownToken },
+            { '|', Token.UnknownToken }, { '&', Token.UnknownToken }
         };
-        private Dictionary<string, Symbol> DoubleCharactersSymbols { get; } 
-            = new Dictionary<string, Symbol> {
-            { "==", Symbol.RelationalOperatorToken }, { "!=", Symbol.RelationalOperatorToken },
-            { "<=", Symbol.RelationalOperatorToken }, { ">=", Symbol.RelationalOperatorToken },
-            { "||", Symbol.AdditionOperatorToken }, { "&&", Symbol.MultiplicationOperatorToken }
+        private Dictionary<string, Token> DoubleCharactersSymbols { get; } 
+            = new Dictionary<string, Token> {
+            { "==", Token.RelationalOperatorToken }, { "!=", Token.RelationalOperatorToken },
+            { "<=", Token.RelationalOperatorToken }, { ">=", Token.RelationalOperatorToken },
+            { "||", Token.AdditionOperatorToken }, { "&&", Token.MultiplicationOperatorToken }
         };
         private static string OutputFormat { get; } = "{0,-38} {1,-30} {2}";
 
@@ -57,7 +57,7 @@ namespace CMinusMinusCompiler
         // Display next token to screen and output file
         public void DisplayCurrentToken()
         {
-            if (Token != Symbol.EndOfFileToken)
+            if (Token != Token.EndOfFileToken)
             {
                 dynamic attribute = Value ?? ValueReal;
                 attribute = attribute ?? Literal;
@@ -83,7 +83,7 @@ namespace CMinusMinusCompiler
             {
                 GetNextCharacter();
             }
-            if (Character == Char.MinValue) Token = Symbol.EndOfFileToken;
+            if (Character == Char.MinValue) Token = Token.EndOfFileToken;
             else ProcessToken();
         }
 
@@ -119,7 +119,7 @@ namespace CMinusMinusCompiler
             else if (IsForwardSlashCharacter(Lexeme[0])) ProcessForwardSlashToken();
             else if (IsSingleCharacterSymbol(Lexeme[0])) ProcessSymbolToken();
             else if (IsQuotationsSymbol(Lexeme[0])) ProcessStringLiteralToken();
-            else Token = Symbol.UnknownToken;
+            else Token = Token.UnknownToken;
         }
 
         // Check if character is forward slash caracter
@@ -168,12 +168,12 @@ namespace CMinusMinusCompiler
 
             if (Lexeme.Length > MaximumIdentifierLength)
             {
-                Token = Symbol.UnknownToken;
+                Token = Token.UnknownToken;
             }
             else
             {
                 Token = ReserverdWordTokens.ContainsKey(Lexeme)
-                    ? ReserverdWordTokens[Lexeme] : Symbol.IdentifierToken;
+                    ? ReserverdWordTokens[Lexeme] : Token.IdentifierToken;
             }
         }
 
@@ -189,7 +189,7 @@ namespace CMinusMinusCompiler
         // Process a potential number token
         private void ProcessNumberToken()
         {
-            Token = Symbol.NumberToken;
+            Token = Token.NumberToken;
             ProcessRemainingNumberToken();
 
             if (Character == '.')
@@ -223,7 +223,7 @@ namespace CMinusMinusCompiler
         private void ProcessForwardSlashToken()
         {
             if (Character == '*') ProcessCommentToken();
-            else Token = Symbol.MultiplicationOperatorToken;
+            else Token = Token.MultiplicationOperatorToken;
         }
 
         // Process a comment token
@@ -281,7 +281,7 @@ namespace CMinusMinusCompiler
             {
                 if (IsEndOfLineCharacter(Character))
                 {
-                    Token = Symbol.UnknownToken;
+                    Token = Token.UnknownToken;
                     return;
                 }
 
@@ -289,7 +289,7 @@ namespace CMinusMinusCompiler
             }
 
             UpdateLexemeAndCharacter();
-            Token = Symbol.StringLiteralToken;
+            Token = Token.StringLiteralToken;
             Literal = Lexeme;
         }
 
@@ -317,7 +317,7 @@ namespace CMinusMinusCompiler
     }
 
     // Enumerated type to contain all possible token types
-    public enum Symbol
+    public enum Token
     {
         IfToken, ElseToken, WhileToken, FloatToken, IntToken, CharToken,
         BreakToken, ContinueToken, VoidToken, CommaToken, SemiColonToken,
@@ -325,6 +325,7 @@ namespace CMinusMinusCompiler
         MultiplicationOperatorToken, LeftParenthesisToken, RightParenthesisToken,
         LeftBraceToken, RightBraceToken, LeftBracketToken, RightBracketToken,
         PeriodToken, QuotationsSymbol, RelationalOperatorToken, IdentifierToken,
-        NumberToken, StringLiteralToken, UnderscoreToken, UnknownToken
+        NumberToken, StringLiteralToken, UnderscoreToken, UnknownToken,
+        ConstToken
     }
 }

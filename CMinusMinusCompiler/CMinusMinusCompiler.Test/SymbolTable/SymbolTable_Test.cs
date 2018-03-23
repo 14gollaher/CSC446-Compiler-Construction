@@ -12,28 +12,28 @@ namespace CMinusMinusCompiler.Test
 
             SymbolTable symbolTable = new SymbolTable();
 
-            symbolTable.InsertNode("cats", Symbol.IdentifierToken, 2);
-            symbolTable.InsertNode("cats", Symbol.IfToken, 2);
-            symbolTable.InsertNode("dogs", Symbol.IdentifierToken, 2);
+            symbolTable.InsertNode("cats", Token.IdentifierToken, 2);
+            symbolTable.InsertNode("cats", Token.IfToken, 2);
+            symbolTable.InsertNode("dogs", Token.IdentifierToken, 2);
 
-            symbolTable.InsertNode("horses", Symbol.IdentifierToken, 3);
+            symbolTable.InsertNode("horses", Token.IdentifierToken, 3);
             symbolTable.DeleteDepth(3);
 
-            symbolTable.InsertNode("cows", Symbol.CharToken, 5);
-            symbolTable.InsertNode("cows", Symbol.FloatToken, 4);
-            symbolTable.InsertNode("cows", Symbol.FloatToken, 6);
+            symbolTable.InsertNode("cows", Token.CharToken, 5);
+            symbolTable.InsertNode("cows", Token.FloatToken, 4);
+            symbolTable.InsertNode("cows", Token.FloatToken, 6);
 
             Node nullNode = symbolTable.LookupNode("horses");
             Assert.IsNull(nullNode);
 
             Node validNode = symbolTable.LookupNode("cats");
             Assert.AreEqual("cats", validNode.Lexeme);
-            Assert.AreEqual(Symbol.IdentifierToken, validNode.Token);
+            Assert.AreEqual(Token.IdentifierToken, validNode.Token);
             Assert.AreEqual(2, validNode.Depth);
 
             validNode = symbolTable.LookupNode("cows");
             Assert.AreEqual("cows", validNode.Lexeme);
-            Assert.AreEqual(Symbol.FloatToken, validNode.Token);
+            Assert.AreEqual(Token.FloatToken, validNode.Token);
             Assert.AreEqual(6, validNode.Depth);
 
             symbolTable.OutputSymbolTable(2);

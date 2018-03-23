@@ -5,6 +5,7 @@ namespace CMinusMinusCompiler
     /* Recursive descent parser to verify program follows C-- grammar
 
     Program        -> Type IdentifierToken Rest Program |
+                      ConstToken IdentifierToken AssignmentOperatorToken NumberToken SemiColonToken Program |
                       e
 
     Type           -> IntToken |
@@ -23,9 +24,8 @@ namespace CMinusMinusCompiler
     Compound       -> { Declaration StatementList Return }
 
     Declaration    -> Type IdentifierList |
+                      ConstToken IdentifierToken AssignmentOperatorToken NumberToken SemiColonToken Declaration |
                       e
-
-    IdentifierList -> IdentifierToken IdentifierTail ; Declaration
     
     IdentifierTail -> , IdentifierToken IdentifierTail
 
@@ -37,9 +37,9 @@ namespace CMinusMinusCompiler
     {
         // Private properties
         private LexicalAnalyzer LexicalAnaylzer { get; set; }
-        private Symbol[] TypeTokens { get; } = {
-            Symbol.IntToken, Symbol.FloatToken,
-            Symbol.CharToken 
+        private Token[] TypeTokens { get; } = {
+            Token.IntToken, Token.FloatToken,
+            Token.CharToken 
         };
 
         // Constructor requires a lexical analyzer instance
@@ -49,7 +49,7 @@ namespace CMinusMinusCompiler
         }
 
         // Matches expected symbol to current symbol from lexical analyzer
-        public void MatchToken(Symbol expectedSymbol)
+        public void MatchToken(Token expectedSymbol)
         {
             if (LexicalAnaylzer.Token == expectedSymbol)
             {
@@ -62,14 +62,24 @@ namespace CMinusMinusCompiler
         }
 
         // Program -> Type IdentifierToken Rest Program |
+        //            ConstToken IdentifierToken AssignmentOperatorToken NumberToken SemiColonToken Program |
         //            e
         public void ProcessProgram()
         {
             if (TypeTokens.Contains(LexicalAnaylzer.Token))
             {
                 ProcessType();
-                MatchToken(Symbol.IdentifierToken);
+                MatchToken(Token.IdentifierToken);
                 ProcessRest();
+                ProcessProgram();
+            }
+            else if (LexicalAnaylzer.Token == Token.ConstToken)
+            {
+                MatchToken(Token.ConstToken);
+                MatchToken(Token.IdentifierToken);
+                MatchToken(Token.AssignmentOperatorToken);
+                MatchToken(Token.NumberToken);
+                MatchToken(Token.SemiColonToken);
                 ProcessProgram();
             }
         }
@@ -79,9 +89,9 @@ namespace CMinusMinusCompiler
         //         CharToken
         private void ProcessType()
         {
-            if (LexicalAnaylzer.Token == Symbol.IntToken) MatchToken(Symbol.IntToken);
-            else if (LexicalAnaylzer.Token == Symbol.FloatToken) MatchToken(Symbol.FloatToken);
-            else if (LexicalAnaylzer.Token == Symbol.CharToken) MatchToken(Symbol.CharToken);
+            if (LexicalAnaylzer.Token == Token.IntToken) MatchToken(Token.IntToken);
+            else if (LexicalAnaylzer.Token == Token.FloatToken) MatchToken(Token.FloatToken);
+            else if (LexicalAnaylzer.Token == Token.CharToken) MatchToken(Token.CharToken);
             else DisplayExpectedTokensError("valid TYPE");
         }
 
@@ -89,17 +99,17 @@ namespace CMinusMinusCompiler
         //         IdentifierTail ; Program
         private void ProcessRest()
         {
-            if (LexicalAnaylzer.Token == Symbol.LeftParenthesisToken)
+            if (LexicalAnaylzer.Token == Token.LeftParenthesisToken)
             {
-                MatchToken(Symbol.LeftParenthesisToken);
+                MatchToken(Token.LeftParenthesisToken);
                 ProcessParameterList();
-                MatchToken(Symbol.RightParenthesisToken);
+                MatchToken(Token.RightParenthesisToken);
                 ProcessCompound();
             }
             else
             {
                 ProcessIdentifierTail();
-                MatchToken(Symbol.SemiColonToken);
+                MatchToken(Token.SemiColonToken);
                 ProcessProgram();
             }
         }
@@ -111,7 +121,7 @@ namespace CMinusMinusCompiler
             if (TypeTokens.Contains(LexicalAnaylzer.Token))
             {
                 ProcessType();
-                MatchToken(Symbol.IdentifierToken);
+                MatchToken(Token.IdentifierToken);
                 ProcessParameterTail();
             }
         }
@@ -120,11 +130,11 @@ namespace CMinusMinusCompiler
         //                  e
         private void ProcessParameterTail()
         {
-            if (LexicalAnaylzer.Token == Symbol.CommaToken)
+            if (LexicalAnaylzer.Token == Token.CommaToken)
             {
-                MatchToken(Symbol.CommaToken);
+                MatchToken(Token.CommaToken);
                 ProcessType();
-                MatchToken(Symbol.IdentifierToken);
+                MatchToken(Token.IdentifierToken);
                 ProcessParameterTail();
             }
         }
@@ -132,21 +142,22 @@ namespace CMinusMinusCompiler
         // Compound -> { Declaration StatementList Return }
         private void ProcessCompound()
         {
-            if (LexicalAnaylzer.Token == Symbol.LeftBraceToken)
+            if (LexicalAnaylzer.Token == Token.LeftBraceToken)
             {
-                MatchToken(Symbol.LeftBraceToken);
+                MatchToken(Token.LeftBraceToken);
                 ProcessDeclaration();
                 ProcessStatementList();
                 ProcessReturn();
-                MatchToken(Symbol.RightBraceToken);
+                MatchToken(Token.RightBraceToken);
             }
             else
             {
-                DisplayExpectedTokensError(Symbol.LeftBraceToken.ToString());
+                DisplayExpectedTokensError(Token.LeftBraceToken.ToString());
             }
         }
 
         // Declaration -> Type IdentifierList |
+        //                ConstToken IdentifierToken AssignmentOperatorToken NumberToken SemiColonToken Declaration |
         //                e
         private void ProcessDeclaration()
         {
@@ -155,17 +166,26 @@ namespace CMinusMinusCompiler
                 ProcessType();
                 ProcessIdentifierList();
             }
+            else if (LexicalAnaylzer.Token == Token.ConstToken)
+            {
+                MatchToken(Token.ConstToken);
+                MatchToken(Token.IdentifierToken);
+                MatchToken(Token.AssignmentOperatorToken);
+                MatchToken(Token.NumberToken);
+                MatchToken(Token.SemiColonToken);
+                ProcessDeclaration();
+            }
         }
 
         // IdentifierList -> IdentifierToken IdentifierTail ; Declaration |
         //                   e
         private void ProcessIdentifierList()
         {
-            if (LexicalAnaylzer.Token == Symbol.IdentifierToken)
+            if (LexicalAnaylzer.Token == Token.IdentifierToken)
             {
-                MatchToken(Symbol.IdentifierToken);
+                MatchToken(Token.IdentifierToken);
                 ProcessIdentifierTail();
-                MatchToken(Symbol.SemiColonToken);
+                MatchToken(Token.SemiColonToken);
                 ProcessDeclaration();
             }
         }
@@ -174,10 +194,10 @@ namespace CMinusMinusCompiler
         //                     e
         private void ProcessIdentifierTail()
         {
-            if (LexicalAnaylzer.Token == Symbol.CommaToken)
+            if (LexicalAnaylzer.Token == Token.CommaToken)
             {
-                MatchToken(Symbol.CommaToken);
-                MatchToken(Symbol.IdentifierToken);
+                MatchToken(Token.CommaToken);
+                MatchToken(Token.IdentifierToken);
                 ProcessIdentifierTail();
             }
         }

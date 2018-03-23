@@ -3,7 +3,7 @@
     // Class to hold properties specific to constant node
     public class ConstantNode : Node
     {
-        public ConstantNode(string lexeme, Symbol token, int depth) 
+        public ConstantNode(string lexeme, Token token, int depth) 
             : base(lexeme, token, depth)
         {}
         public VariableType Type { get; set; }
