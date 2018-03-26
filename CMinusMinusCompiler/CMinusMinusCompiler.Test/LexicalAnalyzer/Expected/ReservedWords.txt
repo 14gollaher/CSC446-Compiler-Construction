@@ -13,4 +13,6 @@ if0else                                IdentifierToken
 0                                      NumberToken                    0
 else                                   ElseToken  
 ifelse                                 IdentifierToken     
-if2                                    IdentifierToken     
+if2                                    IdentifierToken
+const                                    ConstToken     
+x										IdentifierToken     

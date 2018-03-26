@@ -7,3 +7,4 @@ if0else
 0else
 ifelse
 if2
+const x

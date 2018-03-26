@@ -48,19 +48,6 @@ namespace CMinusMinusCompiler
             LexicalAnaylzer = lexicalAnalyzer;
         }
 
-        // Matches expected symbol to current symbol from lexical analyzer
-        public void MatchToken(Token expectedSymbol)
-        {
-            if (LexicalAnaylzer.Token == expectedSymbol)
-            {
-                LexicalAnaylzer.GetNextToken();
-            }
-            else
-            {
-                DisplayExpectedTokensError(expectedSymbol.ToString());
-            }
-        }
-
         // Program -> Type IdentifierToken Rest Program |
         //            ConstToken IdentifierToken AssignmentOperatorToken NumberToken SemiColonToken Program |
         //            e
@@ -222,6 +209,19 @@ namespace CMinusMinusCompiler
                 $"Expected token \"{expectedToken}\" " +
                 $"- Received token \"{LexicalAnaylzer.Token}\"");
             CommonTools.PromptProgramExit();
+        }
+
+        // Matches expected symbol to current symbol from lexical analyzer
+        private void MatchToken(Token expectedSymbol)
+        {
+            if (LexicalAnaylzer.Token == expectedSymbol)
+            {
+                LexicalAnaylzer.GetNextToken();
+            }
+            else
+            {
+                DisplayExpectedTokensError(expectedSymbol.ToString());
+            }
         }
     }
 }

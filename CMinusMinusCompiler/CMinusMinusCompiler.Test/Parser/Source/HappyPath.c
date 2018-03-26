@@ -3,6 +3,7 @@ int main()
 {
 }
 
+const x = 4;
 
 /*This will be omitted!!!*/
 
@@ -11,6 +12,7 @@ int b, c;
 
 int main()
 {
+	const horses = 3;
 	float d;
 }
 /*

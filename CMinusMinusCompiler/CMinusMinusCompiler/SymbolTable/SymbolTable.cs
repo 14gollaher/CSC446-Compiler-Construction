@@ -35,14 +35,14 @@ namespace CMinusMinusCompiler
         }
 
         // Inserts a node into the symbol table, requiring node informations
-        public void InsertNode(string lexeme, Token token, int depth)
+        public void InsertNode(Node newNode)
         {
-            Node node = LookupNode(lexeme);
+            Node node = LookupNode(newNode.Lexeme);
 
-            if (node != null && node.Depth == depth)
+            if (node != null && node.Depth == newNode.Depth)
             {
                 CommonTools.WriteOutput(
-                    $"ERROR: Duplicate lexeme \"{lexeme}\" with depth \"{depth}\" exists");
+                    $"ERROR: Duplicate lexeme \"{newNode.Lexeme}\" with depth \"{newNode.Depth}\" exists");
                 return;
             }
 
