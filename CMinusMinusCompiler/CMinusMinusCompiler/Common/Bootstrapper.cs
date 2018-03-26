@@ -13,8 +13,8 @@ namespace CMinusMinusCompiler
         public static void Start(string[] arguments)
         {
             //StartLexicalAnalyzer(arguments);
-            //StartParser(arguments);
-            StartSymbolTable();
+            //StartSymbolTable();
+            StartParser(arguments);
 
             CommonTools.PromptProgramExit();
         }
@@ -56,7 +56,6 @@ namespace CMinusMinusCompiler
             CommonTools.ClearDisplays();
 
             LexicalAnalyzer lexicalAnalyzer;
-            Parser parser;
 
             if (arguments.Length == 1)
             {
@@ -72,7 +71,7 @@ namespace CMinusMinusCompiler
 
             lexicalAnalyzer.GetNextToken();
 
-            parser = new Parser(lexicalAnalyzer);
+            Parser parser = new Parser(lexicalAnalyzer);
             parser.ProcessProgram();
 
             if (lexicalAnalyzer.Token != Token.EndOfFileToken)

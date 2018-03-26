@@ -11,8 +11,7 @@ namespace CMinusMinusCompiler
     public class SymbolTable
     {
         // Private members
-        private int TableSize { get; }
-            = Int32.Parse(ConfigurationManager.AppSettings["SymbolTableSize"]);
+        private int TableSize { get; } = Int32.Parse(ConfigurationManager.AppSettings["SymbolTableSize"]);
         private LinkedList<Node>[] HashTable { get; }
         private static string OutputFormat { get; } = "{0,-38} {1,-30} {2}";
 
@@ -27,6 +26,7 @@ namespace CMinusMinusCompiler
         public Node LookupNode(string lexeme)
         {
             int location = HashLexeme(lexeme);
+
             if (HashTable[location] != null)
             {
                 return HashTable[location].Where(item => item.Lexeme == lexeme).FirstOrDefault();
@@ -46,13 +46,10 @@ namespace CMinusMinusCompiler
                 return;
             }
 
-            int location = HashLexeme(lexeme);
+            int location = HashLexeme(newNode.Lexeme);
             if (HashTable[location] == null) HashTable[location] = new LinkedList<Node>();
 
-            // Just doing base class of node since we have no way to tell which type of node
-            // to insert at this point
-            node = new Node(lexeme, token, depth);
-            HashTable[location].AddFirst(node);
+            HashTable[location].AddFirst(newNode);
         }
 
         // Deletes entire given scope/depth level from symbol table
@@ -100,6 +97,7 @@ namespace CMinusMinusCompiler
             return Math.Abs(lexeme.GetHashCode()) % TableSize;
         }
     }
+
     // Enumerated type to contain possible variable data types
     public enum VariableType { Int, Float, Char }
 

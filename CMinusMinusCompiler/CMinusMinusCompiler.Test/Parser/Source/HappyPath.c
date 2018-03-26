@@ -19,6 +19,7 @@ int main()
    Whole bunch of bad stuff
 */
 
+const y = 3;
 float func(int z)
 {
 }

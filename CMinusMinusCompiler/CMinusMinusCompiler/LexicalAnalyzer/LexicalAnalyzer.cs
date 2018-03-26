@@ -105,8 +105,9 @@ namespace CMinusMinusCompiler
         // Get the next character from the source file contents without making character "read"
         private char PeakNextCharacter()
         {
-            if (SourceFileContents.Length > 0) return SourceFileContents[0];
-            else return Char.MinValue;
+            if (SourceFileContents.Length == 0) return Char.MinValue;
+
+            return SourceFileContents[0];
         }
 
         // Process token based on next current and next character in the lexeme

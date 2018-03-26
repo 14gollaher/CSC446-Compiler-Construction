@@ -12,16 +12,16 @@ namespace CMinusMinusCompiler.Test
 
             SymbolTable symbolTable = new SymbolTable();
 
-            symbolTable.InsertNode("cats", Token.IdentifierToken, 2);
-            symbolTable.InsertNode("cats", Token.IfToken, 2);
-            symbolTable.InsertNode("dogs", Token.IdentifierToken, 2);
+            symbolTable.InsertNode(new Node("cats", Token.IdentifierToken, 2));
+            symbolTable.InsertNode(new Node("cats", Token.IfToken, 2));
+            symbolTable.InsertNode(new Node("dogs", Token.IdentifierToken, 2));
 
-            symbolTable.InsertNode("horses", Token.IdentifierToken, 3);
+            symbolTable.InsertNode(new Node("horses", Token.IdentifierToken, 3));
             symbolTable.DeleteDepth(3);
 
-            symbolTable.InsertNode("cows", Token.CharToken, 5);
-            symbolTable.InsertNode("cows", Token.FloatToken, 4);
-            symbolTable.InsertNode("cows", Token.FloatToken, 6);
+            symbolTable.InsertNode(new Node("cows", Token.CharToken, 5));
+            symbolTable.InsertNode(new Node("cows", Token.FloatToken, 4));
+            symbolTable.InsertNode(new Node("cows", Token.FloatToken, 6));
 
             Node nullNode = symbolTable.LookupNode("horses");
             Assert.IsNull(nullNode);

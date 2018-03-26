@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
 
 namespace CMinusMinusCompiler
 {
@@ -37,10 +40,22 @@ namespace CMinusMinusCompiler
     {
         // Private properties
         private LexicalAnalyzer LexicalAnaylzer { get; set; }
+        private SymbolTable SymbolTable { get; set; } = new SymbolTable();
+        private int Depth { get; set; } = 0;
+
         private Token[] TypeTokens { get; } = {
             Token.IntToken, Token.FloatToken,
             Token.CharToken 
         };
+
+        private Stack<FunctionNode> functions = new Stack<FunctionNode>();
+        private Stack<ConstantNode> constants = new Stack<ConstantNode>();
+        private Stack<VariableNode> variables = new Stack<VariableNode>();
+
+        private int CharacterSize { get; } = Int32.Parse(ConfigurationManager.AppSettings["CharacterSize"]);
+        private int IntegerSize { get; } = Int32.Parse(ConfigurationManager.AppSettings["IntegerSize"]);
+        private int FloatSize { get; } = Int32.Parse(ConfigurationManager.AppSettings["FloatSize"]);
+
 
         // Constructor requires a lexical analyzer instance
         public Parser(LexicalAnalyzer lexicalAnalyzer)
@@ -58,6 +73,7 @@ namespace CMinusMinusCompiler
                 ProcessType();
                 MatchToken(Token.IdentifierToken);
                 ProcessRest();
+                InsertFunctionNode();
                 ProcessProgram();
             }
             else if (LexicalAnaylzer.Token == Token.ConstToken)
@@ -67,6 +83,9 @@ namespace CMinusMinusCompiler
                 MatchToken(Token.AssignmentOperatorToken);
                 MatchToken(Token.NumberToken);
                 MatchToken(Token.SemiColonToken);
+
+                //TODO: FIX OFFSET
+                InsertConstantNode(0, LexicalAnaylzer.Value, LexicalAnaylzer.ValueReal);
                 ProcessProgram();
             }
         }
@@ -199,6 +218,29 @@ namespace CMinusMinusCompiler
         private void ProcessReturn()
         {
             // Blank for now
+        }
+
+        // Inserts a function node into symbol table
+        private void InsertFunctionNode(int localSize, VariableType returnType, LinkedList<ParameterNode> parameters)
+        {
+            FunctionNode functionNode
+                = new FunctionNode(LexicalAnaylzer.Lexeme, LexicalAnaylzer.Token, Depth, localSize, returnType, parameters);
+        }
+
+        // Inserst a constant node into symbol table
+        private void InsertConstantNode(int offset, int? value, float? valueReal)
+        {
+            ConstantNode constantNode;
+            if (value != null)
+            {
+                constantNode = new ConstantNode(LexicalAnaylzer.Lexeme, LexicalAnaylzer.Token, Depth, offset, value);
+            }
+            else
+            {
+                constantNode = new ConstantNode(LexicalAnaylzer.Lexeme, LexicalAnaylzer.Token, Depth, offset, valueReal);
+            }
+
+            SymbolTable.InsertNode(constantNode);
         }
 
         // Displays expected tokens error to appropriate displays
