@@ -1,11 +1,11 @@
 ﻿ERROR: Duplicate lexeme "cats" with depth "2" exists
+** Symbol Table at Depth 2 **
 Lexeme                                 Class                          Depth
 ---------------------------------------------------------------------------
 cats                                   Variable                       2
 dogs                                   Constant                       2
 
 
+** Symbol Table at Depth 3 **
 Lexeme                                 Class                          Depth
 ---------------------------------------------------------------------------
-
-

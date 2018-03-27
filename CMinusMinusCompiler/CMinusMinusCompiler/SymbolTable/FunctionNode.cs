@@ -5,8 +5,9 @@ namespace CMinusMinusCompiler
     // Class to hold properties specific to function node
     public class FunctionNode : Node
     {
-        public int LocalSize { get; set; }
+        // Public properties
         public Token ReturnType { get; set; }
-        LinkedList<ParameterNode> Parameters { get; set; }
+        public List<ParameterNode> Parameters { get; set; } = new List<ParameterNode>();
+        public int VariablesSize { get; set; }
     }
 }

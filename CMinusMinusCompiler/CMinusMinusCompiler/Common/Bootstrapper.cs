@@ -55,7 +55,6 @@ namespace CMinusMinusCompiler
         {
             CommonTools.CreateOutputDirectory(ConfigurationManager.AppSettings["ParserOutputPath"]);
             CommonTools.ClearDisplays();
-            CommonTools.IsParserExecution = true;
 
             LexicalAnalyzer lexicalAnalyzer;
 
@@ -134,5 +133,19 @@ namespace CMinusMinusCompiler
             CommonTools.WriteOutput($"Completed processing {Path.GetFileName(arguments[0])}");
         }
 
+        // Initializes and runs Semantic Analysis module
+        public static void StartSemanticAnaylsisDebug(string[] arguments)
+        {
+            CommonTools.SemanticAnalysisDebug = true;
+            StartSemanticAnaylsis(arguments);
+            CommonTools.SemanticAnalysisDebug = false;
+        }
+
+        public static void StartParserDebug(string[] arguments)
+        {
+            CommonTools.ParserDebug = true;
+            StartParser(arguments);
+            CommonTools.ParserDebug = false;
+        }
     }
 }

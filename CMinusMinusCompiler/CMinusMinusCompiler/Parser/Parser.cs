@@ -49,12 +49,12 @@ namespace CMinusMinusCompiler
         private int Depth { get; set; } = 1;
         private int Offset { get; set; }
         private Stack<int> Offsets = new Stack<int>();
-        private FunctionNode FunctionNode { get; set; } = new FunctionNode();
+        private FunctionNode CurrentFunction { get; set; } = new FunctionNode();
         private ConstantNode CurrentConstant { get; set; } = new ConstantNode();
         private VariableNode CurrentVariable { get; set; } = new VariableNode();
-        private Token CurrentType { get; set; }
+        private Token CurrentVariableType { get; set; }
 
-        // Parameterized constructor requires a lexical analyzer and 
+        // Parameterized constructor requires a lexical analyzer and symbol table
         public Parser(LexicalAnalyzer lexicalAnalyzer, SymbolTable symbolTable)
         {
             LexicalAnaylzer = lexicalAnalyzer;
@@ -68,7 +68,10 @@ namespace CMinusMinusCompiler
         {
             if (IsVariableType(LexicalAnaylzer.Token))
             {
+                CurrentFunction.ReturnType = LexicalAnaylzer.Token;
                 ProcessType();
+                CurrentVariable.Lexeme = LexicalAnaylzer.Lexeme;
+                CurrentFunction.Lexeme = LexicalAnaylzer.Lexeme;
                 MatchToken(Token.IdentifierToken);
                 ProcessRest();
                 ProcessProgram();
@@ -91,7 +94,7 @@ namespace CMinusMinusCompiler
         //         CharToken
         private void ProcessType()
         {
-            CurrentType = LexicalAnaylzer.Token;
+            CurrentVariable.Type = LexicalAnaylzer.Token;
 
             if (LexicalAnaylzer.Token == Token.IntToken) MatchToken(Token.IntToken);
             else if (LexicalAnaylzer.Token == Token.FloatToken) MatchToken(Token.FloatToken);
@@ -105,6 +108,7 @@ namespace CMinusMinusCompiler
         {
             if (LexicalAnaylzer.Token == Token.LeftParenthesisToken)
             {
+                CurrentFunction.Depth = Depth;
                 IncreaseProgramStack();
                 MatchToken(Token.LeftParenthesisToken);
                 ProcessParameterList();
@@ -113,6 +117,8 @@ namespace CMinusMinusCompiler
             }
             else
             {
+                CurrentVariableType = CurrentVariable.Type;
+                InsertVariableNode();
                 ProcessIdentifierTail();
                 MatchToken(Token.SemiColonToken);
                 ProcessProgram();
@@ -126,6 +132,9 @@ namespace CMinusMinusCompiler
             if (IsVariableType(LexicalAnaylzer.Token))
             {
                 ProcessType();
+                AddParameterNode();
+                CurrentVariable.Lexeme = LexicalAnaylzer.Lexeme;
+                InsertVariableNode();
                 MatchToken(Token.IdentifierToken);
                 ProcessParameterTail();
             }
@@ -139,6 +148,9 @@ namespace CMinusMinusCompiler
             {
                 MatchToken(Token.CommaToken);
                 ProcessType();
+                AddParameterNode();
+                CurrentVariable.Lexeme = LexicalAnaylzer.Lexeme;
+                InsertVariableNode();
                 MatchToken(Token.IdentifierToken);
                 ProcessParameterTail();
             }
@@ -191,6 +203,7 @@ namespace CMinusMinusCompiler
             if (LexicalAnaylzer.Token == Token.IdentifierToken)
             {
                 CurrentVariable.Lexeme = LexicalAnaylzer.Lexeme;
+                CurrentFunction.VariablesSize += CurrentVariable.Size;
                 InsertVariableNode();
                 MatchToken(Token.IdentifierToken);
                 ProcessIdentifierTail();
@@ -223,21 +236,19 @@ namespace CMinusMinusCompiler
         private void ProcessReturn()
         {
             // No grammar rules for now
+            InsertFunctionNode();
             DecreaseProgramStack();
         }
 
         // Inserts a variable node into symbol table
         private void InsertVariableNode()
         {
-            CurrentVariable.Type = CurrentType;
+            if (CurrentVariable.Size == -1) CurrentVariable.Type = CurrentVariableType;
+            CurrentVariable.Offset = Offset;
             CurrentVariable.Depth = Depth;
             SymbolTable.InsertNode(CurrentVariable);
+            Offset += CurrentVariable.Size;
             CurrentVariable = new VariableNode();
-        }
-
-        // Inserts a function node into symbol table
-        private void InsertFunctionNode()
-        {
         }
 
         // Inserts a constant node into symbol table
@@ -247,6 +258,24 @@ namespace CMinusMinusCompiler
             CurrentConstant.Depth = Depth;
             SymbolTable.InsertNode(CurrentConstant);
             CurrentConstant = new ConstantNode();
+        }
+
+        // Inserts a function node into symbol table
+        private void InsertFunctionNode()
+        {
+            SymbolTable.InsertNode(CurrentFunction);
+            CurrentFunction = new FunctionNode();
+        }
+
+        // Adds a parameter node into current function node
+        private void AddParameterNode()
+        {
+            ParameterNode parameter = new ParameterNode()
+            {
+                Type = CurrentVariable.Type
+            };
+            CurrentFunction.VariablesSize += CurrentVariable.Size;
+            CurrentFunction.Parameters.Add(parameter);
         }
 
         // Checks that token is a valid variable type
@@ -263,6 +292,7 @@ namespace CMinusMinusCompiler
         {
             Depth++;
             Offsets.Push(Offset);
+            Offset = 0;
         }
 
         private void DecreaseProgramStack()

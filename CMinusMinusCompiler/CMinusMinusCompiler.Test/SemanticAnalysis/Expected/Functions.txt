@@ -1,0 +1,35 @@
+﻿** Symbol Table at Depth 2 **
+Lexeme          Class        Depth     Offset    Type         Size      Value(r)
+--------------------------------------------------------------------------------
+
+
+** Symbol Table at Depth 2 **
+Lexeme          Class        Depth     Offset    Type         Size      Value(r)
+--------------------------------------------------------------------------------
+x               Variable     2         0         IntToken     2         -
+y               Variable     2         2         IntToken     2         -
+
+
+** Symbol Table at Depth 2 **
+Lexeme          Class        Depth     Offset    Type         Size      Value(r)
+--------------------------------------------------------------------------------
+x               Variable     2         0         CharToken    1         -
+y               Variable     2         1         IntToken     2         -
+z               Variable     2         3         FloatToken   4         -
+p               Variable     2         7         IntToken     2         -
+
+
+** Symbol Table at Depth 1 **
+Lexeme          Class        Depth     Offset    Type         Size      Value(r)
+--------------------------------------------------------------------------------
+beforeMain      Function     1         -         IntToken     0         -
+main            Function     1         -         CharToken    4         -
+-               Parameter    -         -         IntToken     -         -
+-               Parameter    -         -         IntToken     -         -
+afterMain       Function     1         -         FloatToken   9         -
+-               Parameter    -         -         CharToken    -         -
+-               Parameter    -         -         IntToken     -         -
+-               Parameter    -         -         FloatToken   -         -
+
+
+Completed processing Functions.c

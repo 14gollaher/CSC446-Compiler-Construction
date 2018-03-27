@@ -1,0 +1,35 @@
+﻿ERROR: Duplicate lexeme "foo" with depth "1" exists
+ERROR: Duplicate lexeme "foo" with depth "1" exists
+ERROR: Duplicate lexeme "foo" with depth "1" exists
+ERROR: Duplicate lexeme "bar" with depth "2" exists
+ERROR: Duplicate lexeme "bar" with depth "2" exists
+** Symbol Table at Depth 2 **
+Lexeme          Class        Depth     Offset    Type         Size      Value(r)
+--------------------------------------------------------------------------------
+foo             Variable     2         0         IntToken     2         -
+bar             Constant     2         -         -            -         3.23
+
+
+ERROR: Duplicate lexeme "foo" with depth "2" exists
+ERROR: Duplicate lexeme "bar" with depth "2" exists
+** Symbol Table at Depth 2 **
+Lexeme          Class        Depth     Offset    Type         Size      Value(r)
+--------------------------------------------------------------------------------
+foo             Variable     2         0         IntToken     2         -
+bar             Variable     2         3         IntToken     2         -
+
+
+ERROR: Duplicate lexeme "foo" with depth "1" exists
+ERROR: Duplicate lexeme "foo" with depth "1" exists
+** Symbol Table at Depth 1 **
+Lexeme          Class        Depth     Offset    Type         Size      Value(r)
+--------------------------------------------------------------------------------
+main            Function     1         -         IntToken     7         -
+foo             Variable     1         0         IntToken     2         -
+bar             Function     1         -         CharToken    9         -
+-               Parameter    -         -         IntToken     -         -
+-               Parameter    -         -         CharToken    -         -
+-               Parameter    -         -         IntToken     -         -
+
+
+Completed processing Duplicates.c

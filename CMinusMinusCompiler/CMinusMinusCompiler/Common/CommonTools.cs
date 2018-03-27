@@ -12,7 +12,8 @@ namespace CMinusMinusCompiler
         public static bool IsUnitTestExecution { get; set; }
         public static string OutputFilePath { get; set; }
         public static Action DisplayHeader { get; set; }
-        public static bool IsParserExecution { get; set; } = false;
+        public static bool ParserDebug { get; set; }
+        public static bool SemanticAnalysisDebug { get; set; }
 
         // Writes the output to the screen and output file
         public static void WriteOutput(string output)
@@ -23,7 +24,7 @@ namespace CMinusMinusCompiler
             DisplayLineCount++;
         }
 
-        // Checks that an input 
+        // Checks that an input file path exists
         public static bool CheckFilePathExists(string filePath)
         {
             if (!File.Exists(filePath))
