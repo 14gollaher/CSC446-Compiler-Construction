@@ -13,8 +13,9 @@ namespace CMinusMinusCompiler
         public static void Start(string[] arguments)
         {
             //StartLexicalAnalyzer(arguments);
+            //StartParser(arguments);
             //StartSymbolTable();
-            StartParser(arguments);
+            StartSemanticAnaylsis(arguments);
 
             CommonTools.PromptProgramExit();
         }
@@ -54,6 +55,7 @@ namespace CMinusMinusCompiler
         {
             CommonTools.CreateOutputDirectory(ConfigurationManager.AppSettings["ParserOutputPath"]);
             CommonTools.ClearDisplays();
+            CommonTools.IsParserExecution = true;
 
             LexicalAnalyzer lexicalAnalyzer;
 
@@ -71,7 +73,8 @@ namespace CMinusMinusCompiler
 
             lexicalAnalyzer.GetNextToken();
 
-            Parser parser = new Parser(lexicalAnalyzer);
+            SymbolTable symbolTable = new SymbolTable();
+            Parser parser = new Parser(lexicalAnalyzer, symbolTable);
             parser.ProcessProgram();
 
             if (lexicalAnalyzer.Token != Token.EndOfFileToken)
@@ -81,6 +84,8 @@ namespace CMinusMinusCompiler
                     $"Unexpected tokens in source file, expected End-of-File Token");
             }
 
+            symbolTable.OutputSymbolTable(1);
+
             CommonTools.WriteOutput($"Completed processing {Path.GetFileName(arguments[0])}");
         }
 
@@ -89,6 +94,44 @@ namespace CMinusMinusCompiler
         {
             CommonTools.CreateOutputDirectory(ConfigurationManager.AppSettings["SymbolTableOutputPath"]);
             CommonTools.ClearDisplays();
+        }
+
+        // Initializes and runs Semantic Analysis module
+        public static void StartSemanticAnaylsis(string[] arguments)
+        {
+            CommonTools.CreateOutputDirectory(ConfigurationManager.AppSettings["SemanticAnalysisOutputPath"]);
+            CommonTools.ClearDisplays();
+
+            LexicalAnalyzer lexicalAnalyzer;
+
+            if (arguments.Length == 1)
+            {
+                if (!CommonTools.CheckFilePathExists(arguments[0])) return;
+
+                lexicalAnalyzer = new LexicalAnalyzer(arguments[0]);
+            }
+            else
+            {
+                Console.WriteLine("ERROR: Usage expected command line argument");
+                return;
+            }
+
+            lexicalAnalyzer.GetNextToken();
+
+            SymbolTable symbolTable = new SymbolTable();
+            Parser parser = new Parser(lexicalAnalyzer, symbolTable);
+            parser.ProcessProgram();
+
+            if (lexicalAnalyzer.Token != Token.EndOfFileToken)
+            {
+                CommonTools.WriteOutput(
+                    $"ERROR: Line {lexicalAnalyzer.LineNumber} " +
+                    $"Unexpected tokens in source file, expected End-of-File Token");
+            }
+
+            symbolTable.OutputSymbolTable(1);
+
+            CommonTools.WriteOutput($"Completed processing {Path.GetFileName(arguments[0])}");
         }
 
     }

@@ -1,9 +1,11 @@
 ﻿ERROR: Duplicate lexeme "cats" with depth "2" exists
-Lexeme                                 Token                          Depth
+Lexeme                                 Class                          Depth
 ---------------------------------------------------------------------------
-cats                                   IdentifierToken                2
-dogs                                   IdentifierToken                2
+cats                                   Variable                       2
+dogs                                   Constant                       2
 
 
-Lexeme                                 Token                          Depth
+Lexeme                                 Class                          Depth
 ---------------------------------------------------------------------------
+
+

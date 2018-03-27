@@ -15,8 +15,7 @@
 
 
    QUESTIONS:
-   * Shouldn't const have a type involved? or are we supposed to just look a the value and determine it ourselves?
-   * The return type of a function is always void currently, true or false?
+   * When should we print to the screen? Are we using a single command line arg still?
 */ 
 
 namespace CMinusMinusCompiler

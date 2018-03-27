@@ -38,29 +38,27 @@ namespace CMinusMinusCompiler
     */
     public class Parser
     {
+        // Public properties
+        public static int CharacterSize { get; } = Int32.Parse(ConfigurationManager.AppSettings["CharacterSize"]);
+        public static int IntegerSize { get; } = Int32.Parse(ConfigurationManager.AppSettings["IntegerSize"]);
+        public static int FloatSize { get; } = Int32.Parse(ConfigurationManager.AppSettings["FloatSize"]);
+
         // Private properties
         private LexicalAnalyzer LexicalAnaylzer { get; set; }
-        private SymbolTable SymbolTable { get; set; } = new SymbolTable();
-        private int Depth { get; set; } = 0;
+        private SymbolTable SymbolTable { get; set; }
+        private int Depth { get; set; } = 1;
+        private int Offset { get; set; }
+        private Stack<int> Offsets = new Stack<int>();
+        private FunctionNode FunctionNode { get; set; } = new FunctionNode();
+        private ConstantNode CurrentConstant { get; set; } = new ConstantNode();
+        private VariableNode CurrentVariable { get; set; } = new VariableNode();
+        private Token CurrentType { get; set; }
 
-        private Token[] TypeTokens { get; } = {
-            Token.IntToken, Token.FloatToken,
-            Token.CharToken 
-        };
-
-        private Stack<FunctionNode> functions = new Stack<FunctionNode>();
-        private Stack<ConstantNode> constants = new Stack<ConstantNode>();
-        private Stack<VariableNode> variables = new Stack<VariableNode>();
-
-        private int CharacterSize { get; } = Int32.Parse(ConfigurationManager.AppSettings["CharacterSize"]);
-        private int IntegerSize { get; } = Int32.Parse(ConfigurationManager.AppSettings["IntegerSize"]);
-        private int FloatSize { get; } = Int32.Parse(ConfigurationManager.AppSettings["FloatSize"]);
-
-
-        // Constructor requires a lexical analyzer instance
-        public Parser(LexicalAnalyzer lexicalAnalyzer)
+        // Parameterized constructor requires a lexical analyzer and 
+        public Parser(LexicalAnalyzer lexicalAnalyzer, SymbolTable symbolTable)
         {
             LexicalAnaylzer = lexicalAnalyzer;
+            SymbolTable = symbolTable;
         }
 
         // Program -> Type IdentifierToken Rest Program |
@@ -68,24 +66,22 @@ namespace CMinusMinusCompiler
         //            e
         public void ProcessProgram()
         {
-            if (TypeTokens.Contains(LexicalAnaylzer.Token))
+            if (IsVariableType(LexicalAnaylzer.Token))
             {
                 ProcessType();
                 MatchToken(Token.IdentifierToken);
                 ProcessRest();
-                InsertFunctionNode();
                 ProcessProgram();
             }
             else if (LexicalAnaylzer.Token == Token.ConstToken)
             {
                 MatchToken(Token.ConstToken);
+                CurrentConstant.Lexeme = LexicalAnaylzer.Lexeme;
                 MatchToken(Token.IdentifierToken);
                 MatchToken(Token.AssignmentOperatorToken);
+                InsertConstantNode();
                 MatchToken(Token.NumberToken);
                 MatchToken(Token.SemiColonToken);
-
-                //TODO: FIX OFFSET
-                InsertConstantNode(0, LexicalAnaylzer.Value, LexicalAnaylzer.ValueReal);
                 ProcessProgram();
             }
         }
@@ -95,6 +91,8 @@ namespace CMinusMinusCompiler
         //         CharToken
         private void ProcessType()
         {
+            CurrentType = LexicalAnaylzer.Token;
+
             if (LexicalAnaylzer.Token == Token.IntToken) MatchToken(Token.IntToken);
             else if (LexicalAnaylzer.Token == Token.FloatToken) MatchToken(Token.FloatToken);
             else if (LexicalAnaylzer.Token == Token.CharToken) MatchToken(Token.CharToken);
@@ -107,6 +105,7 @@ namespace CMinusMinusCompiler
         {
             if (LexicalAnaylzer.Token == Token.LeftParenthesisToken)
             {
+                IncreaseProgramStack();
                 MatchToken(Token.LeftParenthesisToken);
                 ProcessParameterList();
                 MatchToken(Token.RightParenthesisToken);
@@ -124,7 +123,7 @@ namespace CMinusMinusCompiler
         //                  e
         private void ProcessParameterList()
         {
-            if (TypeTokens.Contains(LexicalAnaylzer.Token))
+            if (IsVariableType(LexicalAnaylzer.Token))
             {
                 ProcessType();
                 MatchToken(Token.IdentifierToken);
@@ -167,7 +166,7 @@ namespace CMinusMinusCompiler
         //                e
         private void ProcessDeclaration()
         {
-            if (TypeTokens.Contains(LexicalAnaylzer.Token))
+            if (IsVariableType(LexicalAnaylzer.Token))
             {
                 ProcessType();
                 ProcessIdentifierList();
@@ -175,8 +174,10 @@ namespace CMinusMinusCompiler
             else if (LexicalAnaylzer.Token == Token.ConstToken)
             {
                 MatchToken(Token.ConstToken);
+                CurrentConstant.Lexeme = LexicalAnaylzer.Lexeme;
                 MatchToken(Token.IdentifierToken);
                 MatchToken(Token.AssignmentOperatorToken);
+                InsertConstantNode();
                 MatchToken(Token.NumberToken);
                 MatchToken(Token.SemiColonToken);
                 ProcessDeclaration();
@@ -189,6 +190,8 @@ namespace CMinusMinusCompiler
         {
             if (LexicalAnaylzer.Token == Token.IdentifierToken)
             {
+                CurrentVariable.Lexeme = LexicalAnaylzer.Lexeme;
+                InsertVariableNode();
                 MatchToken(Token.IdentifierToken);
                 ProcessIdentifierTail();
                 MatchToken(Token.SemiColonToken);
@@ -203,6 +206,8 @@ namespace CMinusMinusCompiler
             if (LexicalAnaylzer.Token == Token.CommaToken)
             {
                 MatchToken(Token.CommaToken);
+                CurrentVariable.Lexeme = LexicalAnaylzer.Lexeme;
+                InsertVariableNode();
                 MatchToken(Token.IdentifierToken);
                 ProcessIdentifierTail();
             }
@@ -211,59 +216,77 @@ namespace CMinusMinusCompiler
         // StatementList -> e
         private void ProcessStatementList()
         {
-            // Blank for now
+            // Blank for now 
         }
 
         // Return -> e
         private void ProcessReturn()
         {
-            // Blank for now
+            // No grammar rules for now
+            DecreaseProgramStack();
+        }
+
+        // Inserts a variable node into symbol table
+        private void InsertVariableNode()
+        {
+            CurrentVariable.Type = CurrentType;
+            CurrentVariable.Depth = Depth;
+            SymbolTable.InsertNode(CurrentVariable);
+            CurrentVariable = new VariableNode();
         }
 
         // Inserts a function node into symbol table
-        private void InsertFunctionNode(int localSize, VariableType returnType, LinkedList<ParameterNode> parameters)
+        private void InsertFunctionNode()
         {
-            FunctionNode functionNode
-                = new FunctionNode(LexicalAnaylzer.Lexeme, LexicalAnaylzer.Token, Depth, localSize, returnType, parameters);
         }
 
-        // Inserst a constant node into symbol table
-        private void InsertConstantNode(int offset, int? value, float? valueReal)
+        // Inserts a constant node into symbol table
+        private void InsertConstantNode()
         {
-            ConstantNode constantNode;
-            if (value != null)
-            {
-                constantNode = new ConstantNode(LexicalAnaylzer.Lexeme, LexicalAnaylzer.Token, Depth, offset, value);
-            }
-            else
-            {
-                constantNode = new ConstantNode(LexicalAnaylzer.Lexeme, LexicalAnaylzer.Token, Depth, offset, valueReal);
-            }
+            CurrentConstant.SetValues(LexicalAnaylzer.Value, LexicalAnaylzer.ValueReal);
+            CurrentConstant.Depth = Depth;
+            SymbolTable.InsertNode(CurrentConstant);
+            CurrentConstant = new ConstantNode();
+        }
 
-            SymbolTable.InsertNode(constantNode);
+        // Checks that token is a valid variable type
+        private bool IsVariableType(Token token)
+        {
+            if (token == Token.IntToken || token == Token.FloatToken || token == Token.CharToken)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private void IncreaseProgramStack()
+        {
+            Depth++;
+            Offsets.Push(Offset);
+        }
+
+        private void DecreaseProgramStack()
+        {
+            SymbolTable.OutputSymbolTable(Depth);
+            SymbolTable.DeleteDepth(Depth);
+            Depth--;
+            Offset = Offsets.Pop();
         }
 
         // Displays expected tokens error to appropriate displays
         private void DisplayExpectedTokensError(string expectedToken)
         {
-            CommonTools.WriteOutput(
-                $"ERROR: Line {LexicalAnaylzer.LineNumber} " +
-                $"Expected token \"{expectedToken}\" " +
-                $"- Received token \"{LexicalAnaylzer.Token}\"");
+            CommonTools.WriteOutput( $"ERROR: Line {LexicalAnaylzer.LineNumber} Expected token " +
+                $"\"{expectedToken}\" -  Received token \"{LexicalAnaylzer.Token}\"");
             CommonTools.PromptProgramExit();
         }
 
         // Matches expected symbol to current symbol from lexical analyzer
         private void MatchToken(Token expectedSymbol)
         {
-            if (LexicalAnaylzer.Token == expectedSymbol)
-            {
-                LexicalAnaylzer.GetNextToken();
-            }
-            else
-            {
-                DisplayExpectedTokensError(expectedSymbol.ToString());
-            }
+            if (LexicalAnaylzer.Token == expectedSymbol) LexicalAnaylzer.GetNextToken();
+            else DisplayExpectedTokensError(expectedSymbol.ToString());
+
         }
     }
 }

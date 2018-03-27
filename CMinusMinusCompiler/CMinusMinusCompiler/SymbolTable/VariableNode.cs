@@ -3,17 +3,24 @@
     // Class to hold properties specific to variable node
     public class VariableNode : Node
     {
-        public VariableNode(string lexeme, Token token, int depth, VariableType type,
-            int offset, int size) 
-            : base(lexeme, token, depth)
-        {
-            Type = type;
-            Offset = offset;
-            Size = size;
-        }
-
-        public VariableType Type { get; set; }
+        public Token Type { get; set; }
         public int Offset { get; set; }
-        public int Size { get; set; }
+        public int Size
+        {
+            get
+            {
+                switch (Type)
+                {
+                    case Token.CharToken:
+                        return Parser.CharacterSize;
+                    case Token.IntToken:
+                        return Parser.IntegerSize;
+                    case Token.FloatToken:
+                        return Parser.FloatSize;
+                    default:
+                        return -1;
+                }
+            }
+        }
     }
 }

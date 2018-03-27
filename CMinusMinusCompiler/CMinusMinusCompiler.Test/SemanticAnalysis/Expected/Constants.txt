@@ -1,0 +1,12 @@
+﻿Lexeme                                 Class                          Depth
+---------------------------------------------------------------------------
+x2                                     Constant                       2
+
+
+Lexeme                                 Class                          Depth
+---------------------------------------------------------------------------
+x1                                     Constant                       1
+y1                                     Constant                       1
+
+
+Completed processing Constants.c

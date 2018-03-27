@@ -12,6 +12,7 @@ namespace CMinusMinusCompiler
         public static bool IsUnitTestExecution { get; set; }
         public static string OutputFilePath { get; set; }
         public static Action DisplayHeader { get; set; }
+        public static bool IsParserExecution { get; set; } = false;
 
         // Writes the output to the screen and output file
         public static void WriteOutput(string output)

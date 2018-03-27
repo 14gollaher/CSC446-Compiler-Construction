@@ -6,6 +6,6 @@
     // an object with 1 property is unecessary
     public class ParameterNode
     {
-        public VariableType Type { get; set; }
+        public Token Type { get; set; }
     }
 }

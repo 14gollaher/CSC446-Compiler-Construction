@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Common\AssemblyInitializer.cs" />
     <Compile Include="LexicalAnalyzer\LexicalAnalyzer_Test.cs" />
+    <Compile Include="SemanticAnalysis\SemanticAnalysis_test.cs" />
     <Compile Include="SymbolTable\SymbolTable_Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\TestTools.cs" />
@@ -145,9 +146,6 @@
     <Content Include="LexicalAnalyzer\Source\Tokens5.c">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="SymbolTable\Expected\HappyPath.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Parser\Expected\InvalidCompound.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -230,6 +228,21 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Parser\Source\t38.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SemanticAnalysis\Expected\Constants.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SemanticAnalysis\Expected\HappyPath.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SemanticAnalysis\Source\HappyPath.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SemanticAnalysis\Source\Constants.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SymbolTable\Expected\HappyPath.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

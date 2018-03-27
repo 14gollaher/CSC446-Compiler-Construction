@@ -64,18 +64,21 @@ namespace CMinusMinusCompiler
         // Displays given depth/scope level to output
         public void OutputSymbolTable(int depth)
         {
-            DisplaySymbolTableHeader();
-            foreach (LinkedList<Node> nodeList in HashTable)
+            if (!CommonTools.IsParserExecution)
             {
-                if (nodeList != null) WriteNodes(nodeList.Where(item => item.Depth == depth));
+                DisplaySymbolTableHeader();
+                foreach (LinkedList<Node> nodeList in HashTable)
+                {
+                    if (nodeList != null) WriteNodes(nodeList.Where(item => item.Depth == depth));
+                }
+                CommonTools.WriteOutput(Environment.NewLine);
             }
-            CommonTools.WriteOutput(Environment.NewLine);
         }
 
         // Display symbol table header to screen and output file
         private void DisplaySymbolTableHeader()
         {
-            string[] headingData = new string[] { "Lexeme", "Token", "Depth" };
+            string[] headingData = new string[] { "Lexeme", "Class", "Depth" };
             string headerRule = Environment.NewLine + new string('-', 75);
             CommonTools.WriteOutput(string.Format(OutputFormat, headingData) + headerRule);
         }
@@ -85,8 +88,7 @@ namespace CMinusMinusCompiler
         {
             foreach (Node node in nodeList)
             {
-                string[] outputData
-                    = new string[] { node.Lexeme, node.Token.ToString(), node.Depth.ToString() };
+                string[] outputData = new string[] { node.Lexeme, node.GetClass(), node.Depth.ToString() };
                 CommonTools.WriteOutput(string.Format(OutputFormat, outputData));
             }
         }
@@ -97,10 +99,4 @@ namespace CMinusMinusCompiler
             return Math.Abs(lexeme.GetHashCode()) % TableSize;
         }
     }
-
-    // Enumerated type to contain possible variable data types
-    public enum VariableType { Int, Float, Char }
-
-    // Enumerated type to contain possible entry types
-    public enum EntryType { Constant, Variable, Function } // Shouldn't need this since we have different class types
 }
