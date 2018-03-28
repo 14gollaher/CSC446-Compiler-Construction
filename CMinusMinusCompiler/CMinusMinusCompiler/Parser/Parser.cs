@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 
 namespace CMinusMinusCompiler
 {
@@ -112,6 +111,7 @@ namespace CMinusMinusCompiler
                 IncreaseProgramStack();
                 MatchToken(Token.LeftParenthesisToken);
                 ProcessParameterList();
+                Offset = 0;
                 MatchToken(Token.RightParenthesisToken);
                 ProcessCompound();
             }

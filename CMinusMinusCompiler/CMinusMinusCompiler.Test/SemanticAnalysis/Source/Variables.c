@@ -7,7 +7,8 @@ int main()
 float c1;
 int dog(char c2)
 {
-	float d2;
+	float d;
+	char e;
 }
 char d1;
 int e1;

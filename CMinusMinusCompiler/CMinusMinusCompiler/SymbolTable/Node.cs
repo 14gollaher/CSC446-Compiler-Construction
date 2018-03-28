@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CMinusMinusCompiler
+﻿namespace CMinusMinusCompiler
 {
     // Class to hold symbol information used by other components of compiler
     public abstract class Node
