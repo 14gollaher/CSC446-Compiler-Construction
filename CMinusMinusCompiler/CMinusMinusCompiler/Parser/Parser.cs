@@ -31,7 +31,8 @@ namespace CMinusMinusCompiler
     
     IdentifierTail -> , IdentifierToken IdentifierTail
 
-    StatementList  -> e
+    StatementList  -> Statement ; StatementList |
+                      e
 
     Return         -> e
     */
