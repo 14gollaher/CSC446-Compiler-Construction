@@ -1,8 +1,8 @@
-﻿ERROR: Duplicate lexeme "foo" with depth "1" exists
-ERROR: Duplicate lexeme "foo" with depth "1" exists
-ERROR: Duplicate lexeme "foo" with depth "1" exists
-ERROR: Duplicate lexeme "bar" with depth "2" exists
-ERROR: Duplicate lexeme "bar" with depth "2" exists
+﻿ERROR: Line 1 Duplicate lexeme "foo" with depth "1" exists
+ERROR: Line 2 Duplicate lexeme "foo" with depth "1" exists
+ERROR: Line 3 Duplicate lexeme "foo" with depth "1" exists
+ERROR: Line 8 Duplicate lexeme "bar" with depth "2" exists
+ERROR: Line 9 Duplicate lexeme "bar" with depth "2" exists
 ** Symbol Table at Depth 2 **
 Lexeme          Class        Depth     Offset    Type         Size      Value(r)
 --------------------------------------------------------------------------------
@@ -10,8 +10,8 @@ foo             Variable     2         0         IntToken     2         -
 bar             Constant     2         -         -            -         3.23
 
 
-ERROR: Duplicate lexeme "foo" with depth "2" exists
-ERROR: Duplicate lexeme "bar" with depth "2" exists
+ERROR: Line 12 Duplicate lexeme "foo" with depth "2" exists
+ERROR: Line 14 Duplicate lexeme "bar" with depth "2" exists
 ** Symbol Table at Depth 2 **
 Lexeme          Class        Depth     Offset    Type         Size      Value(r)
 --------------------------------------------------------------------------------
@@ -19,8 +19,8 @@ foo             Variable     2         0         IntToken     2         -
 bar             Variable     2         3         IntToken     2         -
 
 
-ERROR: Duplicate lexeme "foo" with depth "1" exists
-ERROR: Duplicate lexeme "foo" with depth "1" exists
+ERROR: Line 17 Duplicate lexeme "foo" with depth "1" exists
+ERROR: Line 19 Duplicate lexeme "foo" with depth "1" exists
 ** Symbol Table at Depth 1 **
 Lexeme          Class        Depth     Offset    Type         Size      Value(r)
 --------------------------------------------------------------------------------

@@ -246,7 +246,7 @@ namespace CMinusMinusCompiler
             if (CurrentVariable.Size == -1) CurrentVariable.Type = CurrentVariableType;
             CurrentVariable.Offset = Offset;
             CurrentVariable.Depth = Depth;
-            SymbolTable.InsertNode(CurrentVariable);
+            InsertNode(CurrentVariable);
             Offset += CurrentVariable.Size;
             CurrentVariable = new VariableNode();
         }
@@ -256,15 +256,29 @@ namespace CMinusMinusCompiler
         {
             CurrentConstant.SetValues(LexicalAnaylzer.Value, LexicalAnaylzer.ValueReal);
             CurrentConstant.Depth = Depth;
-            SymbolTable.InsertNode(CurrentConstant);
+            InsertNode(CurrentConstant);
             CurrentConstant = new ConstantNode();
         }
 
         // Inserts a function node into symbol table
         private void InsertFunctionNode()
         {
-            SymbolTable.InsertNode(CurrentFunction);
+            InsertNode(CurrentFunction);
             CurrentFunction = new FunctionNode();
+        }
+
+        // Inserts a node into symbol table and prints error if insertion failure
+        private void InsertNode(Node node)
+        {
+            bool insertSuccess = SymbolTable.InsertNode(node);
+
+            if (!insertSuccess)
+            {
+                CommonTools.WriteOutput
+                    ($"ERROR: Line {LexicalAnaylzer.LineNumber} " +
+                     $"Duplicate lexeme \"{node.Lexeme}\" with depth \"{node.Depth}\" exists");
+                CommonTools.PromptProgramExit();
+            }
         }
 
         // Adds a parameter node into current function node
@@ -306,7 +320,7 @@ namespace CMinusMinusCompiler
         // Displays expected tokens error to appropriate displays
         private void DisplayExpectedTokensError(string expectedToken)
         {
-            CommonTools.WriteOutput( $"ERROR: Line {LexicalAnaylzer.LineNumber} Expected token " +
+            CommonTools.WriteOutput($"ERROR: Line {LexicalAnaylzer.LineNumber} Expected token " +
                 $"\"{expectedToken}\" -  Received token \"{LexicalAnaylzer.Token}\"");
             CommonTools.PromptProgramExit();
         }

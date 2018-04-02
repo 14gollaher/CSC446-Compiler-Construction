@@ -36,7 +36,7 @@ namespace CMinusMinusCompiler
         }
 
         // Inserts a node into the symbol table, requiring node informations
-        public void InsertNode(Node newNode)
+        public bool InsertNode(Node newNode)
         {
             Node node = LookupNode(newNode.Lexeme);
 
@@ -44,9 +44,7 @@ namespace CMinusMinusCompiler
             {
                 if (!CommonTools.ParserDebug)
                 {
-                    CommonTools.WriteOutput($"ERROR: Duplicate lexeme \"{newNode.Lexeme}\" with depth \"{newNode.Depth}\" exists");
-                    CommonTools.PromptProgramExit();
-                    return;
+                    return false;
                 }
             }
 
@@ -54,6 +52,7 @@ namespace CMinusMinusCompiler
             if (HashTable[location] == null) HashTable[location] = new LinkedList<Node>();
 
             HashTable[location].AddFirst(newNode);
+            return true;
         }
 
         // Deletes entire given scope/depth level from symbol table

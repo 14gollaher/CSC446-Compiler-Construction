@@ -39,5 +39,61 @@ namespace CMinusMinusCompiler.Test
             Bootstrapper.StartSemanticAnaylsisDebug(new string[] { @"SemanticAnalysis\Source\Duplicates.c" });
             TestTools.CompareFileEquality(@"SemanticAnalysis\Expected\Duplicates.txt", CommonTools.OutputFilePath);
         }
+
+        [TestMethod]
+        public void SemanticAnalysis_InstructorCase1()
+        {
+            Bootstrapper.StartSemanticAnaylsisDebug(new string[] { @"SemanticAnalysis\Source\t51.c" });
+            TestTools.CompareFileEquality(@"SemanticAnalysis\Expected\t51.txt", CommonTools.OutputFilePath);
+        }
+
+        [TestMethod]
+        public void SemanticAnalysis_InstructorCase2()
+        {
+            Bootstrapper.StartSemanticAnaylsisDebug(new string[] { @"SemanticAnalysis\Source\t52.c" });
+            TestTools.CompareFileEquality(@"SemanticAnalysis\Expected\t52.txt", CommonTools.OutputFilePath);
+        }
+
+        [TestMethod]
+        public void SemanticAnalysis_InstructorCase3()
+        {
+            Bootstrapper.StartSemanticAnaylsisDebug(new string[] { @"SemanticAnalysis\Source\t53.c" });
+            TestTools.CompareFileEquality(@"SemanticAnalysis\Expected\t53.txt", CommonTools.OutputFilePath);
+        }
+
+        [TestMethod]
+        public void SemanticAnalysis_InstructorCase4()
+        {
+            Bootstrapper.StartSemanticAnaylsisDebug(new string[] { @"SemanticAnalysis\Source\t54.c" });
+            TestTools.CompareFileEquality(@"SemanticAnalysis\Expected\t54.txt", CommonTools.OutputFilePath);
+        }
+
+        [TestMethod]
+        public void SemanticAnalysis_InstructorCase5()
+        {
+            Bootstrapper.StartSemanticAnaylsisDebug(new string[] { @"SemanticAnalysis\Source\t55.c" });
+            TestTools.CompareFileEquality(@"SemanticAnalysis\Expected\t55.txt", CommonTools.OutputFilePath);
+        }
+
+        [TestMethod]
+        public void SemanticAnalysis_InstructorCase6()
+        {
+            Bootstrapper.StartSemanticAnaylsisDebug(new string[] { @"SemanticAnalysis\Source\t56.c" });
+            TestTools.CompareFileEquality(@"SemanticAnalysis\Expected\t56.txt", CommonTools.OutputFilePath);
+        }
+
+        [TestMethod]
+        public void SemanticAnalysis_InstructorCase7()
+        {
+            Bootstrapper.StartSemanticAnaylsisDebug(new string[] { @"SemanticAnalysis\Source\t57.c" });
+            TestTools.CompareFileEquality(@"SemanticAnalysis\Expected\t57.txt", CommonTools.OutputFilePath);
+        }
+
+        [TestMethod]
+        public void SemanticAnalysis_InstructorCase8()
+        {
+            Bootstrapper.StartSemanticAnaylsisDebug(new string[] { @"SemanticAnalysis\Source\t58.c" });
+            TestTools.CompareFileEquality(@"SemanticAnalysis\Expected\t58.txt", CommonTools.OutputFilePath);
+        }
     }
 }

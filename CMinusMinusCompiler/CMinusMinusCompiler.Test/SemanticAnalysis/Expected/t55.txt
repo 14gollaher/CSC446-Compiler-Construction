@@ -1,0 +1,34 @@
+﻿** Symbol Table at Depth 2 **
+Lexeme          Class        Depth     Offset    Type         Size      Value(r)
+--------------------------------------------------------------------------------
+x               Variable     2         0         IntToken     2         -
+y               Variable     2         2         IntToken     2         -
+a               Constant     2         -         -            -         5.5
+b               Variable     2         0         IntToken     2         -
+c               Variable     2         2         IntToken     2         -
+d               Variable     2         4         FloatToken   4         -
+e               Variable     2         8         FloatToken   4         -
+f               Variable     2         12        FloatToken   4         -
+
+
+** Symbol Table at Depth 2 **
+Lexeme          Class        Depth     Offset    Type         Size      Value(r)
+--------------------------------------------------------------------------------
+
+
+** Symbol Table at Depth 1 **
+Lexeme          Class        Depth     Offset    Type         Size      Value(r)
+--------------------------------------------------------------------------------
+two             Function     1         -         IntToken     8         -
+-               Parameter    -         -         IntToken     -         -
+-               Parameter    -         -         IntToken     -         -
+main            Function     1         -         IntToken     0         -
+z               Variable     1         0         IntToken     2         -
+w               Constant     1         -         -            -         5
+a               Variable     1         2         FloatToken   4         -
+b               Variable     1         6         FloatToken   4         -
+c               Variable     1         10        FloatToken   4         -
+d               Variable     1         14        FloatToken   4         -
+
+
+Completed processing t55.c
