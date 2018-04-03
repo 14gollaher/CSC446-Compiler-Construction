@@ -188,7 +188,7 @@
     <Content Include="Parser\Expected\HappyPath.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="SemanticAnalysis\Source\InvalidDeclaration.c">
+    <Content Include="SemanticAnalysis\Source\AwkwardTypeDeclaration.c">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SemanticAnalysis\Source\UndeclaredVariableRight.c">
@@ -245,7 +245,7 @@
     <Content Include="SemanticAnalysis\Expected\Functions.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="SemanticAnalysis\Expected\InvalidDeclaration.txt">
+    <Content Include="SemanticAnalysis\Expected\AwkwardTypeDeclaration.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SemanticAnalysis\Expected\UndeclaredVariableRight.txt">

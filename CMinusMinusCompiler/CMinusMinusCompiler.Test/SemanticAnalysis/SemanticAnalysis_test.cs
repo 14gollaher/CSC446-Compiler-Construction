@@ -62,10 +62,10 @@ namespace CMinusMinusCompiler.Test
         }
 
         [TestMethod]
-        public void SemanticAnalysis_InvalidDeclaration()
+        public void SemanticAnalysis_AwkwardTypeDeclaration()
         {
-            Bootstrapper.StartSemanticAnaylsisDebug(new string[] { @"SemanticAnalysis\Source\InvalidDeclaration.c" });
-            TestTools.CompareFileEquality(@"SemanticAnalysis\Expected\InvalidDeclaration.txt", CommonTools.OutputFilePath);
+            Bootstrapper.StartSemanticAnaylsisDebug(new string[] { @"SemanticAnalysis\Source\AwkwardTypeDeclaration.c" });
+            TestTools.CompareFileEquality(@"SemanticAnalysis\Expected\AwkwardTypeDeclaration.txt", CommonTools.OutputFilePath);
         }
 
         [TestMethod]
