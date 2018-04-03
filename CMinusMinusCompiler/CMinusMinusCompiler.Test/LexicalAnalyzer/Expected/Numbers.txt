@@ -31,4 +31,4 @@ a2                                     IdentifierToken
 "88 8                                  UnknownToken       
 2                                      NumberToken                    2
 .                                      PeriodToken                    
-!                                      UnknownToken    
+!                                      NotOperatorToken                   

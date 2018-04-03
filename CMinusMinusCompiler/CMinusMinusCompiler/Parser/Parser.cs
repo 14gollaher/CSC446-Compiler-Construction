@@ -1,40 +1,79 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 
 namespace CMinusMinusCompiler
 {
     /* Recursive descent parser to verify program follows C-- grammar
 
-    Program        -> Type IdentifierToken Rest Program |
-                      ConstToken IdentifierToken AssignmentOperatorToken NumberToken SemiColonToken Program |
-                      e
+    Program                 -> Type IdentifierToken Rest Program |
+                               ConstToken IdentifierToken AssignmentOperatorToken NumberToken SemiColonToken Program |
+                               e
+                            
+    Type                    -> IntToken |
+                               FloatToken |
+                               CharToken
+                            
+    Rest                    -> ( ParameterList ) Compound |
+                               IdentifierTail ; Program
+                            
+    ParameterList           -> Type IdentifierToken ParameterTail |
+                               e
+                            
+    ParameterTail           -> , Type IdentifierToken ParameterTail |
+                               e
+                            
+    Compound                -> { Declaration StatementList Return }
+                            
+    Declaration             -> Type IdentifierList |
+                               ConstToken IdentifierToken AssignmentOperatorToken NumberToken SemiColonToken Declaration |
+                               e
+                            
+    IdentifierTail          -> , IdentifierToken IdentifierTail
+                            
+    StatementList           -> Statement ; StatementList |
+                               e
+                             
+    Statement               -> AssignmentStatement |
+                               InputOutputStatement 
+                            
+    AssignmentStatement     -> IdentifierToken AssignmentOperatorToken Expression
+                            
+    InputOutputStatement    -> e
+                            
+    Expression              -> Relation
+                            
+    Relation                -> SimpleExpression
+                            
+    SimpleExpression        -> SignOperation Term MoreTerm
+                            
+    MoreTerm                -> AdditionOperation Term MoreTerm |
+                               e
+                            
+    Term                    -> Factor MoreFactor
+                            
+    MoreFactor              -> MultiplicationOperation Factor MoreFactor |
+                               e
+                            
+    Factor                  -> IdentifierToken |
+                               NumberToken |
+                               LeftParenthesisToken Expression RightParenthesisToken
+                            
+    AdditionOperation       -> + | 
+                               - | 
+                               ||
 
-    Type           -> IntToken |
-                      FloatToken |
-                      CharToken
+    MultiplicationOperation -> * |
+                               / |
+                               % |
+                               &&
 
-    Rest           -> ( ParameterList ) Compound |
-                      IdentifierTail ; Program
+    SignOperation           -> ! |
+                               - |
+                               e
 
-    ParameterList  -> Type IdentifierToken ParameterTail |
-                      e
-
-    ParameterTail  -> , Type IdentifierToken ParameterTail |
-                      e
-
-    Compound       -> { Declaration StatementList Return }
-
-    Declaration    -> Type IdentifierList |
-                      ConstToken IdentifierToken AssignmentOperatorToken NumberToken SemiColonToken Declaration |
-                      e
-    
-    IdentifierTail -> , IdentifierToken IdentifierTail
-
-    StatementList  -> Statement ; StatementList |
-                      e
-
-    Return         -> e
+    Return                  -> e
     */
     public class Parser
     {
@@ -160,18 +199,11 @@ namespace CMinusMinusCompiler
         // Compound -> { Declaration StatementList Return }
         private void ProcessCompound()
         {
-            if (LexicalAnaylzer.Token == Token.LeftBraceToken)
-            {
-                MatchToken(Token.LeftBraceToken);
-                ProcessDeclaration();
-                ProcessStatementList();
-                ProcessReturn();
-                MatchToken(Token.RightBraceToken);
-            }
-            else
-            {
-                DisplayExpectedTokensError(Token.LeftBraceToken.ToString());
-            }
+            MatchToken(Token.LeftBraceToken);
+            ProcessDeclaration();
+            ProcessStatementList();
+            ProcessReturn();
+            MatchToken(Token.RightBraceToken);
         }
 
         // Declaration -> Type IdentifierList |
@@ -214,7 +246,7 @@ namespace CMinusMinusCompiler
         }
 
         // IdentifierTail -> , IdentifierToken IdentifierTail |
-        //                     e
+        //                   e
         private void ProcessIdentifierTail()
         {
             if (LexicalAnaylzer.Token == Token.CommaToken)
@@ -227,10 +259,145 @@ namespace CMinusMinusCompiler
             }
         }
 
-        // StatementList -> e
+        // StatementList -> Statement ; StatementList |
+        //                  e
         private void ProcessStatementList()
         {
-            // Blank for now 
+            // TODO: I think there should something more to this (true) since IOSTat goes to e
+            if (LexicalAnaylzer.Token == Token.IdentifierToken) 
+            {
+                ProcessStatement();
+                MatchToken(Token.SemiColonToken);
+                ProcessStatementList();
+            }
+        }
+
+        // Statement -> AssignmentStatement |
+        //              InputOutputStatement 
+        private void ProcessStatement()
+        {
+            if (LexicalAnaylzer.Token == Token.IdentifierToken) ProcessAssignmentStatement();
+            else ProcessInputOutputStatement(); //TODO: This probably won't be an else when IOStat is defined
+        }
+
+        // AssignmentStatement -> IdentifierToken AssignmentOperatorToken Expression
+        private void ProcessAssignmentStatement()
+        {
+            CheckUndeclaredVariable();
+            MatchToken(Token.IdentifierToken);
+            MatchToken(Token.AssignmentOperatorToken);
+            ProcessExpression();
+        }
+
+        // InputOutputStatement -> e
+        private void ProcessInputOutputStatement()
+        {
+            // Blank for now
+        }
+
+        // Expression -> Relation
+        private void ProcessExpression()
+        {
+            ProcessRelation();
+        }
+
+        // Relation -> SimpleExpression
+        private void ProcessRelation()
+        {
+            ProcessSimpleExpression();
+        }
+
+        // SimpleExpression -> SignOperation Term MoreTerm
+        private void ProcessSimpleExpression()
+        {
+            ProcessSignOperation();
+            ProcessTerm();
+            ProcessMoreTerm();
+        }
+
+        // MoreTerm -> AdditionOperation Term MoreTerm |
+        //             e
+        private void ProcessMoreTerm()
+        {
+            if (LexicalAnaylzer.Token == Token.AdditionOperatorToken)
+            {
+                ProcessAdditionOperation();
+                ProcessTerm();
+                ProcessMoreTerm();
+            }
+        }
+
+        // Term -> Factor MoreFactor
+        private void ProcessTerm()
+        {
+            ProcessFactor();
+            ProcessMoreFactor();
+        }
+
+        // MoreFactor -> MultiplicationOperation Factor MoreFactor |
+        //               e
+        private void ProcessMoreFactor()
+        {
+            if (LexicalAnaylzer.Token == Token.MultiplicationOperatorToken)
+            {
+                ProcessMultiplicationOperation();
+                ProcessFactor();
+                ProcessMoreFactor();
+            }
+        }
+
+        // Factor -> IdentifierToken |
+        //           NumberToken |
+        //           LeftParenthesisToken Expression RightParenthesisToken
+        private void ProcessFactor()
+        {
+            if (LexicalAnaylzer.Token == Token.IdentifierToken)
+            {
+                CheckUndeclaredVariable();
+                MatchToken(Token.IdentifierToken);
+            }
+            else if (LexicalAnaylzer.Token == Token.NumberToken)
+            {
+                MatchToken(Token.NumberToken);
+            }
+            else
+            {
+                MatchToken(Token.LeftParenthesisToken);
+                ProcessExpression();
+                MatchToken(Token.RightParenthesisToken);
+            }
+        }
+
+        // AdditionOperation -> + | 
+        //                      - | 
+        //                      ||
+        private void ProcessAdditionOperation()
+        {
+            MatchToken(Token.AdditionOperatorToken);
+        }
+
+        // MultiplicationOperation -> * |
+        //                            / |
+        //                            % |
+        //                            &&
+        private void ProcessMultiplicationOperation()
+        {
+            MatchToken(Token.MultiplicationOperatorToken);
+        }
+
+        // SignOperation -> ! |
+        //                  - |
+        //                  e
+        private void ProcessSignOperation()
+        {
+            if (LexicalAnaylzer.Token == Token.NotOperatorToken)
+            {
+                MatchToken(Token.NotOperatorToken);
+            }
+            else if (LexicalAnaylzer.Token == Token.AdditionOperatorToken && LexicalAnaylzer.Lexeme == "-")
+            {
+                MatchToken(Token.AdditionOperatorToken);
+            }
         }
 
         // Return -> e
@@ -303,6 +470,7 @@ namespace CMinusMinusCompiler
             return false;
         }
 
+        // Increments global program stack information
         private void IncreaseProgramStack()
         {
             Depth++;
@@ -310,6 +478,7 @@ namespace CMinusMinusCompiler
             Offset = 0;
         }
 
+        // Decrements global program stack information
         private void DecreaseProgramStack()
         {
             SymbolTable.OutputSymbolTable(Depth);
@@ -318,12 +487,24 @@ namespace CMinusMinusCompiler
             Offset = Offsets.Pop();
         }
 
+        // Checks if an identifier exists as a variable node in symbol table and is in scope
+        private void CheckUndeclaredVariable()
+        {
+            if (SymbolTable.LookupNode(LexicalAnaylzer.Lexeme) == null)
+            {
+                CommonTools.WriteOutput($"ERROR: Line {LexicalAnaylzer.LineNumber} Use of " +
+                    $"undeclared variable {LexicalAnaylzer.Lexeme}");
+                CommonTools.PromptProgramExit();
+            }
+        }
+
         // Displays expected tokens error to appropriate displays
         private void DisplayExpectedTokensError(string expectedToken)
         {
             CommonTools.WriteOutput($"ERROR: Line {LexicalAnaylzer.LineNumber} Expected token " +
-                $"\"{expectedToken}\" -  Received token \"{LexicalAnaylzer.Token}\"");
+                $"\"{expectedToken}\" - Received token \"{LexicalAnaylzer.Token}\"");
             CommonTools.PromptProgramExit();
+            LexicalAnaylzer.GetNextToken();
         }
 
         // Matches expected symbol to current symbol from lexical analyzer
@@ -331,7 +512,6 @@ namespace CMinusMinusCompiler
         {
             if (LexicalAnaylzer.Token == expectedSymbol) LexicalAnaylzer.GetNextToken();
             else DisplayExpectedTokensError(expectedSymbol.ToString());
-
         }
     }
 }

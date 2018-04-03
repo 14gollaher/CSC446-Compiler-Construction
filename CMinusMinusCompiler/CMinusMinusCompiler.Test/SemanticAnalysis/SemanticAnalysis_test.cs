@@ -13,6 +13,13 @@ namespace CMinusMinusCompiler.Test
         }
 
         [TestMethod]
+        public void SemanticAnalysis_HappyPath2()
+        {
+            Bootstrapper.StartSemanticAnaylsisDebug(new string[] { @"SemanticAnalysis\Source\HappyPath2.c" });
+            TestTools.CompareFileEquality(@"SemanticAnalysis\Expected\HappyPath2.txt", CommonTools.OutputFilePath);
+        }
+
+        [TestMethod]
         public void SemanticAnalysis_Variables()
         {
             Bootstrapper.StartSemanticAnaylsisDebug(new string[] { @"SemanticAnalysis\Source\Variables.c" });
@@ -38,6 +45,27 @@ namespace CMinusMinusCompiler.Test
         {
             Bootstrapper.StartSemanticAnaylsisDebug(new string[] { @"SemanticAnalysis\Source\Duplicates.c" });
             TestTools.CompareFileEquality(@"SemanticAnalysis\Expected\Duplicates.txt", CommonTools.OutputFilePath);
+        }
+
+        [TestMethod]
+        public void SemanticAnalysis_UndeclaredVariableLeft()
+        {
+            Bootstrapper.StartSemanticAnaylsisDebug(new string[] { @"SemanticAnalysis\Source\UndeclaredVariableLeft.c" });
+            TestTools.CompareFileEquality(@"SemanticAnalysis\Expected\UndeclaredVariableLeft.txt", CommonTools.OutputFilePath);
+        }
+
+        [TestMethod]
+        public void SemanticAnalysis_UndeclaredVariableRight()
+        {
+            Bootstrapper.StartSemanticAnaylsisDebug(new string[] { @"SemanticAnalysis\Source\UndeclaredVariableRight.c" });
+            TestTools.CompareFileEquality(@"SemanticAnalysis\Expected\UndeclaredVariableRight.txt", CommonTools.OutputFilePath);
+        }
+
+        [TestMethod]
+        public void SemanticAnalysis_InvalidDeclaration()
+        {
+            Bootstrapper.StartSemanticAnaylsisDebug(new string[] { @"SemanticAnalysis\Source\InvalidDeclaration.c" });
+            TestTools.CompareFileEquality(@"SemanticAnalysis\Expected\InvalidDeclaration.txt", CommonTools.OutputFilePath);
         }
 
         [TestMethod]

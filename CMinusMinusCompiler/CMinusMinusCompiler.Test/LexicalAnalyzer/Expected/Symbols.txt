@@ -17,7 +17,7 @@
 <                                      RelationalOperatorToken        
 >                                      RelationalOperatorToken        
 =                                      AssignmentOperatorToken        
-!                                      UnknownToken                   
+!                                      NotOperatorToken                                  
 |                                      UnknownToken                   
 &                                      UnknownToken                   
 ==                                     RelationalOperatorToken        

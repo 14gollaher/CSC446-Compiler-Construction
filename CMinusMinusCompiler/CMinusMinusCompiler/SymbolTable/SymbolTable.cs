@@ -23,18 +23,6 @@ namespace CMinusMinusCompiler
             HashTable = new LinkedList<Node>[TableSize];
         }
 
-        // Returns first node found (most recent insert) in table matching given lexeme
-        public Node LookupNode(string lexeme)
-        {
-            int location = HashLexeme(lexeme);
-
-            if (HashTable[location] != null)
-            {
-                return HashTable[location].Where(item => item.Lexeme == lexeme).FirstOrDefault();
-            }
-            return null;
-        }
-
         // Inserts a node into the symbol table, requiring node informations
         public bool InsertNode(Node newNode)
         {
@@ -42,10 +30,7 @@ namespace CMinusMinusCompiler
 
             if (node != null && node.Depth == newNode.Depth)
             {
-                if (!CommonTools.ParserDebug)
-                {
-                    return false;
-                }
+                if (!CommonTools.ParserDebug) return false;
             }
 
             int location = HashLexeme(newNode.Lexeme);
@@ -94,6 +79,31 @@ namespace CMinusMinusCompiler
             }
             CommonTools.WriteOutput(Environment.NewLine);
         }
+
+        // Returns first node found (most recent insert) in table matching given lexeme
+        public Node LookupNode(string lexeme)
+        {
+            int location = HashLexeme(lexeme);
+
+            if (HashTable[location] != null)
+            {
+                return HashTable[location].Where(item => item.Lexeme == lexeme).FirstOrDefault();
+            }
+            return null;
+        }
+
+        // Checks that a variable exists at a given or lower depth/outer scope
+        //public bool VariableScopeExists(string lexeme, int depth)
+        //{
+        //    int location = HashLexeme(lexeme);
+
+        //    if (HashTable[location] != null)
+        //    {
+        //        return HashTable[location].Where(item => item.Lexeme == lexeme)
+        //                                  .Any(node => node.Depth <= depth);
+        //    }
+        //    return false;
+        //}
 
         // Display symbol table header to screen and output file
         private void DisplaySymbolTableHeader(int depth)

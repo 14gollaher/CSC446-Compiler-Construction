@@ -31,7 +31,7 @@ namespace CMinusMinusCompiler
             { '[', Token.LeftBracketToken }, { ']', Token.RightBracketToken }, { '+', Token.AdditionOperatorToken },
             { '-', Token.AdditionOperatorToken }, { '*', Token.MultiplicationOperatorToken }, { '/', Token.MultiplicationOperatorToken },
             { '%', Token.MultiplicationOperatorToken }, { ',', Token.CommaToken }, { '<', Token.RelationalOperatorToken },
-            { '>', Token.RelationalOperatorToken }, { '=', Token.AssignmentOperatorToken }, { '!', Token.UnknownToken },
+            { '>', Token.RelationalOperatorToken }, { '=', Token.AssignmentOperatorToken }, { '!', Token.NotOperatorToken },
             { '|', Token.UnknownToken }, { '&', Token.UnknownToken }
         };
         private Dictionary<string, Token> DoubleCharactersSymbols { get; } = new Dictionary<string, Token> {
@@ -317,6 +317,6 @@ namespace CMinusMinusCompiler
         VoidToken, CommaToken, SemiColonToken, AssignmentOperatorToken, EndOfFileToken, AdditionOperatorToken,
         MultiplicationOperatorToken, NumberToken, LeftParenthesisToken, RightParenthesisToken, LeftBraceToken,
         RightBraceToken, LeftBracketToken, RightBracketToken, PeriodToken, QuotationsSymbol, ConstToken,
-        RelationalOperatorToken, IdentifierToken, StringLiteralToken, UnderscoreToken, UnknownToken
+        RelationalOperatorToken, IdentifierToken, StringLiteralToken, UnderscoreToken, NotOperatorToken, UnknownToken
     }
 }

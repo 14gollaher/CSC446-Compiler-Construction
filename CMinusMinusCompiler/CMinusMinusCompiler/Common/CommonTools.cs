@@ -80,14 +80,11 @@ namespace CMinusMinusCompiler
             {
                 DisplayLineCount = 0;
                 OutputDisplayPause();
-
                 displayHeader?.Invoke();
             }
         }
 
         // Linked list extension method to include RemoveAll 
-        // Modified from algorithm given at
-        // stackoverflow.com/questions/2218735/c-why-doesnt-linkedlist-have-a-removeall-method-that-takes-a-predicate
         public static void RemoveAll<T>(this LinkedList<T> linkedList, Func<T, bool> predicate)
         {
             for (LinkedListNode<T> node = linkedList.First; node != null;)
