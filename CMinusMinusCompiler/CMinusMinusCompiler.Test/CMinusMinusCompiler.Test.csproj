@@ -50,7 +50,7 @@
   <ItemGroup>
     <Compile Include="Common\AssemblyInitializer.cs" />
     <Compile Include="LexicalAnalyzer\LexicalAnalyzer_Test.cs" />
-    <Compile Include="SemanticAnalysis\SemanticAnalysis_test.cs" />
+    <Compile Include="SemanticAnalysis\SemanticAnalysis_Test.cs" />
     <Compile Include="SymbolTable\SymbolTable_Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\TestTools.cs" />
@@ -188,7 +188,49 @@
     <Content Include="Parser\Expected\HappyPath.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="SemanticAnalysis\Expected\test7.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SemanticAnalysis\Expected\test6.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SemanticAnalysis\Expected\test5.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SemanticAnalysis\Expected\test4.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SemanticAnalysis\Expected\test3.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SemanticAnalysis\Expected\test2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SemanticAnalysis\Expected\test1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="SemanticAnalysis\Source\AwkwardTypeDeclaration.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SemanticAnalysis\Source\test1.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SemanticAnalysis\Source\test2.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SemanticAnalysis\Source\test3.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SemanticAnalysis\Source\test4.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SemanticAnalysis\Source\test5.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SemanticAnalysis\Source\test6.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SemanticAnalysis\Source\test7.c">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SemanticAnalysis\Source\UndeclaredVariableRight.c">
