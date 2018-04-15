@@ -4,4 +4,5 @@ int main()
   int b,c,d;
 
   d = b*a-c;
+  return -1;
 }

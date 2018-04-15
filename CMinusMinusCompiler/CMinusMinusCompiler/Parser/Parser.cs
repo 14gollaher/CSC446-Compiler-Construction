@@ -27,7 +27,8 @@ namespace CMinusMinusCompiler
     Compound                -> { Declaration StatementList Return }
                             
     Declaration             -> Type IdentifierList |
-                               ConstToken IdentifierToken AssignmentOperatorToken NumberToken SemiColonToken Declaration |
+                               ConstToken IdentifierToken 
+                               Token NumberToken SemiColonToken Declaration |
                                e
                             
     IdentifierTail          -> , IdentifierToken IdentifierTail
@@ -100,10 +101,23 @@ namespace CMinusMinusCompiler
             SymbolTable = symbolTable;
         }
 
+        public bool Start()
+        {
+            bool programCorrect = ProcessProgram();
+            if (LexicalAnaylzer.Token != Token.EndOfFileToken && programCorrect)
+            {
+                CommonTools.PromptProgramErrorExit(
+                    $"ERROR: Line {LexicalAnaylzer.LineNumber} " +
+                    $"Unexpected tokens in source file, expected End-of-File Token");
+            }
+
+            return programCorrect;
+        }
+
         // Program -> Type IdentifierToken Rest Program |
         //            ConstToken IdentifierToken AssignmentOperatorToken NumberToken SemiColonToken Program |
         //            e
-        public void ProcessProgram()
+        private bool ProcessProgram()
         {
             if (IsVariableType(LexicalAnaylzer.Token))
             {
@@ -111,342 +125,460 @@ namespace CMinusMinusCompiler
                 ProcessType();
                 CurrentVariable.Lexeme = LexicalAnaylzer.Lexeme;
                 CurrentFunction.Lexeme = LexicalAnaylzer.Lexeme;
-                MatchToken(Token.IdentifierToken);
-                ProcessRest();
-                ProcessProgram();
+                if (!MatchToken(Token.IdentifierToken)) return false;
+                if (!ProcessRest()) return false;
+                if (!ProcessProgram()) return false;
             }
             else if (LexicalAnaylzer.Token == Token.ConstToken)
             {
-                MatchToken(Token.ConstToken);
+                LexicalAnaylzer.GetNextToken();
                 CurrentConstant.Lexeme = LexicalAnaylzer.Lexeme;
-                MatchToken(Token.IdentifierToken);
-                MatchToken(Token.AssignmentOperatorToken);
-                InsertConstantNode();
-                MatchToken(Token.NumberToken);
-                MatchToken(Token.SemiColonToken);
-                ProcessProgram();
+                if (!MatchToken(Token.IdentifierToken)) return false;
+                if (!MatchToken(Token.AssignmentOperatorToken)) return false;
+                if (!InsertConstantNode()) return false;
+                if (!MatchToken(Token.NumberToken)) return false;
+                if (!MatchToken(Token.SemiColonToken)) return false;
+                if (!ProcessProgram()) return false;
             }
+            return true;
         }
 
         // Type -> IntToken | 
         //         FloatToken |
         //         CharToken
-        private void ProcessType()
+        private bool ProcessType()
         {
             CurrentVariable.Type = LexicalAnaylzer.Token;
 
-            if (LexicalAnaylzer.Token == Token.IntToken) MatchToken(Token.IntToken);
-            else if (LexicalAnaylzer.Token == Token.FloatToken) MatchToken(Token.FloatToken);
-            else if (LexicalAnaylzer.Token == Token.CharToken) MatchToken(Token.CharToken);
-            else DisplayExpectedTokensError("valid TYPE");
+            if (LexicalAnaylzer.Token == Token.IntToken)
+            {
+                LexicalAnaylzer.GetNextToken();
+            }
+            else if (LexicalAnaylzer.Token == Token.FloatToken)
+            {
+                LexicalAnaylzer.GetNextToken();
+            }
+            else if (LexicalAnaylzer.Token == Token.CharToken)
+            {
+                LexicalAnaylzer.GetNextToken();
+            }
+            else
+            {
+                DisplayExpectedTokensError("valid TYPE");
+                return false;
+            }
+            return true;
         }
 
         // Rest -> ( ParameterList ) Compound |
         //         IdentifierTail ; Program
-        private void ProcessRest()
+        private bool ProcessRest()
         {
             if (LexicalAnaylzer.Token == Token.LeftParenthesisToken)
             {
                 CurrentFunction.Depth = Depth;
                 IncreaseProgramStack();
-                MatchToken(Token.LeftParenthesisToken);
-                ProcessParameterList();
+                LexicalAnaylzer.GetNextToken();
+                if (!ProcessParameterList()) return false;
                 Offset = 0;
-                MatchToken(Token.RightParenthesisToken);
-                ProcessCompound();
+                if (!MatchToken(Token.RightParenthesisToken)) return false;
+                if (!ProcessCompound()) return false;
             }
             else
             {
                 CurrentVariableType = CurrentVariable.Type;
-                InsertVariableNode();
-                ProcessIdentifierTail();
-                MatchToken(Token.SemiColonToken);
-                ProcessProgram();
+                if (!InsertVariableNode()) return false;
+                if (!ProcessIdentifierTail()) return false;
+                if (!MatchToken(Token.SemiColonToken)) return false;
+                if (!ProcessProgram()) return false;
             }
+            return true;
         }
 
         // ParameterList -> , Type IdentifierToken ParameterTail |
         //                  e
-        private void ProcessParameterList()
+        private bool ProcessParameterList()
         {
             if (IsVariableType(LexicalAnaylzer.Token))
             {
                 ProcessType();
                 AddParameterNode();
                 CurrentVariable.Lexeme = LexicalAnaylzer.Lexeme;
-                InsertVariableNode();
-                MatchToken(Token.IdentifierToken);
-                ProcessParameterTail();
+                if (!InsertVariableNode()) return false;
+                if (!MatchToken(Token.IdentifierToken)) return false;
+                if (!ProcessParameterTail()) return false;
             }
+            return true;
         }
 
         // ParameterTail -> , Type IdentifierToken ParameterTail |
         //                  e
-        private void ProcessParameterTail()
+        private bool ProcessParameterTail()
         {
             if (LexicalAnaylzer.Token == Token.CommaToken)
             {
-                MatchToken(Token.CommaToken);
-                ProcessType();
+                LexicalAnaylzer.GetNextToken();
+                if (!ProcessType()) return false;
                 AddParameterNode();
                 CurrentVariable.Lexeme = LexicalAnaylzer.Lexeme;
-                InsertVariableNode();
-                MatchToken(Token.IdentifierToken);
-                ProcessParameterTail();
+                if (!InsertVariableNode()) return false;
+                if (!MatchToken(Token.IdentifierToken)) return false;
+                if (!ProcessParameterTail()) return false;
             }
+            return true;
         }
 
         // Compound -> { Declaration StatementList Return }
-        private void ProcessCompound()
+        private bool ProcessCompound()
         {
-            MatchToken(Token.LeftBraceToken);
-            ProcessDeclaration();
-            ProcessStatementList();
-            ProcessReturn();
-            MatchToken(Token.RightBraceToken);
+            if (!MatchToken(Token.LeftBraceToken)) return false;
+            if (!ProcessDeclaration()) return false;
+            if (!ProcessStatementList()) return false;
+            if (!ProcessReturn()) return false;
+            if (!MatchToken(Token.RightBraceToken)) return false;
+            return true;
         }
 
         // Declaration -> Type IdentifierList |
         //                ConstToken IdentifierToken AssignmentOperatorToken NumberToken SemiColonToken Declaration |
         //                e
-        private void ProcessDeclaration()
+        private bool ProcessDeclaration()
         {
             if (IsVariableType(LexicalAnaylzer.Token))
             {
-                ProcessType();
-                ProcessIdentifierList();
+                ProcessType(); 
+                if (!ProcessIdentifierList()) return false; 
             }
             else if (LexicalAnaylzer.Token == Token.ConstToken)
             {
-                MatchToken(Token.ConstToken);
+                LexicalAnaylzer.GetNextToken();
                 CurrentConstant.Lexeme = LexicalAnaylzer.Lexeme;
-                MatchToken(Token.IdentifierToken);
-                MatchToken(Token.AssignmentOperatorToken);
-                InsertConstantNode();
-                MatchToken(Token.NumberToken);
-                MatchToken(Token.SemiColonToken);
-                ProcessDeclaration();
+                if (!MatchToken(Token.IdentifierToken)) return false;
+                if (!MatchToken(Token.AssignmentOperatorToken)) return false;
+                if (!InsertConstantNode()) return false;
+                if (!MatchToken(Token.NumberToken)) return false;
+                if (!MatchToken(Token.SemiColonToken)) return false;
+                if (!ProcessDeclaration()) return false;
             }
+            return true;
         }
 
         // IdentifierList -> IdentifierToken IdentifierTail ; Declaration |
         //                   e
-        private void ProcessIdentifierList()
+        private bool ProcessIdentifierList()
         {
             if (LexicalAnaylzer.Token == Token.IdentifierToken)
             {
                 CurrentVariable.Lexeme = LexicalAnaylzer.Lexeme;
                 CurrentFunction.VariablesSize += CurrentVariable.Size;
-                InsertVariableNode();
-                MatchToken(Token.IdentifierToken);
-                ProcessIdentifierTail();
-                MatchToken(Token.SemiColonToken);
-                ProcessDeclaration();
+                if (!InsertVariableNode()) return false;
+                LexicalAnaylzer.GetNextToken();
+                if (!ProcessIdentifierTail()) return false;
+                if (!MatchToken(Token.SemiColonToken)) return false;
+                if (!ProcessDeclaration()) return false;
             }
+            return true;
         }
 
         // IdentifierTail -> , IdentifierToken IdentifierTail |
         //                   e
-        private void ProcessIdentifierTail()
+        private bool ProcessIdentifierTail()
         {
             if (LexicalAnaylzer.Token == Token.CommaToken)
             {
-                MatchToken(Token.CommaToken);
+                LexicalAnaylzer.GetNextToken();
                 CurrentVariable.Lexeme = LexicalAnaylzer.Lexeme;
-                InsertVariableNode();
-                MatchToken(Token.IdentifierToken);
-                ProcessIdentifierTail();
+                if (!InsertVariableNode()) return false;
+                if (!MatchToken(Token.IdentifierToken)) return false;
+                if (!ProcessIdentifierTail()) return false;
             }
+            return true;
         }
 
         // StatementList -> Statement ; StatementList |
         //                  e
-        private void ProcessStatementList()
+        private bool ProcessStatementList()
         {
-            // TODO: I think there should something more to this (true) since IOSTat goes to e
             if (LexicalAnaylzer.Token == Token.IdentifierToken) 
             {
-                ProcessStatement();
-                MatchToken(Token.SemiColonToken);
-                ProcessStatementList();
+                if (!ProcessStatement()) return false;
+                if (!MatchToken(Token.SemiColonToken)) return false;
+                if (!ProcessStatementList()) return false;
             }
+            return true;
         }
 
         // Statement -> AssignmentStatement |
         //              InputOutputStatement 
-        private void ProcessStatement()
+        private bool ProcessStatement()
         {
-            if (LexicalAnaylzer.Token == Token.IdentifierToken) ProcessAssignmentStatement();
-            else ProcessInputOutputStatement(); //TODO: This probably won't be an else when IOStat is defined
+            if (LexicalAnaylzer.Token == Token.IdentifierToken)
+            {
+                if (!ProcessAssignmentStatement()) return false;
+            }
+            else //TODO: This probably won't be an else when IOStat is defined
+            {
+                if (!ProcessInputOutputStatement()) return false; 
+            }
+            return true;
         }
 
         // AssignmentStatement -> IdentifierToken AssignmentOperatorToken Expression
-        private void ProcessAssignmentStatement()
+        //                        IdentifierToken AssignmentOperatorToken FunctionCall
+        private bool ProcessAssignmentStatement()
         {
-            CheckUndeclaredVariable();
-            MatchToken(Token.IdentifierToken);
-            MatchToken(Token.AssignmentOperatorToken);
-            ProcessExpression();
+            if (!CheckDeclaredVariable()) return false;
+            if (!MatchToken(Token.IdentifierToken)) return false;
+            if (!MatchToken(Token.AssignmentOperatorToken)) return false;
+
+            if (LexicalAnaylzer.Token == Token.IdentifierToken && LexicalAnaylzer.LookNextCharacter() == '(')
+            {
+                if (!ProcessFunctionCall()) return false;
+            }
+            else
+            {
+                if (!ProcessExpression()) return false;
+            }
+
+            //if (LexicalAnaylzer.Token == Token.IdentifierToken)
+            //{
+            //    LexicalAnalyzer currentLexicalAnalyzer = (LexicalAnalyzer)LexicalAnaylzer.Clone();
+            //    if (!ProcessFunctionCall())
+            //    {
+            //        LexicalAnaylzer = currentLexicalAnalyzer;
+            //        if (!ProcessExpression()) return false;
+            //    }
+            //}
+            //else
+            //{
+            //    if (!ProcessExpression()) return false;
+            //}
+            return true;
+        }
+
+        // FunctionCall -> IdentifierToken LeftParenthesisToken Parameters RightParenthesisToken
+        private bool ProcessFunctionCall()
+        {
+            if (!CheckDeclaredVariable()) return false;
+            if (!MatchToken(Token.IdentifierToken)) return false;
+            if (!MatchToken(Token.LeftParenthesisToken)) return false;
+            if (!ProcessParameters()) return false;
+            if (!MatchToken(Token.RightParenthesisToken)) return false;
+
+            return true;
         }
 
         // InputOutputStatement -> e
-        private void ProcessInputOutputStatement()
+        private bool ProcessInputOutputStatement()
         {
             // Blank for now
+            return true;
         }
 
         // Expression -> Relation
-        private void ProcessExpression()
+        private bool ProcessExpression()
         {
-            ProcessRelation();
+            if (!ProcessRelation()) return false;
+            return true;
         }
 
         // Relation -> SimpleExpression
-        private void ProcessRelation()
+        private bool ProcessRelation()
         {
-            ProcessSimpleExpression();
+            if (!ProcessSimpleExpression()) return false;
+            return true;
         }
 
         // SimpleExpression -> SignOperation Term MoreTerm
-        private void ProcessSimpleExpression()
+        private bool ProcessSimpleExpression()
         {
-            ProcessSignOperation();
-            ProcessTerm();
-            ProcessMoreTerm();
+            if (!ProcessSignOperation()) return false;
+            if (!ProcessTerm()) return false;
+            if (!ProcessMoreTerm()) return false;
+            return true;
         }
 
         // MoreTerm -> AdditionOperation Term MoreTerm |
         //             e
-        private void ProcessMoreTerm()
+        private bool ProcessMoreTerm()
         {
             if (LexicalAnaylzer.Token == Token.AdditionOperatorToken)
             {
-                ProcessAdditionOperation();
-                ProcessTerm();
-                ProcessMoreTerm();
+                if (!ProcessAdditionOperation()) return false;
+                if (!ProcessTerm()) return false;
+                if (!ProcessMoreTerm()) return false;
             }
+            return true;
         }
 
         // Term -> Factor MoreFactor
-        private void ProcessTerm()
+        private bool ProcessTerm()
         {
-            ProcessFactor();
-            ProcessMoreFactor();
+            if (!ProcessFactor()) return false;
+            if (!ProcessMoreFactor()) return false;
+            return true;
         }
 
         // MoreFactor -> MultiplicationOperation Factor MoreFactor |
         //               e
-        private void ProcessMoreFactor()
+        private bool ProcessMoreFactor()
         {
             if (LexicalAnaylzer.Token == Token.MultiplicationOperatorToken)
             {
-                ProcessMultiplicationOperation();
-                ProcessFactor();
-                ProcessMoreFactor();
+                if (!ProcessMultiplicationOperation()) return false;
+                if (!ProcessFactor()) return false;
+                if (!ProcessMoreFactor()) return false;
             }
+            return true;
         }
 
         // Factor -> IdentifierToken |
         //           NumberToken |
         //           LeftParenthesisToken Expression RightParenthesisToken
-        private void ProcessFactor()
+        private bool ProcessFactor()
         {
             if (LexicalAnaylzer.Token == Token.IdentifierToken)
             {
-                CheckUndeclaredVariable();
-                MatchToken(Token.IdentifierToken);
+                if (!CheckDeclaredVariable()) return false;
+                if (!MatchToken(Token.IdentifierToken)) return false;
             }
             else if (LexicalAnaylzer.Token == Token.NumberToken)
             {
-                MatchToken(Token.NumberToken);
+                if (!MatchToken(Token.NumberToken)) return false;
             }
             else
             {
-                MatchToken(Token.LeftParenthesisToken);
-                ProcessExpression();
-                MatchToken(Token.RightParenthesisToken);
+                if (!MatchToken(Token.LeftParenthesisToken)) return false;
+                if (!ProcessExpression()) return false;
+                if (!MatchToken(Token.RightParenthesisToken)) return false;
             }
+            return true;
         }
 
         // AdditionOperation -> + | 
         //                      - | 
         //                      ||
-        private void ProcessAdditionOperation()
+        private bool ProcessAdditionOperation()
         {
-            MatchToken(Token.AdditionOperatorToken);
+            if (!MatchToken(Token.AdditionOperatorToken)) return false;
+            return true;
         }
 
         // MultiplicationOperation -> * |
         //                            / |
         //                            % |
         //                            &&
-        private void ProcessMultiplicationOperation()
+        private bool ProcessMultiplicationOperation()
         {
-            MatchToken(Token.MultiplicationOperatorToken);
+            if (!MatchToken(Token.MultiplicationOperatorToken)) return false;
+            return true;
         }
 
         // SignOperation -> ! |
         //                  - |
         //                  e
-        private void ProcessSignOperation()
+        private bool ProcessSignOperation()
         {
             if (LexicalAnaylzer.Token == Token.NotOperatorToken)
             {
-                MatchToken(Token.NotOperatorToken);
+                LexicalAnaylzer.GetNextToken();
             }
             else if (LexicalAnaylzer.Token == Token.AdditionOperatorToken && LexicalAnaylzer.Lexeme == "-")
             {
-                MatchToken(Token.AdditionOperatorToken);
+                LexicalAnaylzer.GetNextToken();
             }
+            return true;
         }
 
-        // Return -> e
-        private void ProcessReturn()
+        // Return -> ReturnToken Expression SemiColonToken
+        private bool ProcessReturn()
         {
-            // No grammar rules for now
-            InsertFunctionNode();
+            if (!MatchToken(Token.ReturnToken)) return false;
+            if (!ProcessExpression()) return false;
+            if (!MatchToken(Token.SemiColonToken)) return false;
+            if (!InsertFunctionNode()) return false;
             DecreaseProgramStack();
+            return true;
+        }
+
+        // Parameters -> IdentifierToken ParametersTail |
+        //              NumberToken ParametersTail |
+        //              e
+        private bool ProcessParameters()
+        {
+            if (LexicalAnaylzer.Token == Token.IdentifierToken)
+            {
+                LexicalAnaylzer.GetNextToken();
+                if (!ProcessParametersTail()) return false;
+            }
+            else if (LexicalAnaylzer.Token == Token.NumberToken)
+            {
+                LexicalAnaylzer.GetNextToken();
+                if (!ProcessParametersTail()) return false;
+            }
+            return true;
+        }
+
+        // ParametersTail -> CommaToken IdentifierToken ParametersTail |
+        //                   CommaToken NumberToken ParametersTail |
+        //                   e
+        private bool ProcessParametersTail()
+        {
+            if (LexicalAnaylzer.Token == Token.CommaToken)
+            {
+                LexicalAnaylzer.GetNextToken();
+                if (LexicalAnaylzer.Token == Token.IdentifierToken)
+                {
+                    LexicalAnaylzer.GetNextToken();
+                    if (!ProcessParametersTail()) return false;
+                }
+  
+                if (!MatchToken(Token.NumberToken)) return false;
+                if (!ProcessParametersTail()) return false;
+            }
+            return true;
         }
 
         // Inserts a variable node into symbol table
-        private void InsertVariableNode()
+        private bool InsertVariableNode()
         {
             if (CurrentVariable.Size == -1) CurrentVariable.Type = CurrentVariableType;
             CurrentVariable.Offset = Offset;
             CurrentVariable.Depth = Depth;
-            InsertNode(CurrentVariable);
+            if (!InsertNode(CurrentVariable)) return false;
             Offset += CurrentVariable.Size;
             CurrentVariable = new VariableNode();
+            return true;
         }
 
         // Inserts a constant node into symbol table
-        private void InsertConstantNode()
+        private bool InsertConstantNode()
         {
             CurrentConstant.SetValues(LexicalAnaylzer.Value, LexicalAnaylzer.ValueReal);
             CurrentConstant.Depth = Depth;
-            InsertNode(CurrentConstant);
+            if (!InsertNode(CurrentConstant)) return false;
             CurrentConstant = new ConstantNode();
+            return true;
         }
 
         // Inserts a function node into symbol table
-        private void InsertFunctionNode()
+        private bool InsertFunctionNode()
         {
-            InsertNode(CurrentFunction);
+            if (!InsertNode(CurrentFunction)) return false;
             CurrentFunction = new FunctionNode();
+            return true;
         }
 
         // Inserts a node into symbol table and prints error if insertion failure
-        private void InsertNode(Node node)
+        private bool InsertNode(Node node)
         {
-            bool insertSuccess = SymbolTable.InsertNode(node);
-
-            if (!insertSuccess)
+            if (!SymbolTable.InsertNode(node))
             {
-                CommonTools.WriteOutput
-                    ($"ERROR: Line {LexicalAnaylzer.LineNumber} " +
-                     $"Duplicate lexeme \"{node.Lexeme}\" with depth \"{node.Depth}\" exists");
-                CommonTools.PromptProgramExit();
+                CommonTools.PromptProgramErrorExit($"ERROR: Line {LexicalAnaylzer.LineNumber} " +
+                    $"Duplicate lexeme \"{node.Lexeme}\" with depth \"{node.Depth}\" exists");
+                return false;
             }
+            return true;
         }
 
         // Adds a parameter node into current function node
@@ -488,30 +620,35 @@ namespace CMinusMinusCompiler
         }
 
         // Checks if an identifier exists as a variable node in symbol table and is in scope
-        private void CheckUndeclaredVariable()
+        private bool CheckDeclaredVariable()
         {
             if (SymbolTable.LookupNode(LexicalAnaylzer.Lexeme) == null)
             {
-                CommonTools.WriteOutput($"ERROR: Line {LexicalAnaylzer.LineNumber} Use of " +
+                CommonTools.PromptProgramErrorExit($"ERROR: Line {LexicalAnaylzer.LineNumber} Use of " +
                     $"undeclared variable {LexicalAnaylzer.Lexeme}");
-                CommonTools.PromptProgramExit();
+                return false;
             }
+            return true;
         }
 
         // Displays expected tokens error to appropriate displays
         private void DisplayExpectedTokensError(string expectedToken)
         {
-            CommonTools.WriteOutput($"ERROR: Line {LexicalAnaylzer.LineNumber} Expected token " +
+            CommonTools.PromptProgramErrorExit($"ERROR: Line {LexicalAnaylzer.LineNumber} Expected token " +
                 $"\"{expectedToken}\" - Received token \"{LexicalAnaylzer.Token}\"");
-            CommonTools.PromptProgramExit();
-            LexicalAnaylzer.GetNextToken();
         }
 
         // Matches expected symbol to current symbol from lexical analyzer
-        private void MatchToken(Token expectedSymbol)
+        private bool MatchToken(Token expectedSymbol)
         {
-            if (LexicalAnaylzer.Token == expectedSymbol) LexicalAnaylzer.GetNextToken();
-            else DisplayExpectedTokensError(expectedSymbol.ToString());
+            if (LexicalAnaylzer.Token == expectedSymbol)
+            {
+                LexicalAnaylzer.GetNextToken();
+                return true;
+            }
+            
+            DisplayExpectedTokensError(expectedSymbol.ToString());
+            return false;
         }
     }
 }

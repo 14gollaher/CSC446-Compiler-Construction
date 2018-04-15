@@ -62,6 +62,12 @@ namespace CMinusMinusCompiler.Test
         }
 
         [TestMethod]
+        public void SemanticAnalysis_FunctionCall()
+        {
+            Bootstrapper.StartSemanticAnaylsisDebug(new string[] { @"SemanticAnalysis\Source\FunctionCall.c" });
+            TestTools.CompareFileEquality(@"SemanticAnalysis\Expected\FunctionCall.txt", CommonTools.OutputFilePath);
+        }
+        [TestMethod]
         public void SemanticAnalysis_AwkwardTypeDeclaration()
         {
             Bootstrapper.StartSemanticAnaylsisDebug(new string[] { @"SemanticAnalysis\Source\AwkwardTypeDeclaration.c" });

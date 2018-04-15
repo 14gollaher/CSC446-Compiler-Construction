@@ -5,5 +5,5 @@ int main()
 
   b = -w;
   a = -5 * w;
-  
+  return -1;
 }

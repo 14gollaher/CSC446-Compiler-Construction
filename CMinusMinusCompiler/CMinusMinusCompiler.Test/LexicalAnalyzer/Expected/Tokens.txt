@@ -12,7 +12,7 @@ main                                   IdentifierToken
 String                                 IdentifierToken                
 string                                 IdentifierToken                
 extends                                IdentifierToken                
-return                                 IdentifierToken                
+return                                 ReturnToken                
 int                                    IntToken                       
 float                                  FloatToken                     
 char                                   CharToken                      

@@ -4,19 +4,5 @@ Lexeme          Class        Depth     Offset    Type         Size      Value(r)
 x               Variable     2         0         IntToken     2         -
 
 
-ERROR: Line 9 Use of undeclared variable x
-** Symbol Table at Depth 2 **
-Lexeme          Class        Depth     Offset    Type         Size      Value(r)
---------------------------------------------------------------------------------
-y               Variable     2         0         IntToken     2         -
-
-
-** Symbol Table at Depth 1 **
-Lexeme          Class        Depth     Offset    Type         Size      Value(r)
---------------------------------------------------------------------------------
-main            Function     1         -         IntToken     2         -
--               Parameter    -         -         IntToken     -         -
-foo             Function     1         -         IntToken     2         -
-
-
+ERROR: Line 10 Use of undeclared variable x
 Completed processing UndeclaredVariableRight.c

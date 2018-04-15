@@ -1,13 +1,2 @@
 ﻿ERROR: Line 3 Use of undeclared variable z
-** Symbol Table at Depth 2 **
-Lexeme          Class        Depth     Offset    Type         Size      Value(r)
---------------------------------------------------------------------------------
-
-
-** Symbol Table at Depth 1 **
-Lexeme          Class        Depth     Offset    Type         Size      Value(r)
---------------------------------------------------------------------------------
-main            Function     1         -         IntToken     0         -
-
-
 Completed processing UndeclaredVariableLeft.c

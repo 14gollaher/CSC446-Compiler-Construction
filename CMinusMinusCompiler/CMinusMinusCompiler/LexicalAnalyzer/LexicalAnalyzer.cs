@@ -15,15 +15,15 @@ namespace CMinusMinusCompiler
         public string Literal { get; set; }
         public Token Token { get; set; }
         public string Lexeme { get; set; }
+        public char Character { get; set; } = ' ';
 
         // Private properties
-        private char Character { get; set; } = ' ';
         private string SourceFileContents { get; set; }
         private Dictionary<string, Token> ReserverdWordTokens { get; } = new Dictionary<string, Token> {
             { "if", Token.IfToken }, { "else", Token.ElseToken }, { "while", Token.WhileToken },
             { "float", Token.FloatToken }, { "int", Token.IntToken }, { "char", Token.CharToken },
             { "break", Token.BreakToken }, { "continue", Token.ContinueToken }, { "void", Token.VoidToken },
-            { "const", Token.ConstToken }
+            { "const", Token.ConstToken }, { "return", Token.ReturnToken }
         };
         private Dictionary<char, Token> SingleCharacterSymbols { get; } = new Dictionary<char, Token> {
             { ';', Token.SemiColonToken }, { '.', Token.PeriodToken }, { '(', Token.LeftParenthesisToken },
@@ -71,13 +71,27 @@ namespace CMinusMinusCompiler
         public void GetNextToken()
         {
             ClearLexicalResources();
-            while (Char.IsWhiteSpace(Character))
-            {
-                GetNextCharacter();
-            }
-
+            LookNextCharacter();
             if (Character == Char.MinValue) Token = Token.EndOfFileToken;
             else ProcessToken();
+        }
+
+        // Get the next character from the source file contents without making character "read"
+        public char LookNextCharacter()
+        {
+            while (Character == '/' && PeakNextCharacter() == '*' || Char.IsWhiteSpace(Character))
+            {
+                if (Character == '/' && PeakNextCharacter() == '*')
+                {
+                    SkipComment();
+                    GetNextCharacter();
+                }
+                else
+                {
+                    GetNextCharacter();
+                }
+            }
+            return Character;
         }
 
         // Get the next character from the source file contents
@@ -104,7 +118,7 @@ namespace CMinusMinusCompiler
         }
 
         // Process token based on next current and next character in the lexeme
-        public void ProcessToken()
+        private void ProcessToken()
         {
             UpdateLexemeAndCharacter();
 
@@ -213,42 +227,34 @@ namespace CMinusMinusCompiler
             }
         }
 
-        // Process the forward slash token which has multiple token paths
+        // Process the forward slash token
         private void ProcessForwardSlashToken()
         {
-            if (Character == '*') ProcessCommentToken();
-            else Token = Token.MultiplicationOperatorToken;
+            Token = Token.MultiplicationOperatorToken;
         }
 
         // Process a comment token
-        private void ProcessCommentToken()
+        private void SkipComment()
         {
-            UpdateLexemeAndCharacter();
-
             while (Character != Char.MinValue)
             {
                 GetNextCharacter();
                 if (CommentEndSearch())
                 {
-                    GetNextToken();
                     return;
                 }
             }
+            
             CommonTools.WriteOutput("ERROR: Expected comment end '*/' not found");
-            GetNextToken();
         }
 
         // Search for the end of a comment in the input
         private bool CommentEndSearch()
         {
-            if (Character == '*')
+            if (Character == '*' && PeakNextCharacter() == '/')
             {
                 GetNextCharacter();
-                if (Character == '/')
-                {
-                    Character = ' ';
-                    return true;
-                }
+                return true;
             }
 
             return false;
@@ -313,7 +319,7 @@ namespace CMinusMinusCompiler
     // Enumerated type to contain all possible token types
     public enum Token
     {
-        IfToken, ElseToken, WhileToken, FloatToken, IntToken, CharToken, BreakToken, ContinueToken,
+        IfToken, ElseToken, WhileToken, FloatToken, IntToken, CharToken, BreakToken, ContinueToken, ReturnToken,
         VoidToken, CommaToken, SemiColonToken, AssignmentOperatorToken, EndOfFileToken, AdditionOperatorToken,
         MultiplicationOperatorToken, NumberToken, LeftParenthesisToken, RightParenthesisToken, LeftBraceToken,
         RightBraceToken, LeftBracketToken, RightBracketToken, PeriodToken, QuotationsSymbol, ConstToken,

@@ -3,5 +3,5 @@ float x,y,z;
 
 int main()
 {
-  
+	return -1;
 }

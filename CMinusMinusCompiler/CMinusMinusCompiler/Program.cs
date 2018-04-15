@@ -8,10 +8,17 @@
         Syntax Analyzer (DONE)
         Symbol Table (DONE)
         Semantic Analysis (IN PROGRESS)
-        Intermediate Code Generator (TODO)
+        Intermediate Code Generator (IN PROGRESS)
         Code Optimizer (TODO)
         Code Generator (TODO)
-*/ 
+
+
+    Questions:
+    * Do we need to be type checking like so:
+        int a = 5; a(); // invalid as a is not a function
+    * Do we need to be making sure assigning to a function is a real function?
+        int a = f(); // f is undeclared
+*/
 
 namespace CMinusMinusCompiler
 {

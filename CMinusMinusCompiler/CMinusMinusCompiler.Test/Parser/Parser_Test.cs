@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics;
 
 namespace CMinusMinusCompiler.Test
 {
@@ -46,6 +47,13 @@ namespace CMinusMinusCompiler.Test
         {
             Bootstrapper.StartParserDebug(new string[] { @"Parser\Source\InvalidRest.c" });
             TestTools.CompareFileEquality(@"Parser\Expected\InvalidRest.txt", CommonTools.OutputFilePath);
+        }
+
+        [TestMethod]
+        public void Parser_MissingReturn()
+        {
+            Bootstrapper.StartParserDebug(new string[] { @"Parser\Source\MissingReturn.c" });
+            TestTools.CompareFileEquality(@"Parser\Expected\MissingReturn.txt", CommonTools.OutputFilePath);
         }
 
         [TestMethod]
@@ -103,6 +111,5 @@ namespace CMinusMinusCompiler.Test
             Bootstrapper.StartParserDebug(new string[] { @"Parser\Source\t38.c" });
             TestTools.CompareFileEquality(@"Parser\Expected\t38.txt", CommonTools.OutputFilePath);
         }
-        
     }
 }

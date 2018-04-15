@@ -8,3 +8,4 @@ if0else
 ifelse
 if2
 const x
+return

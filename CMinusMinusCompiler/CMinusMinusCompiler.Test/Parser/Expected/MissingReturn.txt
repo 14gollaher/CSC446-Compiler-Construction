@@ -1,0 +1,2 @@
+﻿ERROR: Line 4 Expected token "ReturnToken" - Received token "RightBraceToken"
+Completed processing MissingReturn.c

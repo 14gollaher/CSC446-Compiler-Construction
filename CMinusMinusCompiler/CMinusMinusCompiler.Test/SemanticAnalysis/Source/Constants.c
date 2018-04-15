@@ -2,6 +2,7 @@
 int main()
 {
 	const x2 = 4.2;
+	return 4;
 }
 const y1 = 4;
 

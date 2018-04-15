@@ -15,4 +15,5 @@ else                                   ElseToken
 ifelse                                 IdentifierToken     
 if2                                    IdentifierToken
 const                                    ConstToken     
-x										IdentifierToken     
+x										IdentifierToken
+return										ReturnToken

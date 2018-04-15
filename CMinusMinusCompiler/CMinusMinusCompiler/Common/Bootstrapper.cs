@@ -16,8 +16,6 @@ namespace CMinusMinusCompiler
             //StartParser(arguments);
             //StartSymbolTable();
             StartSemanticAnaylsis(arguments);
-
-            CommonTools.PromptProgramExit();
         }
 
         // Initializes and runs Lexical Analysis module 
@@ -48,6 +46,7 @@ namespace CMinusMinusCompiler
                 lexicalAnalyzer.GetNextToken();
                 lexicalAnalyzer.DisplayCurrentToken();
             }
+            CommonTools.PromptProgramExit();
         }
 
         // Initializes and runs Parser module
@@ -74,18 +73,12 @@ namespace CMinusMinusCompiler
 
             SymbolTable symbolTable = new SymbolTable();
             Parser parser = new Parser(lexicalAnalyzer, symbolTable);
-            parser.ProcessProgram();
-
-            if (lexicalAnalyzer.Token != Token.EndOfFileToken)
-            {
-                CommonTools.WriteOutput(
-                    $"ERROR: Line {lexicalAnalyzer.LineNumber} " +
-                    $"Unexpected tokens in source file, expected End-of-File Token");
-            }
+            parser.Start();
 
             symbolTable.OutputSymbolTable(1);
 
             CommonTools.WriteOutput($"Completed processing {Path.GetFileName(arguments[0])}");
+            CommonTools.PromptProgramExit();
         }
 
         // Initializes and runs Symbol Table module
@@ -93,6 +86,7 @@ namespace CMinusMinusCompiler
         {
             CommonTools.CreateOutputDirectory(ConfigurationManager.AppSettings["SymbolTableOutputPath"]);
             CommonTools.ClearDisplays();
+            CommonTools.PromptProgramExit();
         }
 
         // Initializes and runs Semantic Analysis module
@@ -119,18 +113,14 @@ namespace CMinusMinusCompiler
 
             SymbolTable symbolTable = new SymbolTable();
             Parser parser = new Parser(lexicalAnalyzer, symbolTable);
-            parser.ProcessProgram();
-
-            if (lexicalAnalyzer.Token != Token.EndOfFileToken)
+            if (parser.Start())
             {
-                CommonTools.WriteOutput(
-                    $"ERROR: Line {lexicalAnalyzer.LineNumber} " +
-                    $"Unexpected tokens in source file, expected End-of-File Token");
+                symbolTable.OutputSymbolTable(1);
             }
 
-            symbolTable.OutputSymbolTable(1);
 
             CommonTools.WriteOutput($"Completed processing {Path.GetFileName(arguments[0])}");
+            CommonTools.PromptProgramExit();
         }
 
         // Initializes and runs Semantic Analysis module
@@ -139,6 +129,7 @@ namespace CMinusMinusCompiler
             CommonTools.SemanticAnalysisDebug = true;
             StartSemanticAnaylsis(arguments);
             CommonTools.SemanticAnalysisDebug = false;
+            CommonTools.PromptProgramExit();
         }
 
         public static void StartParserDebug(string[] arguments)
@@ -146,6 +137,7 @@ namespace CMinusMinusCompiler
             CommonTools.ParserDebug = true;
             StartParser(arguments);
             CommonTools.ParserDebug = false;
+            CommonTools.PromptProgramExit();
         }
     }
 }

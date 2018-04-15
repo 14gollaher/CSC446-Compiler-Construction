@@ -29,8 +29,7 @@ namespace CMinusMinusCompiler
         {
             if (!File.Exists(filePath))
             {
-                Console.WriteLine("ERROR: Could not open specified source file.");
-                PromptProgramExit();
+                PromptProgramErrorExit("ERROR: Could not open specified source file.");
                 return false;
             }
             return true;
@@ -39,12 +38,14 @@ namespace CMinusMinusCompiler
         // Prompt user to for final key before program termination
         public static void PromptProgramExit()
         {
-            if (!IsUnitTestExecution)
-            {
-                Console.Write("\nPress any key to exit...");
-                Console.ReadKey();
-                Environment.Exit(0);
-            }
+            Console.Write("\nPress any key to exit...");
+            if (!IsUnitTestExecution) Console.ReadKey();
+        }
+
+        public static void PromptProgramErrorExit(string output)
+        {
+            WriteOutput(output);
+            PromptProgramExit();
         }
 
         // Create an output directory for specified path
@@ -58,11 +59,8 @@ namespace CMinusMinusCompiler
         public static void OutputDisplayPause()
         {
             Console.Write("Press any key to see more output...");
-            if (!IsUnitTestExecution)
-            {
-                Console.ReadKey();
-                Console.Clear();
-            }
+            Console.ReadKey();
+            Console.Clear();
         }
 
         // Clear the file and screen displays
