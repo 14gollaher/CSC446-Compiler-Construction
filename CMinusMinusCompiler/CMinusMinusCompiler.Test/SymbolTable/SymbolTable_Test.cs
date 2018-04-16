@@ -37,7 +37,7 @@ namespace CMinusMinusCompiler.Test
             symbolTable.OutputSymbolTable(2);
             symbolTable.OutputSymbolTable(3);
 
-            TestTools.CompareFileEquality(@"SymbolTable\Expected\HappyPath.txt", CommonTools.OutputFilePath);
+            TestTools.CompareFileEquality(@"SymbolTable\Expected\HappyPath.txt", CommonTools.OutputFilePaths[0]);
         }
     }
 }

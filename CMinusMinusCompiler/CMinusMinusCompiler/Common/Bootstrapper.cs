@@ -15,30 +15,18 @@ namespace CMinusMinusCompiler
             //StartLexicalAnalyzer(arguments);
             //StartParser(arguments);
             //StartSymbolTable();
-            StartSemanticAnaylsis(arguments);
+            StartThreeAddressCode(arguments);
         }
 
         // Initializes and runs Lexical Analysis module 
         public static void StartLexicalAnalyzer(string[] arguments)
         {
-            CommonTools.CreateOutputDirectory(ConfigurationManager.AppSettings["LexicalAnalyzerOutputPath"]);
+            ValidateArguments(arguments);
+            CommonTools.CreateOutputDirectory(new string[] { ConfigurationManager.AppSettings["LexicalAnalyzerOutputPath"] });
             CommonTools.ClearDisplays();
 
-            LexicalAnalyzer lexicalAnalyzer;
-            if (arguments.Length == 1)
-            {
-                if (!CommonTools.CheckFilePathExists(arguments[0])) return;
-
-                lexicalAnalyzer = new LexicalAnalyzer(arguments[0]);
-            }
-            else
-            {
-                Console.WriteLine("ERROR: Usage expects single command line argument.");
-                return;
-            }
-
+            LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(arguments[0]);
             CommonTools.DisplayHeader = lexicalAnalyzer.DisplayTokenHeader;
-
             lexicalAnalyzer.DisplayTokenHeader();
 
             while(lexicalAnalyzer.Token != Token.EndOfFileToken)
@@ -52,30 +40,17 @@ namespace CMinusMinusCompiler
         // Initializes and runs Parser module
         public static void StartParser(string[] arguments)
         {
-            CommonTools.CreateOutputDirectory(ConfigurationManager.AppSettings["ParserOutputPath"]);
+            ValidateArguments(arguments);
+            CommonTools.CreateOutputDirectory(new string[] { ConfigurationManager.AppSettings["ParserOutputPath"] });
             CommonTools.ClearDisplays();
 
-            LexicalAnalyzer lexicalAnalyzer;
-
-            if (arguments.Length == 1)
-            {
-                if (!CommonTools.CheckFilePathExists(arguments[0])) return;
-
-                lexicalAnalyzer = new LexicalAnalyzer(arguments[0]);
-            }
-            else
-            {
-                Console.WriteLine("ERROR: Usage expected command line argument");
-                return;
-            }
-
+            LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(arguments[0]);
             lexicalAnalyzer.GetNextToken();
 
             SymbolTable symbolTable = new SymbolTable();
             Parser parser = new Parser(lexicalAnalyzer, symbolTable);
-            parser.Start();
 
-            symbolTable.OutputSymbolTable(1);
+            if (parser.Start()) symbolTable.OutputSymbolTable(1);
 
             CommonTools.WriteOutput($"Completed processing {Path.GetFileName(arguments[0])}");
             CommonTools.PromptProgramExit();
@@ -84,60 +59,70 @@ namespace CMinusMinusCompiler
         // Initializes and runs Symbol Table module
         public static void StartSymbolTable()
         {
-            CommonTools.CreateOutputDirectory(ConfigurationManager.AppSettings["SymbolTableOutputPath"]);
+            CommonTools.CreateOutputDirectory(new string[] {ConfigurationManager.AppSettings["SymbolTableOutputPath"]});
             CommonTools.ClearDisplays();
             CommonTools.PromptProgramExit();
         }
 
-        // Initializes and runs Semantic Analysis module
-        public static void StartSemanticAnaylsis(string[] arguments)
+        // Initializes and runs Three Address Code module
+        public static void StartThreeAddressCode(string[] arguments)
         {
-            CommonTools.CreateOutputDirectory(ConfigurationManager.AppSettings["SemanticAnalysisOutputPath"]);
+            ValidateArguments(arguments);
+            CommonTools.CreateOutputDirectory
+                (new string[] { ConfigurationManager.AppSettings["ThreeAddressCodeOutputPath"], GetTACFileName(arguments[0]) });
             CommonTools.ClearDisplays();
 
-            LexicalAnalyzer lexicalAnalyzer;
-
-            if (arguments.Length == 1)
-            {
-                if (!CommonTools.CheckFilePathExists(arguments[0])) return;
-
-                lexicalAnalyzer = new LexicalAnalyzer(arguments[0]);
-            }
-            else
-            {
-                Console.WriteLine("ERROR: Usage expected command line argument");
-                return;
-            }
-
+            LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(arguments[0]);
             lexicalAnalyzer.GetNextToken();
 
             SymbolTable symbolTable = new SymbolTable();
             Parser parser = new Parser(lexicalAnalyzer, symbolTable);
-            if (parser.Start())
-            {
-                symbolTable.OutputSymbolTable(1);
-            }
-
+            parser.Start();
 
             CommonTools.WriteOutput($"Completed processing {Path.GetFileName(arguments[0])}");
             CommonTools.PromptProgramExit();
         }
 
-        // Initializes and runs Semantic Analysis module
+        // Initializes and runs Semantic Analysis module with debug flag set
         public static void StartSemanticAnaylsisDebug(string[] arguments)
         {
             CommonTools.SemanticAnalysisDebug = true;
-            StartSemanticAnaylsis(arguments);
+            StartParser(arguments);
             CommonTools.SemanticAnalysisDebug = false;
-            CommonTools.PromptProgramExit();
         }
 
+        // Initializes and runs Parser module with debug flag set
         public static void StartParserDebug(string[] arguments)
         {
             CommonTools.ParserDebug = true;
             StartParser(arguments);
             CommonTools.ParserDebug = false;
-            CommonTools.PromptProgramExit();
+        }
+
+        // Initializes and runs Three Address Code module with debug flag set
+        public static void StartThreeAddressCodeDebug(string[] arguments)
+        {
+            CommonTools.ThreeAddressCodeDebug = true;
+            StartThreeAddressCode(arguments);
+            CommonTools.ThreeAddressCodeDebug = false;
+        }
+
+        private static bool ValidateArguments(string[] arguments)
+        {
+            if (arguments.Length == 1)
+            {
+                return CommonTools.CheckFilePathExists(arguments[0]);
+            }
+            else
+            {
+                Console.WriteLine("ERROR: Usage expected 1 command line argument");
+                return false;
+            }
+        }
+
+        private static string GetTACFileName(string path)
+        {
+            return Path.GetFileNameWithoutExtension(path) + ".tac";
         }
     }
 }

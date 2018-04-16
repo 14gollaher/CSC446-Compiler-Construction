@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 
 namespace CMinusMinusCompiler
 {
@@ -76,7 +77,7 @@ namespace CMinusMinusCompiler
             else ProcessToken();
         }
 
-        // Get the next character from the source file contents without making character "read"
+        // Get the next character from the source file, skipping comments and whitespace
         public char LookNextCharacter()
         {
             while (Character == '/' && PeakNextCharacter() == '*' || Char.IsWhiteSpace(Character))
@@ -92,6 +93,18 @@ namespace CMinusMinusCompiler
                 }
             }
             return Character;
+        }
+
+        // Check if character is a digit (0-9)
+        public bool IsDigitCharacter(char character)
+        {
+            return "0123456789".Contains(character);
+        }
+
+        // Check if character is a valid English character (A-Z, a-z)
+        public bool IsFirstWordCharacter(char character)
+        {
+            return (character >= 'A' && character <= 'Z') || (character >= 'a' && character <= 'z');
         }
 
         // Get the next character from the source file contents
@@ -136,22 +149,10 @@ namespace CMinusMinusCompiler
             return character == '/';
         }
 
-        // Check if character is a valid English character (A-Z, a-z)
-        private bool IsFirstWordCharacter(char character)
-        {
-            return (character >= 'A' && character <= 'Z') || (character >= 'a' && character <= 'z');
-        }
-
         // Check if character is a valid character after first letter of an identifier
         private bool IsPostWordCharacter(char character)
         {
             return IsFirstWordCharacter(character) || IsDigitCharacter(character) || character == '_';
-        }
-
-        // Check if character is a digit (0-9)
-        private bool IsDigitCharacter(char character)
-        {
-            return Char.IsDigit(character);
         }
 
         // Check if next character is a single character symbol (%, *, ...)

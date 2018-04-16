@@ -30,6 +30,9 @@ namespace CMinusMinusCompiler
                                ConstToken IdentifierToken 
                                Token NumberToken SemiColonToken Declaration |
                                e
+    
+    IdentifierList          -> IdentifierToken IdentifierTail ; Declaration |
+                               e
                             
     IdentifierTail          -> , IdentifierToken IdentifierTail
                             
@@ -39,7 +42,8 @@ namespace CMinusMinusCompiler
     Statement               -> AssignmentStatement |
                                InputOutputStatement 
                             
-    AssignmentStatement     -> IdentifierToken AssignmentOperatorToken Expression
+    AssignmentStatement     -> IdentifierToken AssignmentOperatorToken Expression |
+                               IdentifierToken AssignmentOperatorToken FunctionCall
                             
     InputOutputStatement    -> e
                             
@@ -73,8 +77,19 @@ namespace CMinusMinusCompiler
     SignOperation           -> ! |
                                - |
                                e
+    
+    FunctionCall            -> IdentifierToken LeftParenthesisToken Parameters RightParenthesisToken
 
-    Return                  -> e
+    Parameters              -> IdentifierToken ParametersTail |
+                               NumberToken ParametersTail |
+                               e
+    
+    ParametersTail          -> , IdentiferToken ParametersTail |
+                               , NumberToken ParametersTail |
+                               e
+    
+    Return                  -> ReturnToken Expression SemiColonToken
+
     */
     public class Parser
     {
@@ -122,7 +137,7 @@ namespace CMinusMinusCompiler
             if (IsVariableType(LexicalAnaylzer.Token))
             {
                 CurrentFunction.ReturnType = LexicalAnaylzer.Token;
-                ProcessType();
+                if (!ProcessType()) return false;
                 CurrentVariable.Lexeme = LexicalAnaylzer.Lexeme;
                 CurrentFunction.Lexeme = LexicalAnaylzer.Lexeme;
                 if (!MatchToken(Token.IdentifierToken)) return false;
@@ -201,7 +216,7 @@ namespace CMinusMinusCompiler
         {
             if (IsVariableType(LexicalAnaylzer.Token))
             {
-                ProcessType();
+                if (!ProcessType()) return false;
                 AddParameterNode();
                 CurrentVariable.Lexeme = LexicalAnaylzer.Lexeme;
                 if (!InsertVariableNode()) return false;
@@ -332,7 +347,7 @@ namespace CMinusMinusCompiler
             if (!MatchToken(Token.AssignmentOperatorToken)) return false;
 
             if (LexicalAnaylzer.Token == Token.IdentifierToken && LexicalAnaylzer.LookNextCharacter() == '(')
-            {
+            { // TODO: This isn't good - will work for this grammar but shouldn't be checking just next character like so
                 if (!ProcessFunctionCall()) return false;
             }
             else
@@ -340,19 +355,6 @@ namespace CMinusMinusCompiler
                 if (!ProcessExpression()) return false;
             }
 
-            //if (LexicalAnaylzer.Token == Token.IdentifierToken)
-            //{
-            //    LexicalAnalyzer currentLexicalAnalyzer = (LexicalAnalyzer)LexicalAnaylzer.Clone();
-            //    if (!ProcessFunctionCall())
-            //    {
-            //        LexicalAnaylzer = currentLexicalAnalyzer;
-            //        if (!ProcessExpression()) return false;
-            //    }
-            //}
-            //else
-            //{
-            //    if (!ProcessExpression()) return false;
-            //}
             return true;
         }
 
@@ -502,8 +504,8 @@ namespace CMinusMinusCompiler
         }
 
         // Parameters -> IdentifierToken ParametersTail |
-        //              NumberToken ParametersTail |
-        //              e
+        //               NumberToken ParametersTail |
+        //               e
         private bool ProcessParameters()
         {
             if (LexicalAnaylzer.Token == Token.IdentifierToken)
@@ -524,15 +526,17 @@ namespace CMinusMinusCompiler
         //                   e
         private bool ProcessParametersTail()
         {
-            if (LexicalAnaylzer.Token == Token.CommaToken)
-            {
+
+            if (LexicalAnaylzer.Token == Token.CommaToken && LexicalAnaylzer.IsFirstWordCharacter(LexicalAnaylzer.LookNextCharacter()))
+            { // TODO: This isn't good - will work for this grammar but shouldn't be checking just next character like so
                 LexicalAnaylzer.GetNextToken();
-                if (LexicalAnaylzer.Token == Token.IdentifierToken)
-                {
-                    LexicalAnaylzer.GetNextToken();
-                    if (!ProcessParametersTail()) return false;
-                }
-  
+                if (!CheckDeclaredVariable()) return false;
+                if (!MatchToken(Token.IdentifierToken)) return false;
+                if (!ProcessParametersTail()) return false;
+            }
+            else if (LexicalAnaylzer.Token == Token.CommaToken && LexicalAnaylzer.IsDigitCharacter(LexicalAnaylzer.LookNextCharacter()))
+            { // TODO: This isn't good - will work for this grammar but shouldn't be checking just next character like so
+                LexicalAnaylzer.GetNextToken();
                 if (!MatchToken(Token.NumberToken)) return false;
                 if (!ProcessParametersTail()) return false;
             }

@@ -58,7 +58,7 @@ namespace CMinusMinusCompiler
                 return;
             }
 
-            if (!CommonTools.ParserDebug)
+            if (!CommonTools.ParserDebug && !CommonTools.ThreeAddressCodeDebug)
             {
                 DisplaySymbolTableHeader(depth);
                 foreach (LinkedList<Node> nodeList in HashTable)

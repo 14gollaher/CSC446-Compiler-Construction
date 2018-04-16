@@ -51,6 +51,7 @@
     <Compile Include="Common\AssemblyInitializer.cs" />
     <Compile Include="LexicalAnalyzer\LexicalAnalyzer_Test.cs" />
     <Compile Include="SemanticAnalysis\SemanticAnalysis_Test.cs" />
+    <Compile Include="ThreeAddressCode\ThreeAddressCode_Test.cs" />
     <Compile Include="SymbolTable\SymbolTable_Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\TestTools.cs" />
@@ -384,6 +385,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SemanticAnalysis\Source\Constants.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ThreeAddressCode\Source\ClassCase1.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ThreeAddressCode\Expected\ClassCase1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SymbolTable\Expected\HappyPath.txt">

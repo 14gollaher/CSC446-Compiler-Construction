@@ -10,17 +10,21 @@ namespace CMinusMinusCompiler
         // Public members
         public static int DisplayLineCount { get; set; }
         public static bool IsUnitTestExecution { get; set; }
-        public static string OutputFilePath { get; set; }
+        public static string[] OutputFilePaths { get; set; }
         public static Action DisplayHeader { get; set; }
         public static bool ParserDebug { get; set; }
         public static bool SemanticAnalysisDebug { get; set; }
+        public static bool ThreeAddressCodeDebug { get; set; }
 
         // Writes the output to the screen and output file
         public static void WriteOutput(string output)
         {
             UpdateOutputPager(DisplayHeader);
             Console.WriteLine(output);
-            File.AppendAllText(OutputFilePath, output + Environment.NewLine);
+            foreach (string path in OutputFilePaths)
+            {
+                File.AppendAllText(path, output + Environment.NewLine);
+            }
             DisplayLineCount++;
         }
 
@@ -49,10 +53,16 @@ namespace CMinusMinusCompiler
         }
 
         // Create an output directory for specified path
-        public static void CreateOutputDirectory(string outputFilePath)
+        public static void CreateOutputDirectory(string[] outputFilePaths)
         {
-            OutputFilePath = outputFilePath;
-            Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath));
+            OutputFilePaths = outputFilePaths;
+            foreach (string path in OutputFilePaths)
+            {
+                if (Path.GetDirectoryName(path) != String.Empty)
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+                }
+            }
         }
 
         // Pause output prompting user for key to continue
@@ -67,7 +77,10 @@ namespace CMinusMinusCompiler
         public static void ClearDisplays()
         {
             Console.Clear();
-            File.Delete(OutputFilePath);
+            foreach (string path in OutputFilePaths)
+            {
+                File.Delete(path);
+            }
         }
 
         // Manage the output to ensure only 20 results on the page at a time
