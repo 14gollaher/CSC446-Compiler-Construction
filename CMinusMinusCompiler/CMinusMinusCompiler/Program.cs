@@ -13,11 +13,7 @@
         Code Generator (TODO)
 
 
-    Questions:
-    * Do we need to be type checking like so:
-        int a = 5; a(); // invalid as a is not a function
-    * Do we need to be making sure assigning to a function is a real function?
-        int a = f(); // f is undeclared
+    Todo: What is offset of _bp-x etc if it is a float value?
 */
 
 namespace CMinusMinusCompiler

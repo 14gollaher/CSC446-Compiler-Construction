@@ -52,13 +52,13 @@ namespace CMinusMinusCompiler
         // Displays given depth/scope level to output
         public void OutputSymbolTable(int depth)
         {
-            if (CommonTools.SemanticAnalysisDebug)
+            if (CommonTools.SemanticAnalysisDebug && !CommonTools.ThreeAddressCodeRun)
             {
                 OutputDetailedSymbolTable(depth);
                 return;
             }
 
-            if (!CommonTools.ParserDebug && !CommonTools.ThreeAddressCodeDebug)
+            if (!CommonTools.ParserDebug && !CommonTools.ThreeAddressCodeRun)
             {
                 DisplaySymbolTableHeader(depth);
                 foreach (LinkedList<Node> nodeList in HashTable)

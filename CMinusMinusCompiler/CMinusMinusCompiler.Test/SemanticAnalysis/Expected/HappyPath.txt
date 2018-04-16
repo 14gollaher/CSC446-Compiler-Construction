@@ -1,8 +1,8 @@
 ﻿** Symbol Table at Depth 2 **
 Lexeme          Class        Depth     Offset    Type         Size      Value(r)
 --------------------------------------------------------------------------------
-a2              Variable     2         0         FloatToken   4         -
-b2              Variable     2         4         CharToken    1         -
+a2              Variable     2         -2         FloatToken   4         -
+b2              Variable     2         -6         CharToken    1         -
 x               Constant     2         -         -            -         3
 y               Constant     2         -         -            -         3.14
 
@@ -10,23 +10,23 @@ y               Constant     2         -         -            -         3.14
 ** Symbol Table at Depth 2 **
 Lexeme          Class        Depth     Offset    Type         Size      Value(r)
 --------------------------------------------------------------------------------
-c2              Variable     2         0         FloatToken   4         -
-x               Variable     2         0         IntToken     2         -
-y               Variable     2         2         CharToken    1         -
+c2              Variable     2         -2         FloatToken   4         -
+x               Variable     2         4         IntToken     2         -
+y               Variable     2         6         CharToken    1         -
 
 
 ** Symbol Table at Depth 1 **
 Lexeme          Class        Depth     Offset    Type         Size      Value(r)
 --------------------------------------------------------------------------------
-a1              Variable     1         0         IntToken     2         -
-b1              Variable     1         2         IntToken     2         -
-c1              Variable     1         4         FloatToken   4         -
-d3              Variable     1         12        FloatToken   4         -
+a1              Variable     1         -2         IntToken     2         -
+b1              Variable     1         -4         IntToken     2         -
+c1              Variable     1         -6         FloatToken   4         -
+d3              Variable     1         -14        FloatToken   4         -
 dog             Function     1         -         CharToken    7         -
 -               Parameter    -         -         IntToken     -         -
 -               Parameter    -         -         CharToken    -         -
 main            Function     1         -         IntToken     5         -
-d2              Variable     1         8         FloatToken   4         -
+d2              Variable     1         -10         FloatToken   4         -
 x               Constant     1         -         -            -         3.14
 y               Constant     1         -         -            -         3.1415
 z               Constant     1         -         -            -         2

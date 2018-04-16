@@ -1,26 +1,26 @@
 ﻿** Symbol Table at Depth 2 **
 Lexeme          Class        Depth     Offset    Type         Size      Value(r)
 --------------------------------------------------------------------------------
-a2              Variable     2         0         FloatToken   4         -
-b2              Variable     2         4         FloatToken   4         -
+a2              Variable     2         -2         FloatToken   4         -
+b2              Variable     2         -6         FloatToken   4         -
 
 
 ** Symbol Table at Depth 2 **
 Lexeme          Class        Depth     Offset    Type         Size      Value(r)
 --------------------------------------------------------------------------------
-c2              Variable     2         0         CharToken    1         -
-d               Variable     2         0         FloatToken   4         -
-e               Variable     2         4         CharToken    1         -
+c2              Variable     2         4         CharToken    1         -
+d               Variable     2         -2         FloatToken   4         -
+e               Variable     2         -6         CharToken    1         -
 
 
 ** Symbol Table at Depth 1 **
 Lexeme          Class        Depth     Offset    Type         Size      Value(r)
 --------------------------------------------------------------------------------
-a1              Variable     1         0         IntToken     2         -
-b1              Variable     1         2         IntToken     2         -
-c1              Variable     1         4         FloatToken   4         -
-d1              Variable     1         8         CharToken    1         -
-e1              Variable     1         9         IntToken     2         -
+a1              Variable     1         -2         IntToken     2         -
+b1              Variable     1         -4         IntToken     2         -
+c1              Variable     1         -6         FloatToken   4         -
+d1              Variable     1         -10         CharToken    1         -
+e1              Variable     1         -11         IntToken     2         -
 dog             Function     1         -         IntToken     6         -
 -               Parameter    -         -         CharToken    -         -
 main            Function     1         -         IntToken     8         -

@@ -7,6 +7,6 @@ public static class AssemblyInitializer
     [AssemblyInitialize]
     public static void Initialize(TestContext context)
     {
-        CommonTools.IsUnitTestExecution = true;
+        CommonTools.UnitTestExecution = true;
     }
 }

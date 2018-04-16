@@ -27,10 +27,9 @@ namespace CMinusMinusCompiler
     Compound                -> { Declaration StatementList Return }
                             
     Declaration             -> Type IdentifierList |
-                               ConstToken IdentifierToken 
-                               Token NumberToken SemiColonToken Declaration |
+                               ConstToken IdentifierToken AssignmentOperatorToken NumberToken SemiColonToken Declaration |
                                e
-    
+
     IdentifierList          -> IdentifierToken IdentifierTail ; Declaration |
                                e
                             
@@ -102,12 +101,15 @@ namespace CMinusMinusCompiler
         private LexicalAnalyzer LexicalAnaylzer { get; set; }
         private SymbolTable SymbolTable { get; set; }
         private int Depth { get; set; } = 1;
-        private int Offset { get; set; }
-        private Stack<int> Offsets = new Stack<int>();
+        private int ParameterOffset { get; set; }
+        private Stack<int> ParameterOffsets = new Stack<int>();
+        private int LocalOffset { get; set; } = -2;
+        private Stack<int> LocalOffsets = new Stack<int>();
         private FunctionNode CurrentFunction { get; set; } = new FunctionNode();
         private ConstantNode CurrentConstant { get; set; } = new ConstantNode();
         private VariableNode CurrentVariable { get; set; } = new VariableNode();
         private Token CurrentVariableType { get; set; }
+        private string TemporaryVariableName { get; set; } = "_bp-0";
 
         // Parameterized constructor requires a lexical analyzer and symbol table
         public Parser(LexicalAnalyzer lexicalAnalyzer, SymbolTable symbolTable)
@@ -191,18 +193,19 @@ namespace CMinusMinusCompiler
         {
             if (LexicalAnaylzer.Token == Token.LeftParenthesisToken)
             {
+                OutputThreeAddressCode("proc " + CurrentFunction.Lexeme);
                 CurrentFunction.Depth = Depth;
                 IncreaseProgramStack();
                 LexicalAnaylzer.GetNextToken();
                 if (!ProcessParameterList()) return false;
-                Offset = 0;
+                LocalOffset = -2;
                 if (!MatchToken(Token.RightParenthesisToken)) return false;
                 if (!ProcessCompound()) return false;
             }
             else
             {
                 CurrentVariableType = CurrentVariable.Type;
-                if (!InsertVariableNode()) return false;
+                if (!InsertVariableNode(true)) return false;
                 if (!ProcessIdentifierTail()) return false;
                 if (!MatchToken(Token.SemiColonToken)) return false;
                 if (!ProcessProgram()) return false;
@@ -219,7 +222,7 @@ namespace CMinusMinusCompiler
                 if (!ProcessType()) return false;
                 AddParameterNode();
                 CurrentVariable.Lexeme = LexicalAnaylzer.Lexeme;
-                if (!InsertVariableNode()) return false;
+                if (!InsertVariableNode(false)) return false;
                 if (!MatchToken(Token.IdentifierToken)) return false;
                 if (!ProcessParameterTail()) return false;
             }
@@ -236,7 +239,7 @@ namespace CMinusMinusCompiler
                 if (!ProcessType()) return false;
                 AddParameterNode();
                 CurrentVariable.Lexeme = LexicalAnaylzer.Lexeme;
-                if (!InsertVariableNode()) return false;
+                if (!InsertVariableNode(false)) return false;
                 if (!MatchToken(Token.IdentifierToken)) return false;
                 if (!ProcessParameterTail()) return false;
             }
@@ -286,7 +289,8 @@ namespace CMinusMinusCompiler
             {
                 CurrentVariable.Lexeme = LexicalAnaylzer.Lexeme;
                 CurrentFunction.VariablesSize += CurrentVariable.Size;
-                if (!InsertVariableNode()) return false;
+                CurrentVariableType = CurrentVariable.Type;
+                if (!InsertVariableNode(true)) return false;
                 LexicalAnaylzer.GetNextToken();
                 if (!ProcessIdentifierTail()) return false;
                 if (!MatchToken(Token.SemiColonToken)) return false;
@@ -303,7 +307,7 @@ namespace CMinusMinusCompiler
             {
                 LexicalAnaylzer.GetNextToken();
                 CurrentVariable.Lexeme = LexicalAnaylzer.Lexeme;
-                if (!InsertVariableNode()) return false;
+                if (!InsertVariableNode(true)) return false;
                 if (!MatchToken(Token.IdentifierToken)) return false;
                 if (!ProcessIdentifierTail()) return false;
             }
@@ -442,11 +446,14 @@ namespace CMinusMinusCompiler
             if (LexicalAnaylzer.Token == Token.IdentifierToken)
             {
                 if (!CheckDeclaredVariable()) return false;
-                if (!MatchToken(Token.IdentifierToken)) return false;
+                LexicalAnaylzer.GetNextToken();
             }
             else if (LexicalAnaylzer.Token == Token.NumberToken)
             {
-                if (!MatchToken(Token.NumberToken)) return false;
+                CurrentVariable.Offset = LocalOffset;
+                CurrentVariable.Lexeme = GetNewTemporaryVariableName();
+                LexicalAnaylzer.GetNextToken();
+                LocalOffset += 2; // TODO OR IS IT FOUR?
             }
             else
             {
@@ -544,13 +551,22 @@ namespace CMinusMinusCompiler
         }
 
         // Inserts a variable node into symbol table
-        private bool InsertVariableNode()
+        private bool InsertVariableNode(bool localVariable)
         {
             if (CurrentVariable.Size == -1) CurrentVariable.Type = CurrentVariableType;
-            CurrentVariable.Offset = Offset;
+            if (localVariable)
+            {
+                CurrentVariable.Offset = LocalOffset;
+                LocalOffset -= CurrentVariable.Size;
+            }
+            else
+            {
+                CurrentVariable.Offset = ParameterOffset;
+                ParameterOffset += CurrentVariable.Size;
+            }
+
             CurrentVariable.Depth = Depth;
             if (!InsertNode(CurrentVariable)) return false;
-            Offset += CurrentVariable.Size;
             CurrentVariable = new VariableNode();
             return true;
         }
@@ -610,18 +626,28 @@ namespace CMinusMinusCompiler
         private void IncreaseProgramStack()
         {
             Depth++;
-            Offsets.Push(Offset);
-            Offset = 0;
+            LocalOffsets.Push(LocalOffset);
+            ParameterOffsets.Push(ParameterOffset);
+            LocalOffset = -2;
+            ParameterOffset = 4;
         }
 
         // Decrements global program stack information
         private void DecreaseProgramStack()
         {
+            OutputThreeAddressCode("endp");
             SymbolTable.OutputSymbolTable(Depth);
             SymbolTable.DeleteDepth(Depth);
             Depth--;
-            Offset = Offsets.Pop();
+            LocalOffset = LocalOffsets.Pop();
+            ParameterOffset = ParameterOffsets.Pop();
         }
+
+        private string GetNewTemporaryVariableName()
+        {
+            return ("_bp-" + CurrentVariable.Offset);
+        }
+
 
         // Checks if an identifier exists as a variable node in symbol table and is in scope
         private bool CheckDeclaredVariable()
@@ -653,6 +679,12 @@ namespace CMinusMinusCompiler
             
             DisplayExpectedTokensError(expectedSymbol.ToString());
             return false;
+        }
+
+        // Outputs to screens when running three address code modules
+        private void OutputThreeAddressCode(string output)
+        {
+            if (CommonTools.ThreeAddressCodeRun) CommonTools.WriteOutput(output);
         }
     }
 }

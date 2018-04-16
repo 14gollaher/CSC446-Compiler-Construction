@@ -9,12 +9,12 @@ namespace CMinusMinusCompiler
     {
         // Public members
         public static int DisplayLineCount { get; set; }
-        public static bool IsUnitTestExecution { get; set; }
+        public static bool UnitTestExecution { get; set; }
         public static string[] OutputFilePaths { get; set; }
         public static Action DisplayHeader { get; set; }
         public static bool ParserDebug { get; set; }
         public static bool SemanticAnalysisDebug { get; set; }
-        public static bool ThreeAddressCodeDebug { get; set; }
+        public static bool ThreeAddressCodeRun { get; set; }
 
         // Writes the output to the screen and output file
         public static void WriteOutput(string output)
@@ -43,7 +43,7 @@ namespace CMinusMinusCompiler
         public static void PromptProgramExit()
         {
             Console.Write("\nPress any key to exit...");
-            if (!IsUnitTestExecution) Console.ReadKey();
+            if (!UnitTestExecution) Console.ReadKey();
         }
 
         public static void PromptProgramErrorExit(string output)
@@ -87,7 +87,7 @@ namespace CMinusMinusCompiler
         // and accept function to display header information
         private static void UpdateOutputPager(Action displayHeader)
         {
-            if (DisplayLineCount == 20 && !IsUnitTestExecution)
+            if (DisplayLineCount == 20 && !UnitTestExecution)
             {
                 DisplayLineCount = 0;
                 OutputDisplayPause();

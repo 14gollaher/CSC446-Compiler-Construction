@@ -1,7 +1,7 @@
 ﻿** Symbol Table at Depth 2 **
 Lexeme          Class        Depth     Offset    Type         Size      Value(r)
 --------------------------------------------------------------------------------
-x               Variable     2         0         IntToken     2         -
+x               Variable     2         4         IntToken     2         -
 
 
 ERROR: Line 10 Use of undeclared variable x

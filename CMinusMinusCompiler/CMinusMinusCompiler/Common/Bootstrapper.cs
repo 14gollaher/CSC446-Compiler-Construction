@@ -71,6 +71,7 @@ namespace CMinusMinusCompiler
             CommonTools.CreateOutputDirectory
                 (new string[] { ConfigurationManager.AppSettings["ThreeAddressCodeOutputPath"], GetTACFileName(arguments[0]) });
             CommonTools.ClearDisplays();
+            CommonTools.ThreeAddressCodeRun = true;
 
             LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(arguments[0]);
             lexicalAnalyzer.GetNextToken();
@@ -79,7 +80,6 @@ namespace CMinusMinusCompiler
             Parser parser = new Parser(lexicalAnalyzer, symbolTable);
             parser.Start();
 
-            CommonTools.WriteOutput($"Completed processing {Path.GetFileName(arguments[0])}");
             CommonTools.PromptProgramExit();
         }
 
@@ -102,9 +102,8 @@ namespace CMinusMinusCompiler
         // Initializes and runs Three Address Code module with debug flag set
         public static void StartThreeAddressCodeDebug(string[] arguments)
         {
-            CommonTools.ThreeAddressCodeDebug = true;
             StartThreeAddressCode(arguments);
-            CommonTools.ThreeAddressCodeDebug = false;
+            CommonTools.ThreeAddressCodeRun = false;
         }
 
         private static bool ValidateArguments(string[] arguments)
