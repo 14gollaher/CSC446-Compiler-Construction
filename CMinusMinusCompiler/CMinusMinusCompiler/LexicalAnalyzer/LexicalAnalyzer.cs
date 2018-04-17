@@ -98,7 +98,7 @@ namespace CMinusMinusCompiler
         // Check if character is a digit (0-9)
         public bool IsDigitCharacter(char character)
         {
-            return "0123456789".Contains(character);
+            return Char.IsDigit(character);
         }
 
         // Check if character is a valid English character (A-Z, a-z)

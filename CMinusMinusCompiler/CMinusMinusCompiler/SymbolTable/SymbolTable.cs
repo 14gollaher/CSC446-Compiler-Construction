@@ -114,7 +114,6 @@ namespace CMinusMinusCompiler
             CommonTools.WriteOutput(string.Format(OutputFormat, headingData) + headerRule);
         }
 
-
         // Display detailed table header to screen and output file
         private void DisplayDetailedSymbolTableHeader(int depth)
         {

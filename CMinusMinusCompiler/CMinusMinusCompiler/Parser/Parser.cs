@@ -98,18 +98,24 @@ namespace CMinusMinusCompiler
         public static int FloatSize { get; } = Int32.Parse(ConfigurationManager.AppSettings["FloatSize"]);
 
         // Private properties
+        private static int BaseDepth { get; } = Int32.Parse(ConfigurationManager.AppSettings["BaseDepth"]);
+        private static int BaseLocalOffset { get; } = Int32.Parse(ConfigurationManager.AppSettings["BaseLocalOffset"]);
+        private static int BaseParameterOffset { get; } = Int32.Parse(ConfigurationManager.AppSettings["BaseParameterOffset"]);
         private LexicalAnalyzer LexicalAnaylzer { get; set; }
         private SymbolTable SymbolTable { get; set; }
-        private int Depth { get; set; } = 1;
-        private int ParameterOffset { get; set; }
-        private Stack<int> ParameterOffsets = new Stack<int>();
-        private int LocalOffset { get; set; } = -2;
-        private Stack<int> LocalOffsets = new Stack<int>();
         private FunctionNode CurrentFunction { get; set; } = new FunctionNode();
         private ConstantNode CurrentConstant { get; set; } = new ConstantNode();
         private VariableNode CurrentVariable { get; set; } = new VariableNode();
+        private int Depth { get; set; } = BaseDepth;
+        private int ParameterOffset { get; set; }
+        private Stack<int> ParameterOffsets = new Stack<int>();
+        private int LocalOffset { get; set; } = BaseLocalOffset;
+        private Stack<int> LocalOffsets = new Stack<int>();
         private Token CurrentVariableType { get; set; }
-        private string CurrentThreeAddressCodeOutput { get; set; } = string.Empty;
+        private string ThreeAddressCodeOutput { get; set; } = string.Empty;
+        private Stack<string> ParameterStack { get; set; } = new Stack<string>();
+        private string CurrentFunctionCall { get; set; }
+        private bool ReturnStatement { get; set; }
 
         // Parameterized constructor requires a lexical analyzer and symbol table
         public Parser(LexicalAnalyzer lexicalAnalyzer, SymbolTable symbolTable)
@@ -193,12 +199,12 @@ namespace CMinusMinusCompiler
         {
             if (LexicalAnaylzer.Token == Token.LeftParenthesisToken)
             {
-                OutputThreeAddressCode($"proc {CurrentFunction.Lexeme}");
+                OutputThreeAddressCode($"Proc {CurrentFunction.Lexeme}");
                 CurrentFunction.Depth = Depth;
                 IncreaseProgramStack();
                 LexicalAnaylzer.GetNextToken();
                 if (!ProcessParameterList()) return false;
-                LocalOffset = -2;
+                LocalOffset = BaseLocalOffset;
                 if (!MatchToken(Token.RightParenthesisToken)) return false;
                 if (!ProcessCompound()) return false;
             }
@@ -353,6 +359,7 @@ namespace CMinusMinusCompiler
 
             if (LexicalAnaylzer.Token == Token.IdentifierToken && LexicalAnaylzer.LookNextCharacter() == '(')
             { // TODO: This isn't good - will work for this grammar but shouldn't be checking just next character like so
+                CurrentFunctionCall = LexicalAnaylzer.Lexeme;
                 if (!ProcessFunctionCall()) return false;
             }
             else
@@ -371,7 +378,7 @@ namespace CMinusMinusCompiler
             if (!MatchToken(Token.LeftParenthesisToken)) return false;
             if (!ProcessParameters()) return false;
             if (!MatchToken(Token.RightParenthesisToken)) return false;
-
+            PrintThreeAddressCodeParameterStack();
             return true;
         }
 
@@ -423,6 +430,14 @@ namespace CMinusMinusCompiler
                 if (!ProcessTerm()) return false;
                 if (!ProcessMoreTerm()) return false;
             }
+
+            if (!ReturnStatement && ThreeAddressCodeOutput != string.Empty)
+            {
+                string temporaryVariableName = GetThreeAddressCodeName(CurrentVariable.Lexeme);
+                if (temporaryVariableName == string.Empty) return false;
+
+                OutputThreeAddressCode($"\t{temporaryVariableName} = {ThreeAddressCodeOutput}");
+            }
             return true;
         }
 
@@ -434,16 +449,29 @@ namespace CMinusMinusCompiler
             if (LexicalAnaylzer.Token == Token.IdentifierToken)
             {
                 if (!CheckDeclaredVariable()) return false;
-                if (GetTemporaryLexemeVariableName() == string.Empty) return false;
-                CurrentThreeAddressCodeOutput += GetTemporaryLexemeVariableName();
+
+                string temporaryVariableName = GetThreeAddressCodeName(LexicalAnaylzer.Lexeme);
+                if (temporaryVariableName == string.Empty) return false;
+
+                ThreeAddressCodeOutput += temporaryVariableName;
                 LexicalAnaylzer.GetNextToken();
             }
             else if (LexicalAnaylzer.Token == Token.NumberToken)
             {
                 CurrentVariable.Offset = LocalOffset;
-                OutputThreeAddressCode($"\t{GetTemporaryVariableName()} = {CurrentThreeAddressCodeOutput}{LexicalAnaylzer.Lexeme}");
+                if (ReturnStatement)
+                {
+                    ThreeAddressCodeOutput += LexicalAnaylzer.Lexeme;
+                }
+                else
+                {
+                    OutputThreeAddressCode($"\t{GetTemporaryVariableName()} = {ThreeAddressCodeOutput}{LexicalAnaylzer.Lexeme}");
+                    ThreeAddressCodeOutput = GetTemporaryVariableName();
+                }
+                if (LexicalAnaylzer.Value != null) LocalOffset -= IntegerSize;
+                else LocalOffset -= FloatSize;
+
                 LexicalAnaylzer.GetNextToken();
-                LocalOffset -= 2; // TODO: CASE WHEN IT IS FOUR?
             }
             else
             {
@@ -451,8 +479,6 @@ namespace CMinusMinusCompiler
                 if (!ProcessExpression()) return false;
                 if (!MatchToken(Token.RightParenthesisToken)) return false;
             }
-
-            OutputThreeAddressCode($"\t{CurrentVariable.Lexeme} = {GetTemporaryVariableName()}");
             return true;
         }
 
@@ -474,6 +500,7 @@ namespace CMinusMinusCompiler
         //                      ||
         private bool ProcessAdditionOperation()
         {
+            ThreeAddressCodeOutput += $" {LexicalAnaylzer.Lexeme} ";
             if (!MatchToken(Token.AdditionOperatorToken)) return false;
             return true;
         }
@@ -485,6 +512,7 @@ namespace CMinusMinusCompiler
         private bool ProcessMultiplicationOperation()
         {
             if (!MatchToken(Token.MultiplicationOperatorToken)) return false;
+
             return true;
         }
 
@@ -495,12 +523,12 @@ namespace CMinusMinusCompiler
         {
             if (LexicalAnaylzer.Token == Token.NotOperatorToken)
             {
-                CurrentThreeAddressCodeOutput += LexicalAnaylzer.Lexeme;
+                ThreeAddressCodeOutput += LexicalAnaylzer.Lexeme;
                 LexicalAnaylzer.GetNextToken();
             }
             else if (LexicalAnaylzer.Token == Token.AdditionOperatorToken && LexicalAnaylzer.Lexeme == "-")
             {
-                CurrentThreeAddressCodeOutput += LexicalAnaylzer.Lexeme;
+                ThreeAddressCodeOutput += LexicalAnaylzer.Lexeme;
                 LexicalAnaylzer.GetNextToken();
             }
             return true;
@@ -510,12 +538,15 @@ namespace CMinusMinusCompiler
         private bool ProcessReturn()
         {
             if (!MatchToken(Token.ReturnToken)) return false;
-            CurrentThreeAddressCodeOutput = "\t_AX = ";
+
+             ;
+            ReturnStatement = true;
             if (!ProcessExpression()) return false;
-            OutputThreeAddressCode(CurrentThreeAddressCodeOutput);
+            OutputThreeAddressCode($"\t_AX = {ThreeAddressCodeOutput}");
             if (!MatchToken(Token.SemiColonToken)) return false;
-            if (!InsertFunctionNode()) return false;
+            ReturnStatement = false;
             DecreaseProgramStack();
+            if (!InsertFunctionNode()) return false;
             return true;
         }
 
@@ -526,11 +557,14 @@ namespace CMinusMinusCompiler
         {
             if (LexicalAnaylzer.Token == Token.IdentifierToken)
             {
+                if (!CheckDeclaredVariable()) return false;
+                ParameterStack.Push(LexicalAnaylzer.Lexeme);
                 LexicalAnaylzer.GetNextToken();
                 if (!ProcessParametersTail()) return false;
             }
             else if (LexicalAnaylzer.Token == Token.NumberToken)
             {
+                ParameterStack.Push(LexicalAnaylzer.Lexeme);
                 LexicalAnaylzer.GetNextToken();
                 if (!ProcessParametersTail()) return false;
             }
@@ -547,12 +581,14 @@ namespace CMinusMinusCompiler
             { // TODO: This isn't good - will work for this grammar but shouldn't be checking just next character like so
                 LexicalAnaylzer.GetNextToken();
                 if (!CheckDeclaredVariable()) return false;
+                ParameterStack.Push(LexicalAnaylzer.Lexeme);
                 if (!MatchToken(Token.IdentifierToken)) return false;
                 if (!ProcessParametersTail()) return false;
             }
             else if (LexicalAnaylzer.Token == Token.CommaToken && LexicalAnaylzer.IsDigitCharacter(LexicalAnaylzer.LookNextCharacter()))
             { // TODO: This isn't good - will work for this grammar but shouldn't be checking just next character like so
                 LexicalAnaylzer.GetNextToken();
+                ParameterStack.Push(LexicalAnaylzer.Lexeme);
                 if (!MatchToken(Token.NumberToken)) return false;
                 if (!ProcessParametersTail()) return false;
             }
@@ -637,14 +673,14 @@ namespace CMinusMinusCompiler
             Depth++;
             LocalOffsets.Push(LocalOffset);
             ParameterOffsets.Push(ParameterOffset);
-            LocalOffset = -2;
-            ParameterOffset = 4;
+            LocalOffset = BaseLocalOffset;
+            ParameterOffset = BaseParameterOffset;
         }
 
         // Decrements global program stack information
         private void DecreaseProgramStack()
         {
-            OutputThreeAddressCode($"endp{Environment.NewLine}");
+            OutputThreeAddressCode($"Endp {CurrentFunction.Lexeme}{Environment.NewLine}");
             SymbolTable.OutputSymbolTable(Depth);
             SymbolTable.DeleteDepth(Depth);
             Depth--;
@@ -652,13 +688,48 @@ namespace CMinusMinusCompiler
             ParameterOffset = ParameterOffsets.Pop();
         }
 
-        // Returns the tempory variable name of the current token's lexeme
-        private string GetTemporaryLexemeVariableName()
+        // Prints to three address code the contents of the parameter stack, and resets stack
+        private void PrintThreeAddressCodeParameterStack()
         {
-            Node node = SymbolTable.LookupNode(LexicalAnaylzer.Lexeme);
+            foreach (string parameter in ParameterStack)
+            {
+                OutputThreeAddressCode($"\tPush {GetThreeAddressCodeName(parameter)}");
+            }
+            OutputThreeAddressCode($"\tCall {CurrentFunctionCall}");
+            ParameterStack = new Stack<string>();
+        }
 
-            if (node is VariableNode) return ("_bp" + ((VariableNode)node).Offset);
-            else if (node is ConstantNode) return (((ConstantNode)node).Value ?? ((ConstantNode)node).ValueReal).ToString(); 
+        // Returns the three address code variable name of the given lexeme
+        private string GetThreeAddressCodeName(string lexeme)
+        {
+            if (decimal.TryParse(lexeme, out decimal n))
+            {
+                OutputThreeAddressCode($"\t_bp{LocalOffset} = {lexeme}");
+
+                int prevousOffset = LocalOffset;
+                if (int.TryParse(lexeme, out int x)) LocalOffset -= IntegerSize;
+                else LocalOffset -= FloatSize;
+
+                return $"_bp{prevousOffset}";
+            }
+
+            Node node = SymbolTable.LookupNode(lexeme);
+            if (node is VariableNode)
+            { 
+                if (node.Depth == BaseDepth) return lexeme;
+                else return ("_bp" + ((VariableNode)node).Offset);
+            }
+            else if (node is ConstantNode)
+            {
+                string outputvalue = (((ConstantNode)node).Value ?? ((ConstantNode)node).ValueReal).ToString();
+                OutputThreeAddressCode($"\t_bp{LocalOffset} = {outputvalue}");
+
+                int prevousOffset = LocalOffset;
+                if (((ConstantNode)node).Value != null) LocalOffset -= IntegerSize;
+                else LocalOffset -= FloatSize;
+
+                return $"_bp{prevousOffset}";
+            }
 
             CommonTools.PromptProgramErrorExit($"ERROR: Line {LexicalAnaylzer.LineNumber} Invalid use of function {node.Lexeme}");
             return string.Empty;
@@ -706,7 +777,7 @@ namespace CMinusMinusCompiler
         private void OutputThreeAddressCode(string output)
         {
             if (CommonTools.ThreeAddressCodeRun) CommonTools.WriteOutput(output);
-            CurrentThreeAddressCodeOutput = string.Empty;
+            ThreeAddressCodeOutput = string.Empty;
         }
     }
 }

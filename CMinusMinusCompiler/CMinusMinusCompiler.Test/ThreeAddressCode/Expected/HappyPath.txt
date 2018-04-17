@@ -1,1 +1,32 @@
-﻿
+﻿Proc foo
+	_bp-4 = 2.2
+	_bp-2 = _bp-4
+	_bp-8 = 2.2
+	_AX = _bp-8
+Endp foo
+
+Proc main 
+	_bp-8 = -5
+	a = _bp-8
+	_bp-10 = 10.2
+	b = _bp-10
+	_bp-14 = 6
+	b = _bp-14
+	_bp-16 = 6
+	c = _bp-16
+	d = a
+	f = _bp-4
+	_bp-2 = _bp-2
+	Call foo
+	Push _bp-4
+	_bp-18 = 6
+	Push _bp-18
+	Push a
+	Call foo
+	_bp-20 = 1.25
+	Push _bp-20
+	_bp-24 = 1
+	Push _bp-24
+	Call foo
+	_AX = a
+Endp main

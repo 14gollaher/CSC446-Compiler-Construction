@@ -14,10 +14,24 @@ namespace CMinusMinusCompiler.Test
         }
 
         [TestMethod]
+        public void ThreeAddressCode_HappyPath2()
+        {
+            Bootstrapper.StartThreeAddressCodeDebug(new string[] { @"ThreeAddressCode\Source\HappyPath2.c" });
+            TestTools.CompareFileEquality(@"ThreeAddressCode\Expected\HappyPath2.txt", CommonTools.OutputFilePaths[0]);
+        }
+
+        [TestMethod]
         public void ThreeAddressCode_ClassCase1()
         {
             Bootstrapper.StartThreeAddressCodeDebug(new string[] { @"ThreeAddressCode\Source\ClassCase1.c" });
             TestTools.CompareFileEquality(@"ThreeAddressCode\Expected\ClassCase1.txt", CommonTools.OutputFilePaths[0]);
+        }
+
+        [TestMethod]
+        public void ThreeAddressCode_ReturnSoloConstant()
+        {
+            Bootstrapper.StartThreeAddressCodeDebug(new string[] { @"ThreeAddressCode\Source\ReturnSoloConstant.c" });
+            TestTools.CompareFileEquality(@"ThreeAddressCode\Expected\ReturnSoloConstant.txt", CommonTools.OutputFilePaths[0]);
         }
     }
 }

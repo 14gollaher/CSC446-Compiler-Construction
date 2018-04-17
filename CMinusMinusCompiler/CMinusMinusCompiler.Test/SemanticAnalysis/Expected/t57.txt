@@ -1,2 +1,9 @@
-﻿ERROR: Line 6 Duplicate lexeme "a" with depth "1" exists
+﻿** Symbol Table at Depth 2 **
+Lexeme          Class        Depth     Offset    Type         Size      Value(r)
+--------------------------------------------------------------------------------
+x               Variable     2         4         IntToken     2         -
+y               Variable     2         6         IntToken     2         -
+
+
+ERROR: Line 6 Duplicate lexeme "a" with depth "1" exists
 Completed processing t57.c

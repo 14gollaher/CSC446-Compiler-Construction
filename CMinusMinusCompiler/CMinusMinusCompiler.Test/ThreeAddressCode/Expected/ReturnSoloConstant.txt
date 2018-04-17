@@ -1,0 +1,4 @@
+﻿Proc main
+	_bp-2 = 5.5
+	_AX = _bp-2
+Endp main
