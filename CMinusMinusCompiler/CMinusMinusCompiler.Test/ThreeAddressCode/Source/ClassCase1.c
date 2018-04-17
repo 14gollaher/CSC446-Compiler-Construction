@@ -1,14 +1,8 @@
-﻿int a, b, c, d;
-int x, y;
+﻿int a, b, c;
 int main()
 {
-	c = a + b / c + d;
-	return -1;
-}
-
-int func(int a, int b)
-{
-	int x, y;
-	a = x / y + (b - a);
+	a = 5;
+	b = 10;
+	c = a + b;
 	return -1;
 }

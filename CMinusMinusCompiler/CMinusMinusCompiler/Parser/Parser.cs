@@ -109,7 +109,7 @@ namespace CMinusMinusCompiler
         private ConstantNode CurrentConstant { get; set; } = new ConstantNode();
         private VariableNode CurrentVariable { get; set; } = new VariableNode();
         private Token CurrentVariableType { get; set; }
-        private string TemporaryVariableName { get; set; } = "_bp-0";
+        private string CurrentThreeAddressCodeOutput { get; set; } = string.Empty;
 
         // Parameterized constructor requires a lexical analyzer and symbol table
         public Parser(LexicalAnalyzer lexicalAnalyzer, SymbolTable symbolTable)
@@ -193,7 +193,7 @@ namespace CMinusMinusCompiler
         {
             if (LexicalAnaylzer.Token == Token.LeftParenthesisToken)
             {
-                OutputThreeAddressCode("proc " + CurrentFunction.Lexeme);
+                OutputThreeAddressCode($"proc {CurrentFunction.Lexeme}");
                 CurrentFunction.Depth = Depth;
                 IncreaseProgramStack();
                 LexicalAnaylzer.GetNextToken();
@@ -347,6 +347,7 @@ namespace CMinusMinusCompiler
         private bool ProcessAssignmentStatement()
         {
             if (!CheckDeclaredVariable()) return false;
+            CurrentVariable.Lexeme = LexicalAnaylzer.Lexeme;
             if (!MatchToken(Token.IdentifierToken)) return false;
             if (!MatchToken(Token.AssignmentOperatorToken)) return false;
 
@@ -357,8 +358,8 @@ namespace CMinusMinusCompiler
             else
             {
                 if (!ProcessExpression()) return false;
-            }
 
+            }
             return true;
         }
 
@@ -404,6 +405,14 @@ namespace CMinusMinusCompiler
             return true;
         }
 
+        // Term -> Factor MoreFactor
+        private bool ProcessTerm()
+        {
+            if (!ProcessFactor()) return false;
+            if (!ProcessMoreFactor()) return false;
+            return true;
+        }
+
         // MoreTerm -> AdditionOperation Term MoreTerm |
         //             e
         private bool ProcessMoreTerm()
@@ -417,11 +426,33 @@ namespace CMinusMinusCompiler
             return true;
         }
 
-        // Term -> Factor MoreFactor
-        private bool ProcessTerm()
+        // Factor -> IdentifierToken |
+        //           NumberToken |
+        //           LeftParenthesisToken Expression RightParenthesisToken
+        private bool ProcessFactor()
         {
-            if (!ProcessFactor()) return false;
-            if (!ProcessMoreFactor()) return false;
+            if (LexicalAnaylzer.Token == Token.IdentifierToken)
+            {
+                if (!CheckDeclaredVariable()) return false;
+                if (GetTemporaryLexemeVariableName() == string.Empty) return false;
+                CurrentThreeAddressCodeOutput += GetTemporaryLexemeVariableName();
+                LexicalAnaylzer.GetNextToken();
+            }
+            else if (LexicalAnaylzer.Token == Token.NumberToken)
+            {
+                CurrentVariable.Offset = LocalOffset;
+                OutputThreeAddressCode($"\t{GetTemporaryVariableName()} = {CurrentThreeAddressCodeOutput}{LexicalAnaylzer.Lexeme}");
+                LexicalAnaylzer.GetNextToken();
+                LocalOffset -= 2; // TODO: CASE WHEN IT IS FOUR?
+            }
+            else
+            {
+                if (!MatchToken(Token.LeftParenthesisToken)) return false;
+                if (!ProcessExpression()) return false;
+                if (!MatchToken(Token.RightParenthesisToken)) return false;
+            }
+
+            OutputThreeAddressCode($"\t{CurrentVariable.Lexeme} = {GetTemporaryVariableName()}");
             return true;
         }
 
@@ -434,32 +465,6 @@ namespace CMinusMinusCompiler
                 if (!ProcessMultiplicationOperation()) return false;
                 if (!ProcessFactor()) return false;
                 if (!ProcessMoreFactor()) return false;
-            }
-            return true;
-        }
-
-        // Factor -> IdentifierToken |
-        //           NumberToken |
-        //           LeftParenthesisToken Expression RightParenthesisToken
-        private bool ProcessFactor()
-        {
-            if (LexicalAnaylzer.Token == Token.IdentifierToken)
-            {
-                if (!CheckDeclaredVariable()) return false;
-                LexicalAnaylzer.GetNextToken();
-            }
-            else if (LexicalAnaylzer.Token == Token.NumberToken)
-            {
-                CurrentVariable.Offset = LocalOffset;
-                CurrentVariable.Lexeme = GetNewTemporaryVariableName();
-                LexicalAnaylzer.GetNextToken();
-                LocalOffset += 2; // TODO OR IS IT FOUR?
-            }
-            else
-            {
-                if (!MatchToken(Token.LeftParenthesisToken)) return false;
-                if (!ProcessExpression()) return false;
-                if (!MatchToken(Token.RightParenthesisToken)) return false;
             }
             return true;
         }
@@ -490,10 +495,12 @@ namespace CMinusMinusCompiler
         {
             if (LexicalAnaylzer.Token == Token.NotOperatorToken)
             {
+                CurrentThreeAddressCodeOutput += LexicalAnaylzer.Lexeme;
                 LexicalAnaylzer.GetNextToken();
             }
             else if (LexicalAnaylzer.Token == Token.AdditionOperatorToken && LexicalAnaylzer.Lexeme == "-")
             {
+                CurrentThreeAddressCodeOutput += LexicalAnaylzer.Lexeme;
                 LexicalAnaylzer.GetNextToken();
             }
             return true;
@@ -503,7 +510,9 @@ namespace CMinusMinusCompiler
         private bool ProcessReturn()
         {
             if (!MatchToken(Token.ReturnToken)) return false;
+            CurrentThreeAddressCodeOutput = "\t_AX = ";
             if (!ProcessExpression()) return false;
+            OutputThreeAddressCode(CurrentThreeAddressCodeOutput);
             if (!MatchToken(Token.SemiColonToken)) return false;
             if (!InsertFunctionNode()) return false;
             DecreaseProgramStack();
@@ -635,7 +644,7 @@ namespace CMinusMinusCompiler
         // Decrements global program stack information
         private void DecreaseProgramStack()
         {
-            OutputThreeAddressCode("endp");
+            OutputThreeAddressCode($"endp{Environment.NewLine}");
             SymbolTable.OutputSymbolTable(Depth);
             SymbolTable.DeleteDepth(Depth);
             Depth--;
@@ -643,11 +652,23 @@ namespace CMinusMinusCompiler
             ParameterOffset = ParameterOffsets.Pop();
         }
 
-        private string GetNewTemporaryVariableName()
+        // Returns the tempory variable name of the current token's lexeme
+        private string GetTemporaryLexemeVariableName()
         {
-            return ("_bp-" + CurrentVariable.Offset);
+            Node node = SymbolTable.LookupNode(LexicalAnaylzer.Lexeme);
+
+            if (node is VariableNode) return ("_bp" + ((VariableNode)node).Offset);
+            else if (node is ConstantNode) return (((ConstantNode)node).Value ?? ((ConstantNode)node).ValueReal).ToString(); 
+
+            CommonTools.PromptProgramErrorExit($"ERROR: Line {LexicalAnaylzer.LineNumber} Invalid use of function {node.Lexeme}");
+            return string.Empty;
         }
 
+        // Returns a new temporary variable, created by looking at current variable offset
+        private string GetTemporaryVariableName()
+        {
+            return ("_bp" + CurrentVariable.Offset);
+        }
 
         // Checks if an identifier exists as a variable node in symbol table and is in scope
         private bool CheckDeclaredVariable()
@@ -685,6 +706,7 @@ namespace CMinusMinusCompiler
         private void OutputThreeAddressCode(string output)
         {
             if (CommonTools.ThreeAddressCodeRun) CommonTools.WriteOutput(output);
+            CurrentThreeAddressCodeOutput = string.Empty;
         }
     }
 }

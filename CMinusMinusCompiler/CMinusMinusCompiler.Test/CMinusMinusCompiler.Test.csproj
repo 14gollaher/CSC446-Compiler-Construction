@@ -387,6 +387,12 @@
     <Content Include="SemanticAnalysis\Source\Constants.c">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="ThreeAddressCode\Expected\HappyPath.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ThreeAddressCode\Source\HappyPath.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="ThreeAddressCode\Source\ClassCase1.c">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
