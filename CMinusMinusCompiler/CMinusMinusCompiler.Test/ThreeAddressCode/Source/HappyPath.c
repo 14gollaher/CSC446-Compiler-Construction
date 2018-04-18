@@ -1,5 +1,6 @@
 ﻿int a, b, c, d, f;
 const x = 2.2;
+
 int foo()
 {
 	int a;
@@ -23,7 +24,7 @@ int main()
 	d = a;
 	f = y;
 
-	z = z;
+	z = -z;
 	c = foo();
 	c = foo(a, x, y);
 	d = foo(1, 1.25);

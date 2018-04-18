@@ -1,0 +1,21 @@
+﻿Proc test1
+	_bp-4 = _bp6 * _bp4
+	_bp-8 = 30
+	_bp-6 = _bp-4 + _bp-8
+	_bp-2 = _bp-6
+	_AX = _bp-2
+Endp test1
+
+Proc main
+	_bp-8 = 10
+	_bp-2 = _bp-8
+	_bp-10 = 20
+	_bp-4 = _bp-10
+	Push _bp-4
+	Push _bp-2
+	Call test1
+	_bp-6 = _AX
+	_AX = _bp-2
+Endp main
+
+Start Proc Main

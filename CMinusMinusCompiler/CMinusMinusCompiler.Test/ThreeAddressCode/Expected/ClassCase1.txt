@@ -1,1 +1,12 @@
-﻿
+﻿Proc main
+	_bp-2 = 5
+	a = _bp-2
+	_bp-4 = 10
+	b = _bp-4
+	_bp-6 = a + b
+	c = _bp-6
+	_bp-8 = -1
+	_AX = _bp-8
+Endp main
+
+Start Proc Main

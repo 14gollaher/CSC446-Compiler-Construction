@@ -13,9 +13,7 @@
         Code Generator (TODO)
 
 
-    Todo: * What is offset of _bp-x etc if it is a float value?
-          * What is offset of _bp-x etc if it is a const float value?
-          * Is it okay if I make new _bp-x each time i'm assigning to a constant?
+    Todo: * Fix offsets
 */
 
 namespace CMinusMinusCompiler

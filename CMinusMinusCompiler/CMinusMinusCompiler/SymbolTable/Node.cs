@@ -1,7 +1,7 @@
 ﻿namespace CMinusMinusCompiler
 {
     // Class to hold symbol information used by other components of compiler
-    public abstract class Node
+    public class Node
     {
         // Public propertiies
         public string Lexeme { get; set; }

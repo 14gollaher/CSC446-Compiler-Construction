@@ -1,0 +1,18 @@
+﻿Proc foo
+	_bp-4 = _bp-2 * _bp-2
+	_bp-6 = _bp-4 + _bp-2
+	_AX = _bp-6
+Endp foo
+
+Proc main
+	_bp-6 = _bp-2 * _bp-2
+	_bp-4 = _bp-2 + _bp-6
+	_bp-2 = _bp-4
+	Push b
+	Push _bp-2
+	Call foo
+	_bp-2 = _AX
+	_AX = _bp-2
+Endp main
+
+Start Proc Main

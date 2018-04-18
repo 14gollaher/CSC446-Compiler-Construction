@@ -1,0 +1,4 @@
+﻿Proc main
+	_bp-2 = 2.5
+ERROR: Line 5 Invalid assignment to z
+Start Proc Main

@@ -16,17 +16,22 @@ Proc main
 	c = _bp-16
 	d = a
 	f = _bp-4
-	_bp-2 = _bp-2
+	_bp-2 = -_bp-2
 	Call foo
+	c = _AX
 	Push _bp-4
 	_bp-18 = 6
 	Push _bp-18
 	Push a
 	Call foo
+	c = _AX
 	_bp-20 = 1.25
 	Push _bp-20
 	_bp-24 = 1
 	Push _bp-24
 	Call foo
+	d = _AX
 	_AX = a
 Endp main
+
+Start Proc Main

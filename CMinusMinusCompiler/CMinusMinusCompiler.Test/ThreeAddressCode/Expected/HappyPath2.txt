@@ -1,18 +1,37 @@
-﻿int a, b, c, d;
+﻿Proc main
+	_bp-8 = 2.2
+	_bp-6 = a + _bp-8
+	_bp-2 = _bp-6
+	_bp-12 = a + b
+	_bp-16 = 2.2
+	_bp-14 = _bp-12 + _bp-16
+	_bp-22 = 2.5
+	_bp-20 = _bp-14 + _bp-22
+	_bp-4 = _bp-20
+	_bp-2 = !_bp-2
+	_bp-26 = 2.25
+	_bp-32 = 2.5
+	_bp-36 = _bp-32 + _bp-4
+	_bp-38 = _bp-36 * b
+	_bp-30 = _bp-26 - _bp-38
+	_bp-42 = 4
+	_bp-40 = _bp-30 + _bp-42
+	_bp-4 = _bp-40
+	_bp-44 = 2
+	_bp-46 = _bp-44 * a
+	_bp-50 = b + _bp-2
+	_bp-48 = _bp-46 + _bp-50
+	_bp-54 = 2
+	_bp-52 = _bp-48 + _bp-54
+	_bp-58 = 3
+	_bp-56 = _bp-52 + _bp-58
+	a = _bp-56
+	_bp-60 = 2.5
+	_bp-66 = a + _bp-4
+	_bp-70 = 2
+	_bp-68 = _bp-66 * _bp-70
+	_bp-64 = _bp-60 - _bp-68
+	_AX = _bp-64
+Endp main
 
-int main()
-{
-	const x = 6;
-
-	a = -5;
-	b = 10;
-	b = a;
-	c = x;
-	d = a;
-	return a;
-}
-
-int foo()
-{
-	return -5;
-}
+Start Proc Main

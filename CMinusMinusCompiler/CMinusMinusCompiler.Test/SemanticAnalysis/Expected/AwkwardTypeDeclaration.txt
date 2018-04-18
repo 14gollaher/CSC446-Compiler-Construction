@@ -3,5 +3,5 @@ Lexeme          Class        Depth     Offset    Type         Size      Value(r)
 --------------------------------------------------------------------------------
 
 
-ERROR: Line 12 Invalid use of function main
+ERROR: Line 12 Invalid assignment to main
 Completed processing AwkwardTypeDeclaration.c
