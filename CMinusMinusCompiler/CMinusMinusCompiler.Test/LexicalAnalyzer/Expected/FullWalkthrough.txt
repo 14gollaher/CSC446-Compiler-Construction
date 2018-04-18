@@ -26,10 +26,9 @@ break                                  BreakToken
 /                                      MultiplicationOperatorToken    
 /                                      MultiplicationOperatorToken    
 <=                                     RelationalOperatorToken        
->                                      RelationalOperatorToken        
->=                                     RelationalOperatorToken        
+>>                                      RightShiftOperatorToken        
 ==                                     RelationalOperatorToken        
-=                                      AssignmentOperatorToken        
+==                                     RelationalOperatorToken        
 ;                                      SemiColonToken                 
 +                                      AdditionOperatorToken          
 or                                     IdentifierToken                

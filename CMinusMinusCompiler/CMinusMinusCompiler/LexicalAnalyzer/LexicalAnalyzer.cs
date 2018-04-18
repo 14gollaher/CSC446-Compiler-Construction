@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
 
 namespace CMinusMinusCompiler
 {
@@ -24,7 +23,8 @@ namespace CMinusMinusCompiler
             { "if", Token.IfToken }, { "else", Token.ElseToken }, { "while", Token.WhileToken },
             { "float", Token.FloatToken }, { "int", Token.IntToken }, { "char", Token.CharToken },
             { "break", Token.BreakToken }, { "continue", Token.ContinueToken }, { "void", Token.VoidToken },
-            { "const", Token.ConstToken }, { "return", Token.ReturnToken }
+            { "const", Token.ConstToken }, { "return", Token.ReturnToken }, { "cin", Token.CharacterInToken },
+            { "cout", Token.CharacterOutToken }, { "endl", Token.EndLineToken }
         };
         private Dictionary<char, Token> SingleCharacterSymbols { get; } = new Dictionary<char, Token> {
             { ';', Token.SemiColonToken }, { '.', Token.PeriodToken }, { '(', Token.LeftParenthesisToken },
@@ -37,7 +37,8 @@ namespace CMinusMinusCompiler
         };
         private Dictionary<string, Token> DoubleCharactersSymbols { get; } = new Dictionary<string, Token> {
             { "==", Token.RelationalOperatorToken }, { "!=", Token.RelationalOperatorToken }, { "<=", Token.RelationalOperatorToken },
-            { ">=", Token.RelationalOperatorToken }, { "||", Token.AdditionOperatorToken }, { "&&", Token.MultiplicationOperatorToken }
+            { ">=", Token.RelationalOperatorToken }, { "||", Token.AdditionOperatorToken }, { "&&", Token.MultiplicationOperatorToken },
+            { "<<", Token.LeftShiftOperatorToken}, { ">>", Token.RightShiftOperatorToken } 
         };
         private static string OutputFormat { get; } = "{0,-38} {1,-30} {2}";
 
@@ -324,6 +325,7 @@ namespace CMinusMinusCompiler
         VoidToken, CommaToken, SemiColonToken, AssignmentOperatorToken, EndOfFileToken, AdditionOperatorToken,
         MultiplicationOperatorToken, NumberToken, LeftParenthesisToken, RightParenthesisToken, LeftBraceToken,
         RightBraceToken, LeftBracketToken, RightBracketToken, PeriodToken, QuotationsSymbol, ConstToken,
-        RelationalOperatorToken, IdentifierToken, StringLiteralToken, UnderscoreToken, NotOperatorToken, UnknownToken
+        RelationalOperatorToken, IdentifierToken, StringLiteralToken, UnderscoreToken, NotOperatorToken, EndLineToken,
+        LeftShiftOperatorToken, RightShiftOperatorToken, CharacterInToken, CharacterOutToken, UnknownToken,
     }
 }

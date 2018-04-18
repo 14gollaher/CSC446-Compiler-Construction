@@ -15,6 +15,7 @@ namespace CMinusMinusCompiler
         public static bool ParserDebug { get; set; }
         public static bool SemanticAnalysisDebug { get; set; }
         public static bool ThreeAddressCodeRun { get; set; }
+        public static bool CodeGeneratorRun { get; set; }
 
         // Writes the output to the screen and output file
         public static void WriteOutput(string output)
@@ -53,7 +54,7 @@ namespace CMinusMinusCompiler
         }
 
         // Create an output directory for specified path
-        public static void CreateOutputDirectory(string[] outputFilePaths)
+        public static void SetuputOutputResources(string[] outputFilePaths)
         {
             OutputFilePaths = outputFilePaths;
             foreach (string path in OutputFilePaths)

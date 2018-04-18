@@ -7,10 +7,10 @@
         Lexical Analyzer (DONE)
         Syntax Analyzer (DONE)
         Symbol Table (DONE)
-        Semantic Analysis (IN PROGRESS)
-        Intermediate Code Generator (IN PROGRESS)
-        Code Optimizer (TODO)
-        Code Generator (TODO)
+        Semantic Analysis (DONE)
+        Intermediate Code Generator (DONE)
+        Code Optimizer (SKIPPED)
+        Code Generator (IN PRODGRESS)
 
 
     Todo: * Fix offsets

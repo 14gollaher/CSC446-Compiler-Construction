@@ -51,6 +51,7 @@
     <Compile Include="Common\AssemblyInitializer.cs" />
     <Compile Include="LexicalAnalyzer\LexicalAnalyzer_Test.cs" />
     <Compile Include="SemanticAnalysis\SemanticAnalysis_Test.cs" />
+    <Compile Include="CodeGenerator\CodeGenerator_Test.cs" />
     <Compile Include="ThreeAddressCode\ThreeAddressCode_Test.cs" />
     <Compile Include="SymbolTable\SymbolTable_Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,6 +70,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="CodeGenerator\Source\HappyPath.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="LexicalAnalyzer\Expected\FullWalkthrough.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -385,6 +389,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SemanticAnalysis\Source\Constants.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeGenerator\Expected\HappyPath.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ThreeAddressCode\Expected\ClassCase4.txt">

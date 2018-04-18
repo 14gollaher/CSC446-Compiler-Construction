@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Common\Bootstrapper.cs" />
     <Compile Include="Common\CommonTools.cs" />
+    <Compile Include="CodeGenerator\CodeGenerator.cs" />
     <Compile Include="SymbolTable\ConstantNode.cs" />
     <Compile Include="SymbolTable\FunctionNode.cs" />
     <Compile Include="SymbolTable\Node.cs" />
