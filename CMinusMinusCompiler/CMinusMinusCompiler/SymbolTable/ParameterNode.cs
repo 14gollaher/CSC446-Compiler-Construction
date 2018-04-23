@@ -1,11 +1,19 @@
-﻿namespace CMinusMinusCompiler
+﻿using System;
+
+namespace CMinusMinusCompiler
 {
     // Class to hold properties specific to parameter node
 
-    // ** Assuming we may add more to this later, else
-    // an object with 1 property is unecessary
     public class ParameterNode
     {
         public Token Type { get; set; }
+        public int Size { get
+            {
+                if (Type == Token.IntToken) return GlobalConfiguration.IntegerSize;
+                else if (Type == Token.FloatToken) return GlobalConfiguration.FloatSize;
+                else if (Type == Token.CharToken) return GlobalConfiguration.CharacterSize;
+                else return -1;
+            }
+        }
     }
 }

@@ -21,7 +21,7 @@ b1              Variable     1         -4         IntToken     2         -
 c1              Variable     1         -6         FloatToken   4         -
 d1              Variable     1         -10         CharToken    1         -
 e1              Variable     1         -11         IntToken     2         -
-dog             Function     1         -         IntToken     6         -
+dog             Function     1         -         IntToken     5         -
 -               Parameter    -         -         CharToken    -         -
 main            Function     1         -         IntToken     8         -
 

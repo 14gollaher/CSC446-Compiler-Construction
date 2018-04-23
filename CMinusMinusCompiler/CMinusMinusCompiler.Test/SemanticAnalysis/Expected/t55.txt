@@ -19,7 +19,7 @@ Lexeme          Class        Depth     Offset    Type         Size      Value(r)
 ** Symbol Table at Depth 1 **
 Lexeme          Class        Depth     Offset    Type         Size      Value(r)
 --------------------------------------------------------------------------------
-two             Function     1         -         IntToken     8         -
+two             Function     1         -         IntToken     4         -
 -               Parameter    -         -         IntToken     -         -
 -               Parameter    -         -         IntToken     -         -
 main            Function     1         -         IntToken     0         -

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.IO;
 
 namespace CMinusMinusCompiler
@@ -17,15 +16,14 @@ namespace CMinusMinusCompiler
             //StartSymbolTable();
             //StartThreeAddressCode(arguments);
             StartCodeGenerator(arguments);
-
         }
 
         // Initializes and runs Lexical Analysis module 
         public static void StartLexicalAnalyzer(string[] arguments)
         {
             ValidateArguments(arguments);
-            CommonTools.SetuputOutputResources(new string[] { ConfigurationManager.AppSettings["LexicalAnalyzerOutputPath"] });
-            CommonTools.ClearDisplays();
+            CommonTools.SetupOutputs(new string[] { GlobalConfiguration.LexicalAnalyzerOutputPath });
+            CommonTools.ClearOutputDisplays();
 
             LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(arguments[0]);
             CommonTools.DisplayHeader = lexicalAnalyzer.DisplayTokenHeader;
@@ -43,8 +41,8 @@ namespace CMinusMinusCompiler
         public static void StartParser(string[] arguments)
         {
             ValidateArguments(arguments);
-            CommonTools.SetuputOutputResources(new string[] { ConfigurationManager.AppSettings["ParserOutputPath"] });
-            CommonTools.ClearDisplays();
+            CommonTools.SetupOutputs(new string[] { GlobalConfiguration.LexicalAnalyzerOutputPath });
+            CommonTools.ClearOutputDisplays();
 
             LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(arguments[0]);
             lexicalAnalyzer.GetNextToken();
@@ -61,21 +59,21 @@ namespace CMinusMinusCompiler
         // Initializes and runs Symbol Table module
         public static void StartSymbolTable()
         {
-            CommonTools.SetuputOutputResources(new string[] {ConfigurationManager.AppSettings["SymbolTableOutputPath"]});
-            CommonTools.ClearDisplays();
+            CommonTools.SetupOutputs(new string[] { GlobalConfiguration.SymbolTableOutputPath });
+            CommonTools.ClearOutputDisplays();
             CommonTools.PromptProgramExit();
         }
 
         // Initializes and runs Three Address Code module
         public static void StartThreeAddressCode(string[] arguments)
         {
+            CommonTools.ThreeAddressCodeRun = true;
             ValidateArguments(arguments);
-            CommonTools.SetuputOutputResources
-                (new string[] { ConfigurationManager.AppSettings["ThreeAddressCodeOutputPath"],
+            CommonTools.SetupOutputs
+                (new string[] { GlobalConfiguration.ThreeAddressCodeOutputPath,
                                 AppendFileExtension(arguments[0], "tac") });
 
-            CommonTools.ClearDisplays();
-            CommonTools.ThreeAddressCodeRun = true;
+            CommonTools.ClearOutputDisplays();
 
             LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(arguments[0]);
             lexicalAnalyzer.GetNextToken();
@@ -90,11 +88,11 @@ namespace CMinusMinusCompiler
         // Initializes and runs Code Generator module
         public static void StartCodeGenerator(string[] arguments)
         {
-            ValidateArguments(arguments);
-            CommonTools.SetuputOutputResources(new string[] { AppendFileExtension(arguments[0], "tac") });
-
-            CommonTools.ClearDisplays();
             CommonTools.ThreeAddressCodeRun = true;
+            ValidateArguments(arguments);
+            CommonTools.SetupOutputs(new string[] { GlobalConfiguration.ThreeAddressCodeOutputPath,
+                                                    AppendFileExtension(arguments[0], "tac") });
+            CommonTools.ClearOutputDisplays();
 
             LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(arguments[0]);
             lexicalAnalyzer.GetNextToken();
@@ -104,10 +102,11 @@ namespace CMinusMinusCompiler
 
             if (parser.Start())
             {
-                CommonTools.SetuputOutputResources
-                    (new string[] { ConfigurationManager.AppSettings["CodeGeneratorOutputPath"],
+                CommonTools.SetupOutputs
+                    (new string[] { GlobalConfiguration.CodeGeneratorOutputPath,
                                     AppendFileExtension(arguments[0], "asm") });
-                CodeGenerator codeGenerator = new CodeGenerator(AppendFileExtension(arguments[0], "asm"), symbolTable);
+                CommonTools.ClearOutputDisplays();
+                CodeGenerator codeGenerator = new CodeGenerator(AppendFileExtension(arguments[0], "tac"), symbolTable);
                 codeGenerator.Start();
             }
 
@@ -141,22 +140,19 @@ namespace CMinusMinusCompiler
         public static void StartCodeGeneratorDebug(string[] arguments)
         {
             StartCodeGenerator(arguments);
-            CommonTools.CodeGeneratorRun = false;
+            CommonTools.ThreeAddressCodeRun = false;
         }
 
+        // Validates that a single comman line argument exists and its path is valid
         private static bool ValidateArguments(string[] arguments)
         {
-            if (arguments.Length == 1)
-            {
-                return CommonTools.CheckFilePathExists(arguments[0]);
-            }
-            else
-            {
-                Console.WriteLine("ERROR: Usage expected 1 command line argument");
-                return false;
-            }
+            if (arguments.Length == 1) return CommonTools.CheckFilePathExists(arguments[0]);
+
+            CommonTools.WriteOutput("ERROR: Usage expected 1 command line argument");
+            return false;
         }
 
+        // Gets file name from a given path and appends given extension to paht 
         private static string AppendFileExtension(string path, string extension)
         {
             return $"{Path.GetFileNameWithoutExtension(path)}.{extension}";

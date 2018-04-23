@@ -14,11 +14,11 @@
                 switch (Type)
                 {
                     case Token.CharToken:
-                        return Parser.CharacterSize;
+                        return GlobalConfiguration.CharacterSize;
                     case Token.IntToken:
-                        return Parser.IntegerSize;
+                        return GlobalConfiguration.IntegerSize;
                     case Token.FloatToken:
-                        return Parser.FloatSize;
+                        return GlobalConfiguration.FloatSize;
                     default:
                         return -1;
                 }

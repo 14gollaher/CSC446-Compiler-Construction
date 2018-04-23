@@ -1,6 +1,6 @@
-﻿Proc main
-	_bp-2 = 5.5
-	_AX = _bp-2
-Endp main
+﻿PROC main
+	_BP-2 = 5.5
+	_AX = _BP-2
+ENDP main
 
-Start Proc Main
+START PROC main

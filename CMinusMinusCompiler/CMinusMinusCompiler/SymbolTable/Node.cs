@@ -12,7 +12,9 @@
         {
             if (this is VariableNode) return "Variable";
             else if (this is ConstantNode) return "Constant";
-            else return "Function";
+            else if (this is FunctionNode) return "Function";
+            else if (this is StringLiteralNode) return "StringLiteral";
+            else return "Node";
         }
     }
 }

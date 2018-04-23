@@ -23,10 +23,10 @@ p               Variable     2         -2         IntToken     2         -
 Lexeme          Class        Depth     Offset    Type         Size      Value(r)
 --------------------------------------------------------------------------------
 beforeMain      Function     1         -         IntToken     0         -
-main            Function     1         -         CharToken    4         -
+main            Function     1         -         CharToken    0         -
 -               Parameter    -         -         IntToken     -         -
 -               Parameter    -         -         IntToken     -         -
-afterMain       Function     1         -         FloatToken   9         -
+afterMain       Function     1         -         FloatToken   2         -
 -               Parameter    -         -         CharToken    -         -
 -               Parameter    -         -         IntToken     -         -
 -               Parameter    -         -         FloatToken   -         -

@@ -1,2 +1,1 @@
 ﻿ERROR: No required function "main" exists
-Completed processing InvalidProgram.c

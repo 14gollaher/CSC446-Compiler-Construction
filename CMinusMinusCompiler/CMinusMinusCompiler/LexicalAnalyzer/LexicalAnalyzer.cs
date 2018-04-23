@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 
 namespace CMinusMinusCompiler
@@ -173,8 +172,7 @@ namespace CMinusMinusCompiler
         {
             ProcessRemainingWordToken();
 
-            int MaximumIdentifierLength 
-                = Int32.Parse(ConfigurationManager.AppSettings["MaximumIdentifierLength"]);
+            int MaximumIdentifierLength = GlobalConfiguration.MaximumIdentifierLength;
 
             if (Lexeme.Length > MaximumIdentifierLength)
             {

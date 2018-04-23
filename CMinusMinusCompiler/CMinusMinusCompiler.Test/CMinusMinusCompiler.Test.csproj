@@ -70,6 +70,12 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="CodeGenerator\Expected\ConsoleInputOutput.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeGenerator\Source\ConsoleInputOutput.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="CodeGenerator\Source\HappyPath.c">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -394,6 +400,9 @@
     <Content Include="CodeGenerator\Expected\HappyPath.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="ThreeAddressCode\Expected\NoMain.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="ThreeAddressCode\Expected\ClassCase4.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -416,6 +425,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ThreeAddressCode\Expected\HappyPath.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ThreeAddressCode\Source\NoMain.c">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ThreeAddressCode\Source\ClassCase4.c">

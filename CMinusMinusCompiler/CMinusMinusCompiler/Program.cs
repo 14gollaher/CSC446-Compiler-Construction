@@ -9,11 +9,8 @@
         Symbol Table (DONE)
         Semantic Analysis (DONE)
         Intermediate Code Generator (DONE)
-        Code Optimizer (SKIPPED)
-        Code Generator (IN PRODGRESS)
-
-
-    Todo: * Fix offsets
+        Code Optimizer (DONE)
+        Code Generator (IN PROGRESS)
 */
 
 namespace CMinusMinusCompiler

@@ -46,9 +46,11 @@
     <Compile Include="Common\Bootstrapper.cs" />
     <Compile Include="Common\CommonTools.cs" />
     <Compile Include="CodeGenerator\CodeGenerator.cs" />
+    <Compile Include="Common\GlobalConfiguration.cs" />
     <Compile Include="SymbolTable\ConstantNode.cs" />
     <Compile Include="SymbolTable\FunctionNode.cs" />
     <Compile Include="SymbolTable\Node.cs" />
+    <Compile Include="SymbolTable\StringLiteralNode.cs" />
     <Compile Include="SymbolTable\ParameterNode.cs" />
     <Compile Include="SymbolTable\SymbolTable.cs" />
     <Compile Include="SymbolTable\VariableNode.cs" />

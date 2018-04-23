@@ -19,7 +19,7 @@ main            Function     1         -         IntToken     0         -
 x               Variable     1         -2         IntToken     2         -
 y               Variable     1         -4         IntToken     2         -
 z               Variable     1         -6         FloatToken   4         -
-a               Function     1         -         IntToken     6         -
+a               Function     1         -         IntToken     2         -
 -               Parameter    -         -         IntToken     -         -
 -               Parameter    -         -         IntToken     -         -
 

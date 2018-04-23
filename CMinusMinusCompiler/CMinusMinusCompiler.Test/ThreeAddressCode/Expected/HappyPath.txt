@@ -1,37 +1,37 @@
-﻿Proc foo
-	_bp-4 = 2.2
-	_bp-2 = _bp-4
-	_bp-8 = 2.2
-	_AX = _bp-8
-Endp foo
+﻿PROC foo
+	_BP-4 = 2.2
+	_BP-2 = _BP-4
+	_BP-8 = 2.2
+	_AX = _BP-8
+ENDP foo
 
-Proc main 
-	_bp-8 = -5
-	a = _bp-8
-	_bp-10 = 10.2
-	b = _bp-10
-	_bp-14 = 6
-	b = _bp-14
-	_bp-16 = 6
-	c = _bp-16
+PROC main 
+	_BP-8 = -5
+	a = _BP-8
+	_BP-10 = 10.2
+	b = _BP-10
+	_BP-14 = 6
+	b = _BP-14
+	_BP-16 = 6
+	c = _BP-16
 	d = a
-	f = _bp-4
-	_bp-2 = -_bp-2
-	Call foo
+	f = _BP-4
+	_BP-2 = -_BP-2
+	_CALL foo
 	c = _AX
-	Push _bp-4
-	_bp-18 = 6
-	Push _bp-18
-	Push a
-	Call foo
+	_PUSH _BP-4
+	_BP-18 = 6
+	_PUSH _BP-18
+	_PUSH a
+	_CALL foo
 	c = _AX
-	_bp-20 = 1.25
-	Push _bp-20
-	_bp-24 = 1
-	Push _bp-24
-	Call foo
+	_BP-20 = 1.25
+	_PUSH _BP-20
+	_BP-24 = 1
+	_PUSH _BP-24
+	_CALL foo
 	d = _AX
 	_AX = a
-Endp main
+ENDP main
 
-Start Proc Main
+START PROC main

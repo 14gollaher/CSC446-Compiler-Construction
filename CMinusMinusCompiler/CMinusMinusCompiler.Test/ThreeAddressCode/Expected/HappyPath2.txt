@@ -1,37 +1,37 @@
-﻿Proc main
-	_bp-8 = 2.2
-	_bp-6 = a + _bp-8
-	_bp-2 = _bp-6
-	_bp-12 = a + b
-	_bp-16 = 2.2
-	_bp-14 = _bp-12 + _bp-16
-	_bp-22 = 2.5
-	_bp-20 = _bp-14 + _bp-22
-	_bp-4 = _bp-20
-	_bp-2 = !_bp-2
-	_bp-26 = 2.25
-	_bp-32 = 2.5
-	_bp-36 = _bp-32 + _bp-4
-	_bp-38 = _bp-36 * b
-	_bp-30 = _bp-26 - _bp-38
-	_bp-42 = 4
-	_bp-40 = _bp-30 + _bp-42
-	_bp-4 = _bp-40
-	_bp-44 = 2
-	_bp-46 = _bp-44 * a
-	_bp-50 = b + _bp-2
-	_bp-48 = _bp-46 + _bp-50
-	_bp-54 = 2
-	_bp-52 = _bp-48 + _bp-54
-	_bp-58 = 3
-	_bp-56 = _bp-52 + _bp-58
-	a = _bp-56
-	_bp-60 = 2.5
-	_bp-66 = a + _bp-4
-	_bp-70 = 2
-	_bp-68 = _bp-66 * _bp-70
-	_bp-64 = _bp-60 - _bp-68
-	_AX = _bp-64
-Endp main
+﻿PROC main
+	_BP-8 = 2.2
+	_BP-6 = a + _BP-8
+	_BP-2 = _BP-6
+	_BP-12 = a + b
+	_BP-16 = 2.2
+	_BP-14 = _BP-12 + _BP-16
+	_BP-22 = 2.5
+	_BP-20 = _BP-14 + _BP-22
+	_BP-4 = _BP-20
+	_BP-2 = !_BP-2
+	_BP-26 = 2.25
+	_BP-32 = 2.5
+	_BP-36 = _BP-32 + _BP-4
+	_BP-38 = _BP-36 * b
+	_BP-30 = _BP-26 - _BP-38
+	_BP-42 = 4
+	_BP-40 = _BP-30 + _BP-42
+	_BP-4 = _BP-40
+	_BP-44 = 2
+	_BP-46 = _BP-44 * a
+	_BP-50 = b + _BP-2
+	_BP-48 = _BP-46 + _BP-50
+	_BP-54 = 2
+	_BP-52 = _BP-48 + _BP-54
+	_BP-58 = 3
+	_BP-56 = _BP-52 + _BP-58
+	a = _BP-56
+	_BP-60 = 2.5
+	_BP-66 = a + _BP-4
+	_BP-70 = 2
+	_BP-68 = _BP-66 * _BP-70
+	_BP-64 = _BP-60 - _BP-68
+	_AX = _BP-64
+ENDP main
 
-Start Proc Main
+START PROC main

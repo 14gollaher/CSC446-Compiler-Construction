@@ -35,6 +35,13 @@ namespace CMinusMinusCompiler.Test
         }
 
         [TestMethod]
+        public void ThreeAddressCode_NoMain()
+        {
+            Bootstrapper.StartThreeAddressCodeDebug(new string[] { @"ThreeAddressCode\Source\NoMain.c" });
+            TestTools.CompareFileEquality(@"ThreeAddressCode\Expected\NoMain.txt", CommonTools.OutputFilePaths[0]);
+        }
+
+        [TestMethod]
         public void ThreeAddressCode_DepthNameCheck()
         {
             Bootstrapper.StartThreeAddressCodeDebug(new string[] { @"ThreeAddressCode\Source\DepthNameCheck.c" });

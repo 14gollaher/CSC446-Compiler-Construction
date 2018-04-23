@@ -17,7 +17,7 @@ Lexeme          Class        Depth     Offset    Type         Size      Value(r)
 --------------------------------------------------------------------------------
 main            Function     1         -         IntToken     0         -
 x               Variable     1         -10         IntToken     2         -
-func            Function     1         -         IntToken     6         -
+func            Function     1         -         IntToken     2         -
 -               Parameter    -         -         IntToken     -         -
 -               Parameter    -         -         IntToken     -         -
 y               Variable     1         -12        IntToken     2         -

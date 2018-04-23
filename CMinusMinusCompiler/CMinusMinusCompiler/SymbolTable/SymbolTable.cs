@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 
 namespace CMinusMinusCompiler
@@ -11,8 +10,8 @@ namespace CMinusMinusCompiler
     public class SymbolTable
     {
         // Private members
-        private int TableSize { get; } = Int32.Parse(ConfigurationManager.AppSettings["SymbolTableSize"]);
         private LinkedList<Node>[] HashTable { get; }
+        public int StringLiteralCount { get; set; }
         private static string OutputFormat { get; } = "{0,-38} {1,-30} {2}";
         private static string OutputDetailedFormat { get; }
             = "{0,-15} {1,-12} {2,-9} {3,-9} {4,-12} {5,-9} {6}";
@@ -20,7 +19,7 @@ namespace CMinusMinusCompiler
         // Constructor to create empty symbol table
         public SymbolTable()
         {
-            HashTable = new LinkedList<Node>[TableSize];
+            HashTable = new LinkedList<Node>[GlobalConfiguration.TableSize];
         }
 
         // Inserts a node into the symbol table, requiring node informations
@@ -37,6 +36,9 @@ namespace CMinusMinusCompiler
             if (HashTable[location] == null) HashTable[location] = new LinkedList<Node>();
 
             HashTable[location].AddFirst(newNode);
+
+            if (newNode is StringLiteralNode) StringLiteralCount++;
+
             return true;
         }
 
@@ -61,12 +63,20 @@ namespace CMinusMinusCompiler
             if (!CommonTools.ParserDebug && !CommonTools.ThreeAddressCodeRun)
             {
                 DisplaySymbolTableHeader(depth);
-                foreach (LinkedList<Node> nodeList in HashTable)
-                {
-                    if (nodeList != null) WriteNodes(nodeList.Where(item => item.Depth == depth));
-                }
+                WriteNodes(GetSymbolTableDepth(depth));
                 CommonTools.WriteOutput(Environment.NewLine);
             }
+        }
+
+        // Returns given depth/scope level
+        public List<Node> GetSymbolTableDepth(int depth)
+        {
+            List<Node> nodes = new List<Node>();
+            foreach (LinkedList<Node> nodeList in HashTable)
+            {
+                if (nodeList != null) nodes.AddRange(nodeList.Where(item => item.Depth == depth));
+            }
+            return nodes;
         }
 
         // Displays given depth's detailed symbol table information to output
@@ -91,19 +101,6 @@ namespace CMinusMinusCompiler
             }
             return null;
         }
-
-        // Checks that a variable exists at a given or lower depth/outer scope
-        //public bool VariableScopeExists(string lexeme, int depth)
-        //{
-        //    int location = HashLexeme(lexeme);
-
-        //    if (HashTable[location] != null)
-        //    {
-        //        return HashTable[location].Where(item => item.Lexeme == lexeme)
-        //                                  .Any(node => node.Depth <= depth);
-        //    }
-        //    return false;
-        //}
 
         // Display symbol table header to screen and output file
         private void DisplaySymbolTableHeader(int depth)
@@ -161,7 +158,7 @@ namespace CMinusMinusCompiler
             FunctionNode outputNode = (FunctionNode)node;
 
             outputData = new string[] { outputNode.Lexeme, outputNode.GetClass(), outputNode.Depth.ToString(),
-                                        "-", outputNode.ReturnType.ToString(), outputNode.VariablesSize.ToString(), "-" };
+                                        "-", outputNode.ReturnType.ToString(), outputNode.LocalsSize.ToString(), "-" };
             CommonTools.WriteOutput(string.Format(OutputDetailedFormat, outputData));
 
             foreach (ParameterNode item in outputNode.Parameters)
@@ -186,7 +183,7 @@ namespace CMinusMinusCompiler
         // Function to hash lexeme into a valid integer for symbol table
         private int HashLexeme(string lexeme)
         {   
-            return Math.Abs(lexeme.GetHashCode()) % TableSize;
+            return Math.Abs(lexeme.GetHashCode()) % GlobalConfiguration.TableSize;
         }
     }
 }

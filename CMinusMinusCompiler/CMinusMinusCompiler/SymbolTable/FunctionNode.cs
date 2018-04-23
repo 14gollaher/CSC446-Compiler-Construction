@@ -8,6 +8,7 @@ namespace CMinusMinusCompiler
         // Public properties
         public Token ReturnType { get; set; }
         public List<ParameterNode> Parameters { get; set; } = new List<ParameterNode>();
-        public int VariablesSize { get; set; }
+        public int LocalsSize { get; set; }
+        public int ParametersSize { get; set; }
     }
 }
