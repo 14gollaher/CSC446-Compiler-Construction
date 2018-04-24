@@ -41,7 +41,7 @@ namespace CMinusMinusCompiler
         public static void StartParser(string[] arguments)
         {
             ValidateArguments(arguments);
-            CommonTools.SetupOutputs(new string[] { GlobalConfiguration.LexicalAnalyzerOutputPath });
+            CommonTools.SetupOutputs(new string[] { GlobalConfiguration.ParserOutputPath });
             CommonTools.ClearOutputDisplays();
 
             LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(arguments[0]);

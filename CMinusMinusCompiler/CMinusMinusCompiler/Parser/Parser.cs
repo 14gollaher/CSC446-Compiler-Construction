@@ -391,9 +391,15 @@ namespace CMinusMinusCompiler
             if (!MatchToken(Token.RightShiftOperatorToken)) return false;
 
             VariableNode node = (VariableNode)SymbolTable.LookupNode(LexicalAnaylzer.Lexeme);
-            if (node.Type == Token.CharToken) OutputThreeAddressCode($"\t_READCHAR {GetThreeAddressCodeName(LexicalAnaylzer.Lexeme)}");
-            else if (node.Type == Token.IntToken) OutputThreeAddressCode($"\t_READINT {GetThreeAddressCodeName(LexicalAnaylzer.Lexeme)}");
-            else OutputThreeAddressCode($"\t_readFloat {GetThreeAddressCodeName(LexicalAnaylzer.Lexeme)}");
+            if (node == null)
+            {
+                CommonTools.PromptProgramErrorExit($"ERROR: Line {LexicalAnaylzer.LineNumber} Use of " +
+                    $"undeclared variable \"{LexicalAnaylzer.Lexeme}\"");
+                return false;
+            }
+            if (node.Type == Token.CharToken) OutputThreeAddressCode($"\t_RDC {GetThreeAddressCodeName(LexicalAnaylzer.Lexeme)}");
+            else if (node.Type == Token.IntToken) OutputThreeAddressCode($"\t_RDI {GetThreeAddressCodeName(LexicalAnaylzer.Lexeme)}");
+            else OutputThreeAddressCode($"\t_RDF {GetThreeAddressCodeName(LexicalAnaylzer.Lexeme)}");
 
             if (!MatchToken(Token.IdentifierToken)) return false;
             if (!ProcessInputEnd()) return false;
@@ -430,9 +436,16 @@ namespace CMinusMinusCompiler
             if (LexicalAnaylzer.Token == Token.IdentifierToken)
             {
                 VariableNode node = (VariableNode) SymbolTable.LookupNode(LexicalAnaylzer.Lexeme);
-                if (node.Type == Token.CharToken) OutputThreeAddressCode($"\t_WRITECHAR {GetThreeAddressCodeName(LexicalAnaylzer.Lexeme)}");
-                else if (node.Type == Token.IntToken) OutputThreeAddressCode($"\t_WRITEINT {GetThreeAddressCodeName(LexicalAnaylzer.Lexeme)}");
-                else OutputThreeAddressCode($"\t_writeFloat {GetThreeAddressCodeName(LexicalAnaylzer.Lexeme)}");
+                if (node == null)
+                {
+                    CommonTools.PromptProgramErrorExit($"ERROR: Line {LexicalAnaylzer.LineNumber} Use of " +
+                        $"undeclared variable \"{LexicalAnaylzer.Lexeme}\"");
+                    return false;
+                }
+
+                if (node.Type == Token.CharToken) OutputThreeAddressCode($"\t_WRC {GetThreeAddressCodeName(LexicalAnaylzer.Lexeme)}");
+                else if (node.Type == Token.IntToken) OutputThreeAddressCode($"\t_WRI {GetThreeAddressCodeName(LexicalAnaylzer.Lexeme)}");
+                else OutputThreeAddressCode($"\t_WRF {GetThreeAddressCodeName(LexicalAnaylzer.Lexeme)}");
                 LexicalAnaylzer.GetNextToken();
             }
             else if (LexicalAnaylzer.Token == Token.StringLiteralToken)
@@ -442,12 +455,12 @@ namespace CMinusMinusCompiler
                     Literal = LexicalAnaylzer.Lexeme
                 };
                 SymbolTable.InsertNode(node);
-                OutputThreeAddressCode($"\t_WRITESTRINGLITERAL {node.Lexeme}");
+                OutputThreeAddressCode($"\t_WRS {node.Lexeme}");
                 LexicalAnaylzer.GetNextToken();
             }
             else
             {
-                OutputThreeAddressCode($"\t_WRITENEWLINE");
+                OutputThreeAddressCode($"\t_WRL");
                 if (!MatchToken(Token.EndLineToken)) return false;
             }
             return true;
@@ -808,7 +821,7 @@ namespace CMinusMinusCompiler
             SymbolTable.DeleteDepth(Depth);
             Depth--;
 
-            CurrentFunction.LocalsSize = Math.Abs(LocalOffset);
+            CurrentFunction.LocalsSize = Math.Abs(LocalOffset) - Math.Abs(GlobalConfiguration.BaseLocalOffset);
             CurrentFunction.ParametersSize = Math.Abs(ParameterOffset) - GlobalConfiguration.BaseParameterOffset;
 
             LocalOffset = LocalOffsets.Pop();

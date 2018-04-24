@@ -100,15 +100,18 @@ namespace CMinusMinusCompiler
         private void ProcessFunction(List<string> functionCode)
         {
             CurrentFunction = (FunctionNode) SymbolTable.LookupNode(functionCode[0].Split(' ')[1]);
-            functionCode.RemoveAt(0);
 
+            if (CurrentFunction.LocalsSize % 2 != 0) CurrentFunction.LocalsSize += 1;
+            if (CurrentFunction.ParametersSize % 2 != 0) CurrentFunction.ParametersSize += 1;
+
+            functionCode.RemoveAt(0);
             ProcessFunctionBegin();
             foreach (string line in functionCode)
             {
                 if (line.StartsWith("_PUSH")) ProcessPush(line.Split(' '));
                 else if (line.StartsWith("_CALL")) ProcessCall(line.Split(' '));
-                else if (line.StartsWith("_WRITE")) ProcessWrite(line.Split(' '));
-                else if (line.StartsWith("_READ")) ProcessRead(line.Split(' '));
+                else if (line.StartsWith("_WR")) ProcessWrite(line.Split(' '));
+                else if (line.StartsWith("_RD")) ProcessRead(line.Split(' '));
                 else ProcessRegisterOperation(line.Split(' '));
             }
             ProcessFunctionEnd();
@@ -126,10 +129,10 @@ namespace CMinusMinusCompiler
 
         private void ProcessWrite(string[] line)
         {
-            if (line[0] == "_WRITESTRINGLITERAL") ProcessWriteStringLiteral(line[1]);
-            else if (line[0] == "_WRITECHAR") ProcessWriteChar(line[1]);
-            else if (line[0] == "_WRITEINT") ProcessWriteInt(line[1]);
-            else if (line[0] == "_WRITENEWLINE") ProcessWriteNewLine();
+            if (line[0] == "_WRS") ProcessWriteStringLiteral(line[1]);
+            else if (line[0] == "_WRC") ProcessWriteChar(line[1]);
+            else if (line[0] == "_WRI") ProcessWriteInt(line[1]);
+            else if (line[0] == "_WRL") ProcessWriteNewLine();
         }
 
         private void ProcessWriteStringLiteral(string output)
@@ -157,8 +160,8 @@ namespace CMinusMinusCompiler
 
         private void ProcessRead(string[] line)
         {
-            if (line[0] == "_READCHAR") ProcessReadChar(line[1]);
-            else if (line[0] == "_READINT") ProcessReadInt(line[1]);
+            if (line[0] == "_RDC") ProcessReadChar(line[1]);
+            else if (line[0] == "_RDI") ProcessReadInt(line[1]);
         }
 
         private void ProcessReadInt(string output)
@@ -173,23 +176,60 @@ namespace CMinusMinusCompiler
             OutputAssembly($"MOV {ConvertNotation(output)}, AL", 2);
         }
 
-        private void ProcessRegisterOperation(string[] line)
+        private void ProcessRegisterOperation(string[] statement)
         {
-            if (line.Count() == 3) ProcessAssignmentOperation(line);
-            if (line.Count() == 5 && line[3] == "+") ProcessAdditionOperation(line);
+            if (statement.Count() == 3) ProcessAssignmentOperation(statement);
+            else if (statement.Count() == 5 && statement[3] == "+") ProcessAdditionOperation(statement);
+            else if (statement.Count() == 5 && statement[3] == "-") ProcessSubtractionOperation(statement);
+            else if (statement.Count() == 5 && statement[3] == "*") ProcessMultiplicationOperation(statement);
+            else if (statement.Count() == 5 && statement[3] == "/") ProcessDivisionOperation(statement);
+            else if (statement.Count() == 5 && statement[3] == "%") ProcessModuloOperation(statement);
+            //else if (statement.Count() == 5 && statement[3] == "|") ProcessOrOperation(statement);
+            //else if (statement.Count() == 5 && statement[3] == "&") ProcessAndOperation(statement);
         }
 
-        private void ProcessAssignmentOperation(string[] line)
+        private void ProcessAssignmentOperation(string[] statement)
         {
-            OutputAssembly($"MOV AX, {ConvertNotation(line[2])}", 2);
-            OutputAssembly($"MOV {ConvertNotation(line[0])}, AX", 2);
+            OutputAssembly($"MOV AX, {ConvertNotation(statement[2])}", 2);
+            OutputAssembly($"MOV {ConvertNotation(statement[0])}, AX", 2);
         }
-        private void ProcessAdditionOperation(string[] line)
+        private void ProcessAdditionOperation(string[] statement)
         {
-            OutputAssembly($"MOV AX, {ConvertNotation(line[2])}", 2);
-            OutputAssembly($"MOV BX, {ConvertNotation(line[4])}", 2);
+            OutputAssembly($"MOV AX, {ConvertNotation(statement[2])}", 2);
+            OutputAssembly($"MOV BX, {ConvertNotation(statement[4])}", 2);
             OutputAssembly("ADD AX, BX", 2);
-            OutputAssembly($"MOV {ConvertNotation(line[0])}, AX", 2);
+            OutputAssembly($"MOV {ConvertNotation(statement[0])}, AX", 2);
+        }
+
+        private void ProcessSubtractionOperation(string[] statement)
+        {
+            OutputAssembly($"MOV BX, {ConvertNotation(statement[2])}", 2);
+            OutputAssembly($"MOV CX, {ConvertNotation(statement[4])}", 2);
+            OutputAssembly("SUB BX, CX", 2);
+            OutputAssembly($"MOV {ConvertNotation(statement[0])}, BX", 2);
+        }
+
+        private void ProcessMultiplicationOperation(string[] statement)
+        {
+            OutputAssembly($"MOV AX, {ConvertNotation(statement[2])}", 2);
+            OutputAssembly($"MOV BX, {ConvertNotation(statement[4])}", 2);
+            OutputAssembly("MUL BX", 2);
+            OutputAssembly($"MOV {ConvertNotation(statement[0])}, AX", 2);
+        }
+
+        private void ProcessDivisionOperation(string[] statement)
+        {
+            OutputAssembly($"MOV AX, {ConvertNotation(statement[2])}", 2);
+            OutputAssembly($"MOV CX, {ConvertNotation(statement[4])}", 2);
+            OutputAssembly("DIV CX", 2);
+            OutputAssembly($"MOV {ConvertNotation(statement[0])}, AX", 2);
+        }
+        private void ProcessModuloOperation(string[] statement)
+        {
+            OutputAssembly($"MOV AX, {ConvertNotation(statement[2])}", 2);
+            OutputAssembly($"MOV CX, {ConvertNotation(statement[4])}", 2);
+            OutputAssembly("DIV CX", 2);
+            OutputAssembly($"MOV {ConvertNotation(statement[0])}, DX", 2);
         }
 
         private string ConvertNotation(string output)
@@ -216,6 +256,8 @@ namespace CMinusMinusCompiler
 
         private void ProcessFunctionBegin()
         {
+            if (CurrentFunction.LocalsSize % 2 != 0) CurrentFunction.LocalsSize += 1;
+
             OutputAssembly(new string[] { $"_{CurrentFunction.Lexeme}", "PROC" });
             OutputAssembly("PUSH BP", 2);
             OutputAssembly("MOV BP, SP", 2);

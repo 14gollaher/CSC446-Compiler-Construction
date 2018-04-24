@@ -1,1 +1,90 @@
-﻿LALA
+﻿.MODEL SMALL    
+.STACK 100H     
+                
+.DATA           
+_beta DB ?      
+_alpha DW ?     
+__S0 DB "Hello!", "$" 
+__S1 DB "Enter a char for zeta: ", "$" 
+__S2 DB "Enter an int for gamma: ", "$" 
+__S3 DB "Enter an int for alpha: ", "$" 
+__S4 DB "The value of alpha is: ", "$" 
+__S5 DB "The value of zeta is: ", "$" 
+__S6 DB "The value of gamma is: ", "$" 
+__S7 DB "The value of charlie is: ", "$" 
+                
+.CODE           
+INCLUDE io.asm  
+_baz            PROC
+                PUSH BP
+                MOV BP, SP
+                SUB SP, 2
+                MOV DX, OFFSET __S0
+                CALL writestr
+                CALL writeln
+                CALL writeln
+                MOV DX, OFFSET __S1
+                CALL writestr
+                CALL readch
+                MOV [BP+6], AL
+                MOV DX, OFFSET __S2
+                CALL writestr
+                CALL readint
+                MOV [BP-2], BX
+                MOV DX, OFFSET __S3
+                CALL writestr
+                CALL readint
+                MOV _alpha, BX
+                MOV DX, OFFSET __S4
+                CALL writestr
+                MOV AX, _alpha
+                CALL writeint
+                CALL writeln
+                MOV DX, OFFSET __S5
+                CALL writestr
+                MOV DL, [BP+6]
+                CALL writech
+                CALL writeln
+                MOV DX, OFFSET __S6
+                CALL writestr
+                MOV AX, [BP-2]
+                CALL writeint
+                CALL writeln
+                MOV AX, [BP+6]
+                MOV AX, AX
+                ADD SP, 2
+                POP BP
+                RET 4
+_baz            ENDP
+                
+                
+_main           PROC
+                PUSH BP
+                MOV BP, SP
+                SUB SP, 4
+                PUSH [BP-4]
+                PUSH [BP-2]
+                CALL _baz
+                MOV AX, AX
+                MOV [BP-4], AX
+                MOV DX, OFFSET __S7
+                CALL writestr
+                MOV DL, [BP-4]
+                CALL writech
+                CALL writeln
+                MOV AX, [BP-2]
+                MOV AX, AX
+                ADD SP, 4
+                POP BP
+                RET 0
+_main           ENDP
+                
+                
+__STARTPROC     PROC
+                MOV AX, @data
+                MOV DS, AX
+                CALL _main
+                MOV AX, 4C00H
+                INT 21H
+__STARTPROC     ENDP
+END __STARTPROC 

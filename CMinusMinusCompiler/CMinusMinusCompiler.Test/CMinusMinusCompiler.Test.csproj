@@ -73,7 +73,13 @@
     <Content Include="CodeGenerator\Expected\ConsoleInputOutput.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="CodeGenerator\Expected\Operations.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="CodeGenerator\Source\ConsoleInputOutput.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CodeGenerator\Source\Operations.c">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="CodeGenerator\Source\HappyPath.c">

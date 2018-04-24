@@ -15,6 +15,7 @@ namespace CMinusMinusCompiler
         public static int MaximumIdentifierLength { get; } = Int32.Parse(ConfigurationManager.AppSettings["MaximumIdentifierLength"]);
         public static string LexicalAnalyzerOutputPath { get; } = ConfigurationManager.AppSettings["LexicalAnalyzerOutputPath"];
         public static string SymbolTableOutputPath { get; } = ConfigurationManager.AppSettings["SymbolTableOutputPath"];
+        public static string ParserOutputPath { get; } = ConfigurationManager.AppSettings["ParserOutputPath"];
         public static string ThreeAddressCodeOutputPath { get; } = ConfigurationManager.AppSettings["ThreeAddressCodeOutputPath"];
         public static string CodeGeneratorOutputPath { get; } = ConfigurationManager.AppSettings["CodeGeneratorOutputPath"];
     }
