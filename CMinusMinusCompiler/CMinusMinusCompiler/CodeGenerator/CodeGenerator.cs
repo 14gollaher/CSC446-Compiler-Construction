@@ -5,6 +5,8 @@ using System.Linq;
 
 namespace CMinusMinusCompiler
 {
+    // Code generator generates Intel 80x86 assembly language code
+    // from a given symbol table and intermediate code file
     public class CodeGenerator
     {
         // Private properties
