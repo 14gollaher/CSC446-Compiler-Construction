@@ -1,1 +1,201 @@
-﻿LALA
+﻿.MODEL SMALL    
+.STACK 100H     
+                
+.DATA           
+__S0 DB "Enter the first letter of your name: ", "$" 
+__S1 DB "Hello ", "$" 
+__S2 DB "!", "$" 
+__S3 DB "Enter length of a rectangle: ", "$" 
+__S4 DB "Enter width of a rectangle: ", "$" 
+__S5 DB "The area + 1 is: ", "$" 
+__S6 DB "The area + (area * 2) is: ", "$" 
+__S7 DB "The area after a complex operation is: ", "$" 
+                
+.CODE           
+INCLUDE io.asm  
+_findArea       PROC
+                PUSH BP
+                MOV BP, SP
+                SUB SP, 2
+                
+                MOV AX, [BP+4]
+                MOV BX, [BP+6]
+                MUL BX
+                MOV [BP-2], AX
+                
+                MOV AX, [BP-2]
+                MOV AX, AX
+                
+                ADD SP, 2
+                POP BP
+                RET 4
+_findArea       ENDP
+                
+                
+_findArea2      PROC
+                PUSH BP
+                MOV BP, SP
+                SUB SP, 6
+                
+                PUSH [BP+6]
+                
+                PUSH [BP+4]
+                
+                CALL _findArea
+                
+                MOV AX, AX
+                MOV [BP-2], AX
+                
+                MOV AX, 2
+                MOV [BP-6], AX
+                
+                MOV AX, [BP-2]
+                MOV BX, [BP-6]
+                MUL BX
+                MOV [BP-4], AX
+                
+                MOV AX, [BP-4]
+                MOV AX, AX
+                
+                ADD SP, 6
+                POP BP
+                RET 4
+_findArea2      ENDP
+                
+                
+_main           PROC
+                PUSH BP
+                MOV BP, SP
+                SUB SP, 26
+                
+                MOV DX, OFFSET __S0
+                CALL writestr
+                
+                CALL readch
+                MOV [BP-2], AL
+                
+                CALL writeln
+                
+                MOV DX, OFFSET __S1
+                CALL writestr
+                
+                MOV DL, [BP-2]
+                CALL writech
+                
+                MOV DX, OFFSET __S2
+                CALL writestr
+                
+                CALL writeln
+                
+                MOV DX, OFFSET __S3
+                CALL writestr
+                
+                CALL readint
+                MOV [BP-3], BX
+                
+                MOV DX, OFFSET __S4
+                CALL writestr
+                
+                CALL readint
+                MOV [BP-5], BX
+                
+                PUSH [BP-5]
+                
+                PUSH [BP-3]
+                
+                CALL _findArea
+                
+                MOV AX, AX
+                MOV [BP-7], AX
+                
+                MOV DX, OFFSET __S5
+                CALL writestr
+                
+                MOV AX, [BP-7]
+                CALL writeint
+                
+                CALL writeln
+                
+                PUSH [BP-5]
+                
+                PUSH [BP-3]
+                
+                CALL _findArea2
+                
+                MOV AX, AX
+                MOV [BP-7], AX
+                
+                MOV DX, OFFSET __S6
+                CALL writestr
+                
+                MOV AX, [BP-7]
+                CALL writeint
+                
+                CALL writeln
+                
+                MOV AX, 3
+                MOV [BP-11], AX
+                
+                MOV AX, 1
+                MOV [BP-15], AX
+                
+                MOV AX, 1
+                MOV [BP-19], AX
+                
+                MOV AX, [BP-15]
+                MOV BX, [BP-19]
+                ADD AX, BX
+                MOV [BP-17], AX
+                
+                MOV AX, [BP-11]
+                MOV BX, [BP-17]
+                MUL BX
+                MOV [BP-13], AX
+                
+                MOV AX, [BP-7]
+                MOV BX, [BP-13]
+                ADD AX, BX
+                MOV [BP-9], AX
+                
+                MOV AX, 1
+                MOV [BP-23], AX
+                
+                MOV BX, [BP-9]
+                MOV CX, [BP-23]
+                SUB BX, CX
+                MOV [BP-21], BX
+                
+                MOV AX, [BP-21]
+                MOV [BP-7], AX
+                
+                MOV DX, OFFSET __S7
+                CALL writestr
+                
+                MOV AX, [BP-7]
+                CALL writeint
+                
+                CALL writeln
+                
+                MOV AX, 1
+                NEG AX
+                MOV [BP-25], AX
+                
+                MOV AX, [BP-25]
+                MOV AX, AX
+                
+                ADD SP, 26
+                POP BP
+                RET 0
+_main           ENDP
+                
+                
+__STARTPROC     PROC
+                MOV AX, @data
+                MOV DS, AX
+                
+                CALL _main
+                
+                MOV AX, 4C00H
+                INT 21H
+__STARTPROC     ENDP
+END __STARTPROC 

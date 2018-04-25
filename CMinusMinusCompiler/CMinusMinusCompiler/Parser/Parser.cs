@@ -821,8 +821,11 @@ namespace CMinusMinusCompiler
             SymbolTable.DeleteDepth(Depth);
             Depth--;
 
-            CurrentFunction.LocalsSize = Math.Abs(LocalOffset) - Math.Abs(GlobalConfiguration.BaseLocalOffset);
-            CurrentFunction.ParametersSize = Math.Abs(ParameterOffset) - GlobalConfiguration.BaseParameterOffset;
+            if (!CommonTools.SemanticAnalysisDebug)
+            {
+                CurrentFunction.LocalsSize = Math.Abs(LocalOffset) - Math.Abs(GlobalConfiguration.BaseLocalOffset);
+                CurrentFunction.ParametersSize = Math.Abs(ParameterOffset) - GlobalConfiguration.BaseParameterOffset;
+            }
 
             LocalOffset = LocalOffsets.Pop();
             ParameterOffset = ParameterOffsets.Pop();
@@ -861,7 +864,7 @@ namespace CMinusMinusCompiler
             Node node = SymbolTable.LookupNode(lexeme);
             if (node is VariableNode)
             {
-                if (node.Depth == GlobalConfiguration.BaseDepth) return lexeme;
+                if (node.Depth == GlobalConfiguration.BaseDepth) return ($"{signOperation}_{lexeme}");
                 else return ($"{signOperation}_BP" + ((VariableNode)node).Offset.ToString("+0;-#"));
             }
             else if (node is ConstantNode)
@@ -896,7 +899,6 @@ namespace CMinusMinusCompiler
 
             int oldOffset = LocalOffset;
             LocalOffset -= localOffset;
-
 
             return ($"_BP{oldOffset.ToString("+0;-#")}");
         }

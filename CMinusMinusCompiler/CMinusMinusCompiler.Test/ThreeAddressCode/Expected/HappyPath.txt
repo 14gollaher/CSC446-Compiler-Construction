@@ -7,31 +7,31 @@ ENDP foo
 
 PROC main 
 	_BP-8 = -5
-	a = _BP-8
+	_a = _BP-8
 	_BP-10 = 10.2
-	b = _BP-10
+	_b = _BP-10
 	_BP-14 = 6
-	b = _BP-14
+	_b = _BP-14
 	_BP-16 = 6
-	c = _BP-16
-	d = a
-	f = _BP-4
+	_c = _BP-16
+	_d = _a
+	_f = _BP-4
 	_BP-2 = -_BP-2
 	_CALL foo
-	c = _AX
+	_c = _AX
 	_PUSH _BP-4
 	_BP-18 = 6
 	_PUSH _BP-18
-	_PUSH a
+	_PUSH _a
 	_CALL foo
-	c = _AX
+	_c = _AX
 	_BP-20 = 1.25
 	_PUSH _BP-20
 	_BP-24 = 1
 	_PUSH _BP-24
 	_CALL foo
-	d = _AX
-	_AX = a
+	_d = _AX
+	_AX = _a
 ENDP main
 
 START PROC main

@@ -8,7 +8,7 @@ PROC main
 	_BP-6 = _BP-2 * _BP-2
 	_BP-4 = _BP-2 + _BP-6
 	_BP-2 = _BP-4
-	_PUSH b
+	_PUSH _b
 	_PUSH _BP-2
 	_CALL foo
 	_BP-2 = _AX

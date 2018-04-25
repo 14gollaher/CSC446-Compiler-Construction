@@ -10,7 +10,7 @@
         Semantic Analysis (DONE)
         Intermediate Code Generator (DONE)
         Code Optimizer (DONE)
-        Code Generator (IN PROGRESS)
+        Code Generator (DONE)
 */
 
 namespace CMinusMinusCompiler

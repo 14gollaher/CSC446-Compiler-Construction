@@ -1,10 +1,10 @@
 ﻿PROC main
 	_BP-2 = 5
-	a = _BP-2
+	_a = _BP-2
 	_BP-4 = 10
-	b = _BP-4
-	_BP-6 = a + b
-	c = _BP-6
+	_b = _BP-4
+	_BP-6 = _a + _b
+	_c = _BP-6
 	_BP-8 = -1
 	_AX = _BP-8
 ENDP main

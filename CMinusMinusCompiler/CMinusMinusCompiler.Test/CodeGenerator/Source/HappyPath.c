@@ -3,6 +3,13 @@
 	return length * width;
 }
 
+int findArea2(int length, int width)
+{
+	int x;
+	x = findArea(length, width);
+	return x * 2;
+}
+
 int main()
 {
 	char firstLetterName;
@@ -20,12 +27,13 @@ int main()
 	cin >> width;
 
 	area = findArea(length, width);
+	cout << "The area + 1 is: " << area << endl;
 
-	cout << "The area is: " << area << endl;
+	area = findArea2(length, width);
+	cout << "The area + (area * 2) is: " << area << endl;
 
-	area = (area + 3 * (1 + 1)) - 1; /* area = (6 * area) - 1 */
-	cout << "The area after a complex operation is " << area << endl;
-
+	area = (area + 3 * (1 + 1)) - 1; /* area = area + 5 */
+	cout << "The area after a complex operation is: " << area << endl;
 	return -1;
 }
 
