@@ -1,0 +1,13 @@
+﻿PROC main
+	_BP-2 = 10
+	_a = _BP-2
+	_BP-4 = 5
+	_b = _BP-4
+	_BP-6 = _a + _b
+	_c = _BP-6
+	_BP-8 = 0
+	_AX = _BP-8
+ENDP main
+
+START PROC main
+

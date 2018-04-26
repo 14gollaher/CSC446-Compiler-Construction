@@ -588,7 +588,7 @@ namespace CMinusMinusCompiler
                 Node lookupfactorNode = SymbolTable.LookupNode(LexicalAnaylzer.Lexeme);
                 if (lookupfactorNode is ConstantNode)
                 {
-                    factorNode.Lexeme = GetThreeAddressCodeName(lookupfactorNode.Lexeme);
+                    factorNode.Lexeme = GetThreeAddressCodeName(SignOperation + lookupfactorNode.Lexeme);
                 }
                 else
                 {
@@ -844,10 +844,12 @@ namespace CMinusMinusCompiler
         // Returns the three address code variable name of the given lexeme
         private string GetThreeAddressCodeName(string lexeme)
         {
-            if (decimal.TryParse(lexeme, out decimal n))
+            decimal n;
+            if (decimal.TryParse(lexeme, out n))
             {
                 string temporaryVariable;
-                if (int.TryParse(lexeme, out int x)) temporaryVariable = GetTemporaryVariableName(Token.IntToken);
+                int x;
+                if (int.TryParse(lexeme, out x)) temporaryVariable = GetTemporaryVariableName(Token.IntToken);
                 else temporaryVariable = GetTemporaryVariableName(Token.FloatToken);
 
                 OutputThreeAddressCode($"\t{temporaryVariable} = {lexeme}");
@@ -874,8 +876,8 @@ namespace CMinusMinusCompiler
                 else temporaryVariable = GetTemporaryVariableName(Token.FloatToken);
 
                 string outputvalue = (((ConstantNode)node).Value ?? ((ConstantNode)node).ValueReal).ToString();
-                OutputThreeAddressCode($"\t{temporaryVariable} = {outputvalue}");
-                return signOperation + temporaryVariable;
+                OutputThreeAddressCode($"\t{signOperation}{temporaryVariable} = {outputvalue}");
+                return temporaryVariable;
             }
             else if (node is FunctionNode)
             {

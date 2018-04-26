@@ -75,5 +75,61 @@ namespace CMinusMinusCompiler.Test
             Bootstrapper.StartThreeAddressCodeDebug(new string[] { @"ThreeAddressCode\Source\ClassCase4.c" });
             TestTools.CompareFileEquality(@"ThreeAddressCode\Expected\ClassCase4.txt", CommonTools.OutputFilePaths[0]);
         }
+
+        [TestMethod]
+        public void ThreeAddressCode_InstructorCase1()
+        {
+            Bootstrapper.StartThreeAddressCodeDebug(new string[] { @"ThreeAddressCode\Source\test1.c" });
+            TestTools.CompareFileEquality(@"ThreeAddressCode\Expected\test1.txt", CommonTools.OutputFilePaths[0]);
+        }
+
+        [TestMethod]
+        public void ThreeAddressCode_InstructorCase2()
+        {
+            Bootstrapper.StartThreeAddressCodeDebug(new string[] { @"ThreeAddressCode\Source\test2.c" });
+            TestTools.CompareFileEquality(@"ThreeAddressCode\Expected\test2.txt", CommonTools.OutputFilePaths[0]);
+        }
+
+        [TestMethod]
+        public void ThreeAddressCode_InstructorCase3()
+        {
+            Bootstrapper.StartThreeAddressCodeDebug(new string[] { @"ThreeAddressCode\Source\test3.c" });
+            TestTools.CompareFileEquality(@"ThreeAddressCode\Expected\test3.txt", CommonTools.OutputFilePaths[0]);
+        }
+
+        [TestMethod]
+        public void ThreeAddressCode_InstructorCase4()
+        {
+            Bootstrapper.StartThreeAddressCodeDebug(new string[] { @"ThreeAddressCode\Source\test4.c" });
+            TestTools.CompareFileEquality(@"ThreeAddressCode\Expected\test4.txt", CommonTools.OutputFilePaths[0]);
+        }
+
+        [TestMethod]
+        public void ThreeAddressCode_InstructorCase5()
+        {
+            Bootstrapper.StartThreeAddressCodeDebug(new string[] { @"ThreeAddressCode\Source\test5.c" });
+            TestTools.CompareFileEquality(@"ThreeAddressCode\Expected\test5.txt", CommonTools.OutputFilePaths[0]);
+        }
+
+        [TestMethod]
+        public void ThreeAddressCode_InstructorCase6()
+        {
+            Bootstrapper.StartThreeAddressCodeDebug(new string[] { @"ThreeAddressCode\Source\test6.c" });
+            TestTools.CompareFileEquality(@"ThreeAddressCode\Expected\test6.txt", CommonTools.OutputFilePaths[0]);
+        }
+
+        [TestMethod]
+        public void ThreeAddressCode_InstructorCase7()
+        {
+            Bootstrapper.StartThreeAddressCodeDebug(new string[] { @"ThreeAddressCode\Source\test7.c" });
+            TestTools.CompareFileEquality(@"ThreeAddressCode\Expected\test7.txt", CommonTools.OutputFilePaths[0]);
+        }
+
+        [TestMethod]
+        public void ThreeAddressCode_InstructorCase8()
+        {
+            Bootstrapper.StartThreeAddressCodeDebug(new string[] { @"ThreeAddressCode\Source\test8.c" });
+            TestTools.CompareFileEquality(@"ThreeAddressCode\Expected\test8.txt", CommonTools.OutputFilePaths[0]);
+        }
     }
 }

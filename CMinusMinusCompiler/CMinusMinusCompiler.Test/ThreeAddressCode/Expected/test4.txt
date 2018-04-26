@@ -1,0 +1,23 @@
+﻿PROC func
+	_BP-6 = _BP-2 / _BP-4
+	_BP-10 = _BP+6 - _BP+4
+	_BP-8 = _BP-6 + _BP-10
+	_BP+4 = _BP-8
+	_AX = _BP+4
+ENDP func
+
+PROC main
+	_PUSH _d
+	_PUSH _c
+	_CALL func
+	_d = _AX
+	_BP-4 = _b / _c
+	_BP-2 = _a + _BP-4
+	_BP-6 = _BP-2 + _d
+	_c = _BP-6
+	_BP-8 = 0
+	_AX = _BP-8
+ENDP main
+
+START PROC main
+
