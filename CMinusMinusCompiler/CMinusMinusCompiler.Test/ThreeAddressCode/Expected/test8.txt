@@ -1,12 +1,17 @@
 ﻿PROC main
-	_BP-2 = 5
-	_a = _BP-2
-	_BP-4 = 10
-	_b = _BP-4
-	_BP-6 = _a + _b
-	_c = _BP-6
-	_BP-8 = -1
-	_AX = _BP-8
+	_BP-14 = 5
+	_BP-2 = _BP-14
+	_BP-16 = 10
+	_BP-4 = _BP-16
+	_BP-18 = 33
+	_BP-22 = 20
+	_BP-20 = _BP-18 + _BP-22
+	_BP-8 = _BP-20
+	_BP-24 = 33
+	_BP-26 = _BP-24 + -_BP-2
+	_BP-6 = _BP-26
+	_AX = _BP-6
 ENDP main
 
 START PROC main
+

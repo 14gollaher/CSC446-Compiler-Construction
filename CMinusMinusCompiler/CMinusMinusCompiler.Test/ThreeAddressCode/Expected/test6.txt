@@ -1,12 +1,11 @@
 ﻿PROC main
-	_BP-2 = 5
-	_a = _BP-2
-	_BP-4 = 10
-	_b = _BP-4
-	_BP-6 = _a + _b
-	_c = _BP-6
-	_BP-8 = -1
-	_AX = _BP-8
+	_BP-10 = 5
+	_BP-8 = _BP-2 * _BP-10
+	_BP-12 = _BP-8 - _BP-4
+	_BP-6 = _BP-12
+	_BP-14 = 0
+	_AX = _BP-14
 ENDP main
 
 START PROC main
+

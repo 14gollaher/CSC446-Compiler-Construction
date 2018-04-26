@@ -117,7 +117,6 @@ namespace CMinusMinusCompiler
         private Stack<string> ParameterStack { get; set; } = new Stack<string>();
         private string CurrentFunctionCall { get; set; }
         private string SignOperation { get; set; }
-        private List<string> SignOperations { get; } = new List<string>() { "-", "!" };
         private string ThreeAddressCodeOutput { get; set; } = string.Empty;
 
         // Parameterized constructor requires a lexical analyzer and symbol table
@@ -503,7 +502,8 @@ namespace CMinusMinusCompiler
                 Node node = new Node();
                 if (!ProcessExpression(ref node)) return false;
                 if (!CheckValidVariableAssignment(lexeme)) return false;
-                OutputThreeAddressCode($"\t{GetThreeAddressCodeName(lexeme)} = {GetThreeAddressCodeName(node.Lexeme)}");
+                OutputThreeAddressCode($"\t{GetThreeAddressCodeName(lexeme)} = {SignOperation}{GetThreeAddressCodeName(node.Lexeme)}");
+                SignOperation = string.Empty;
             }
             return true;
         }
@@ -568,7 +568,8 @@ namespace CMinusMinusCompiler
 
                 Node newMoreTermMode = new Node();
                 if (!ProcessTerm(ref newMoreTermMode)) return false;
-                OutputThreeAddressCode($"{threeAddressCodeOutput} {GetThreeAddressCodeName(newMoreTermMode.Lexeme)}");
+                OutputThreeAddressCode($"{threeAddressCodeOutput} {SignOperation}{GetThreeAddressCodeName(newMoreTermMode.Lexeme)}");
+                SignOperation = string.Empty;
 
                 moreTermNode.Lexeme = temporaryVariableName;
                 if (!ProcessMoreTerm(ref moreTermNode)) return false;
@@ -588,20 +589,18 @@ namespace CMinusMinusCompiler
                 Node lookupfactorNode = SymbolTable.LookupNode(LexicalAnaylzer.Lexeme);
                 if (lookupfactorNode is ConstantNode)
                 {
-                    factorNode.Lexeme = GetThreeAddressCodeName(SignOperation + lookupfactorNode.Lexeme);
+                    factorNode.Lexeme = GetThreeAddressCodeName(lookupfactorNode.Lexeme);
                 }
                 else
                 {
-                    factorNode.Lexeme = SignOperation + lookupfactorNode.Lexeme;
+                    factorNode.Lexeme = lookupfactorNode.Lexeme;
                 }
-                SignOperation = string.Empty;
                 LexicalAnaylzer.GetNextToken();
             }
             else if (LexicalAnaylzer.Token == Token.NumberToken)
             {
                 
-                factorNode.Lexeme = GetThreeAddressCodeName(SignOperation + LexicalAnaylzer.Lexeme);
-                SignOperation = string.Empty;
+                factorNode.Lexeme = GetThreeAddressCodeName(LexicalAnaylzer.Lexeme);
                 LexicalAnaylzer.GetNextToken();
             }
             else
@@ -627,7 +626,8 @@ namespace CMinusMinusCompiler
 
                 Node moreFactorNode = new Node();
                 if (!ProcessFactor(ref moreFactorNode)) return false;
-                OutputThreeAddressCode($"{threeAddressCodeOutput} {GetThreeAddressCodeName(moreFactorNode.Lexeme)}");
+                OutputThreeAddressCode($"{threeAddressCodeOutput} {SignOperation}{GetThreeAddressCodeName(moreFactorNode.Lexeme)}");
+                SignOperation = string.Empty;
 
                 factorNode.Lexeme = temporaryVariableName;
                 if (!ProcessMoreFactor(ref moreFactorNode)) return false;
@@ -679,7 +679,8 @@ namespace CMinusMinusCompiler
 
             Node expressionNode = new Node();
             if (!ProcessExpression(ref expressionNode)) return false; 
-            OutputThreeAddressCode($"\t_AX = {GetThreeAddressCodeName(expressionNode.Lexeme)}");
+            OutputThreeAddressCode($"\t_AX = {SignOperation}{GetThreeAddressCodeName(expressionNode.Lexeme)}");
+            SignOperation = string.Empty;
 
             if (!MatchToken(Token.SemiColonToken)) return false;
             DecreaseProgramStack();
@@ -852,22 +853,16 @@ namespace CMinusMinusCompiler
                 if (int.TryParse(lexeme, out x)) temporaryVariable = GetTemporaryVariableName(Token.IntToken);
                 else temporaryVariable = GetTemporaryVariableName(Token.FloatToken);
 
-                OutputThreeAddressCode($"\t{temporaryVariable} = {lexeme}");
+                OutputThreeAddressCode($"\t{temporaryVariable} = {SignOperation}{lexeme}");
+                SignOperation = string.Empty;
                 return temporaryVariable;
-            }
-
-            string signOperation = string.Empty;
-            if (SignOperations.Contains(lexeme[0].ToString()))
-            {
-                signOperation = lexeme[0].ToString();
-                lexeme = lexeme.Remove(0, 1);
             }
 
             Node node = SymbolTable.LookupNode(lexeme);
             if (node is VariableNode)
             {
-                if (node.Depth == GlobalConfiguration.BaseDepth) return ($"{signOperation}_{lexeme}");
-                else return ($"{signOperation}_BP" + ((VariableNode)node).Offset.ToString("+0;-#"));
+                if (node.Depth == GlobalConfiguration.BaseDepth) return ($"_{lexeme}");
+                else return ($"_BP" + ((VariableNode)node).Offset.ToString("+0;-#"));
             }
             else if (node is ConstantNode)
             {
@@ -876,7 +871,8 @@ namespace CMinusMinusCompiler
                 else temporaryVariable = GetTemporaryVariableName(Token.FloatToken);
 
                 string outputvalue = (((ConstantNode)node).Value ?? ((ConstantNode)node).ValueReal).ToString();
-                OutputThreeAddressCode($"\t{signOperation}{temporaryVariable} = {outputvalue}");
+                OutputThreeAddressCode($"\t{temporaryVariable} = {SignOperation}{outputvalue}");
+                SignOperation = string.Empty;
                 return temporaryVariable;
             }
             else if (node is FunctionNode)

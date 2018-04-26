@@ -13,6 +13,13 @@ namespace CMinusMinusCompiler.Test
         }
 
         [TestMethod]
+        public void CodeGenerator_HappyPath2()
+        {
+            Bootstrapper.StartCodeGeneratorDebug(new string[] { @"CodeGenerator\Source\HappyPath2.c" });
+            TestTools.CompareFileEquality(@"CodeGenerator\Expected\HappyPath2.txt", CommonTools.OutputFilePaths[0]);
+        }
+
+        [TestMethod]
         public void CodeGenerator_ConsoleInputOutput()
         {
             Bootstrapper.StartCodeGeneratorDebug(new string[] { @"CodeGenerator\Source\ConsoleInputOutput.c" });
